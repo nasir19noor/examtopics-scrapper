@@ -1,0 +1,9 @@
+output/
+__pycache__/
+*.pyc
+sample.html
+_inspect*.py
+.git
+.gitignore
+README.md
+LICENSE

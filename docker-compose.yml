@@ -1,0 +1,7 @@
+services:
+  scraper:
+    build: .
+    image: examtopics-scrapper
+    ports:
+      - "8000:8000"          # open http://localhost:8000 in your browser
+    restart: unless-stopped
