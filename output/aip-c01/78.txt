@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 78
+
+A healthcare company is building a document management system that stores medical research papers in an Amazon S3 bucket. The company must create a comprehensive metadata framework to improve search precision for a generative AI (GenAI) application that analyzes the research papers. The metadata framework must include document timestamps, author details, and research-domain classifications.  
+  
+The solution must preserve a consistent metadata structure for every uploaded document. The solution must enable foundation models (FMs) to understand document context without accessing the complete content.  
+  
+Which solution will meet these requirements?
+
+A. Store document timestamps in Amazon S3 system metadata. Use S3 object tags to implement domain classification. Implement custom user-defined metadata to store author information.
+B. Set up S3 Object Lock with legal holds to track document timestamps. Use S3 object tags to store author information. Implement S3 access points for domain classification.
+C. Use S3 Inventory reports to track document timestamps. Create S3 access points to implement domain classification. Store author information in S3 Storage Lens dashboards.
+D. Use custom user-defined metadata to store author information. Use S3 Object Lock retention periods to track document timestamps. Use S3 Event Notifications to implement domain classification.
+
+Correct answer: A
+
+Explanation:
+Amazon S3 maintains system-defined metadata such as object creation and last-modified dates. S3 object tags are key-value pairs designed to categorize objects, making them suitable for research-domain classification, while user-defined metadata can store application-specific author information. These object-level metadata fields provide contextual attributes without requiring access to the document body.
+
+**Learn more:** [Working with object metadata - Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingMetadata.html)

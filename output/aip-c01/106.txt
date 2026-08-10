@@ -1,0 +1,24 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 106
+
+A university is developing an AI-powered application composed of several sub-applications, including AI assistants, assignment graders, and internal analytics tools. The university is defining and testing multiple prompts across various foundation models (FMs) and wants to:  
+  
+- Compare variants of each prompt and select the variant that produces outputs best suited for each specific use case.  
+- Implement version control for the prompts.  
+- Test prompt variations and collect audit trails covering prompt changes and prompt usage.  
+- Maintain consistency while still allowing the prompts to be integrated into the main application.  
+  
+Which combination of solutions will meet these requirements with the LEAST operational overhead? (Choose two.)
+
+A. Use Amazon Bedrock Prompt Management to create versioned prompts. Include parameterized variables for each use case.
+B. Store prompts in Amazon S3. Use AWS Step Functions to orchestrate the model interactions and service integrations.
+C. Use Amazon Bedrock Flows to create workflows that combine FMs and AWS services.
+D. Configure AWS Config to record prompt changes. Use AWS CloudTrail to track prompt usage.
+E. Configure Amazon Bedrock intelligent prompt routing.
+
+Correct answer: AC
+
+Explanation:
+Amazon Bedrock Prompt Management provides built-in prompt versioning and supports parameterized variables, enabling teams to create, test, and compare prompt variants for different use cases without building custom infrastructure. Because it is a native Bedrock feature, all prompt changes and invocations are automatically captured in AWS CloudTrail, satisfying the audit-trail requirement with no extra logging setup. Amazon Bedrock Flows allows prompts, FMs, and AWS service integrations to be composed into consistent, reusable workflows, making it straightforward to integrate versioned prompts into the university's main application and its various sub-applications. Together, these two fully managed Bedrock capabilities meet all stated requirements with minimal operational overhead, unlike custom solutions built on S3/Step Functions or manually configured AWS Config/CloudTrail tracking, and unlike intelligent prompt routing, which addresses model selection rather than versioning or auditing.
+
+**Learn more:** [Manage prompts using Prompt management in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management.html) · [Create your own generative AI workflows using Prompt Flows for Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/flows.html)

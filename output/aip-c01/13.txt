@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 13
+
+A company uses Amazon Bedrock to build an AI-powered application with a foundation model (FM) that supports cross-Region inference and provisioned throughput. The application must provide consistently low latency to users in Europe and North America. It must also comply with data-residency regulations requiring European user data to stay in Europe-based AWS Regions.  
+  
+During testing, the application has service degradation when Regional traffic spikes reach service quotas. The company requires a solution that preserves application resilience while minimizing operational complexity.  
+  
+Which solution meets these requirements?
+
+A. Deploy separate Amazon Bedrock instances in North American and European Regions. Use a custom routing layer that directs traffic based on user location. Configure Amazon CloudWatch alarms to monitor Regional service usage. Use Amazon SNS to send email alerts to the company when usage approaches specified thresholds.
+B. Use Amazon Bedrock cross-Region inference profiles by specifying geographical codes in profile IDs when the application calls the InvokeModel API. Configure separate Amazon API Gateway HTTP APIs to direct European and North American users to the appropriate Regional endpoints.
+C. Deploy a multi-Region Amazon API Gateway HTTP API and AWS Lambda functions that implement retry logic to handle throttling. Configure the Lambda functions to call the FM in the nearest secondary Region when the application reaches service quotas in the primary Region. Use intelligent routing to ensure compliance with data residency requirements.
+D. Configure provisioned throughput for Amazon Bedrock in multiple Regions. Implement failover logic in the application code to switch between Regions when throttling occurs. Use AWS Global Accelerator to route traffic to the appropriate endpoints based on user location.
+
+Correct answer: B
+
+Explanation:
+Geographic Amazon Bedrock cross-Region inference profiles automatically route invocations among the supported Regions within a specified geography, such as the EU or US. This increases available throughput and handles unplanned traffic bursts without custom Regional failover logic. An EU geographic profile confines processing to EU Regions, supporting European data-residency requirements; separate regional API endpoints can direct each user population to the applicable geographic profile. Amazon Bedrock inference profiles currently do not support Provisioned Throughput.
+
+**Learn more:** [Increase throughput with cross-Region inference - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) · [Supported Regions and models for inference profiles - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)

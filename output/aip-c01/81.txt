@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 81
+
+A retail company operates a generative AI (GenAI) product-recommendation application that uses Amazon Bedrock. The application recommends products to customers according to browsing history and demographics. The company must implement fairness evaluation across multiple demographic groups to identify and quantify bias in recommendations between two prompt approaches. The company wants to gather and monitor fairness metrics in real time. The company must receive an alert when the fairness metrics reveal a discrepancy greater than 15% between demographic groups. The company must receive weekly reports that compare the performance of the two prompt approaches.  
+  
+Which solution meets these requirements with the **LEAST** custom development effort?
+
+A. Configure an Amazon CloudWatch dashboard to display default metrics from Amazon Bedrock API calls. Create custom metrics based on model outputs. Set up Amazon EventBridge rules to invoke AWS lambda functions that perform post-processing analysis on model responses and publish custom fairness metrics.
+B. Create the two prompt variants in Amazon Bedrock Prompt Management. Use Amazon Bedrock Flows to deploy the prompt variants with defined traffic allocation. Configure Amazon Bedrock guardrails that have content filters to monitor demographic fairness. Set up Amazon CloudWatch alarms on the GuardrailContentSource dimension that use InvocationsIntervened metrics to detect recommendation discrepancy threshold violations.
+C. Set up Amazon SageMaker Clarify to analyze model outputs. Publish fairness metrics to Amazon CloudWatch. Create CloudWatch composite alarms that combine SageMaker Clarify bias metrics with Amazon Bedrock latency metrics to provide a comprehensive fairness evaluation dashboard.
+D. Create an Amazon Bedrock model evaluation job to compare fairness between the two prompt variants. Enable model invocation logging in Amazon CloudWatch. Set up CloudWatch alarms for InvocationsIntervened metrics with a dimension for each demographic group.
+
+Correct answer: C
+
+Explanation:
+Amazon SageMaker Clarify supplies bias metrics that quantify fairness across demographic facets and can monitor bias on an ongoing schedule. Its bias-monitoring workflow produces reports, emits metrics that can be monitored in Amazon CloudWatch, and supports threshold-based alerts. This provides managed analysis and reporting for the demographic disparity requirement while CloudWatch operationalizes monitoring and alerting with less custom logic than post-processing every model response in Lambda.
+
+**Learn more:** [Bias drift for models in production — Amazon SageMaker AI](https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-bias-drift.html) · [Schedule Bias Drift Monitoring Jobs — Amazon SageMaker AI](https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-model-monitor-bias-drift-schedule.html)

@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 114
+
+A healthcare company is building an AI application that retrieves medical literature to support doctors' research. The company plans to deploy this application across multiple countries. The application must index 50,000 text-heavy medical documents containing specialized terminology in English, French, and German, and it must deliver high search accuracy for that medical terminology. The company wants a solution requiring minimal custom code development and minimal ongoing maintenance.  
+  
+Which solution will meet these requirements?
+
+A. Use Amazon Titan Text Embeddings to process all documents in their original language without translation. Apply semantic chunking at the medical section level to preserve medical terminology context and to maintain moderate vector dimensions.
+B. Use Amazon Titan Text Embeddings to translate all non-English documents to English before processing. Implement document chunking strategies based on logical sections to improve retrieval accuracy.
+C. Use Amazon Titan Multimodal Embeddings to convert document pages to images. Generate text captions for the images to create a multimodal knowledge base that handles medical content.
+D. Use an Amazon Bedrock knowledge base as the vector store. Use Amazon Kendra to perform multilingual document processing. Configure the vector store to automatically handle language detection and translation for each query.
+
+Correct answer: A
+
+Explanation:
+Amazon Titan Text Embeddings natively supports over 100 languages, so it can generate high-quality embeddings directly from documents in their original language (English, French, or German) without a separate translation step, preserving the precise meaning of specialized medical terminology that could otherwise be lost or altered during translation. Applying semantic chunking at the medical section level keeps related terminology and context together, improving retrieval accuracy for domain-specific searches, while also controlling vector size (moderate dimensions) for efficient storage and query performance. This approach avoids extra translation pipelines, image-conversion workflows, or non-existent automatic in-store translation features, keeping custom development and ongoing maintenance to a minimum, consistent with AWS guidance on using Titan Text Embeddings for multilingual RAG and semantic search scenarios.
+
+**Learn more:** [Amazon Titan Text Embeddings models - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html) · [Get started with Amazon Titan Text Embeddings V2](https://aws.amazon.com/blogs/machine-learning/get-started-with-amazon-titan-text-embeddings-v2-a-new-state-of-the-art-embeddings-model-on-amazon-bedrock/)

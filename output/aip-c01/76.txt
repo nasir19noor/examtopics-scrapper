@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 76
+
+A company is developing a video-analysis platform on AWS. The platform will analyze a large video archive using Amazon Rekognition and Amazon Bedrock. It must comply with predefined privacy standards, use secure model I/O, control foundation model (FM) access patterns, and provide an audit trail showing who accessed what and when.  
+  
+Which solution meets these requirements?
+
+A. Configure VPC endpoints for Amazon Bedrock model API calls. Implement Amazon Bedrock Guardrails to filter harmful or unauthorized content in prompts and responses. Use Amazon Bedrock trace events to track all agent and model invocations for auditing purposes. Export the traces to Amazon CloudWatch Logs as an audit record of model usage. Store all prompts and outputs in Amazon S3 with server-side encryption with AWS KMS keys (SSE-KMS).
+B. Define access control by using IAM with attribute-based controls to map departments to specific permissions. Configure VPC endpoints for Amazon Bedrock model API calls. Use IAM condition keys to enforce specific GuardrailIdentifier and ModelId values. Configure AWS CloudTrail to capture management and data events for S3 objects and KMS key usage activities. Enable S3 server access logging to record detailed file-level interactions with the video archives. Send all CloudTrail logs to AWS CloudTrail Lake. Set up Amazon CloudWatch alarms to detect and alert on unexpected activity from Amazon Bedrock, Amazon Rekognition, and AWS KMS.
+C. Restrict access to services by using VPC endpoint policies. Use AWS Config to track resource changes and compliance with security rules. Use server-side encryption with AWS KMS keys (SSE-KMS) to encrypt data at rest. Store the model's I/O in separate Amazon S3 buckets. Enable S3 server access logging to track file-level interactions.
+D. Configure AWS CloudTrail Insights to analyze API call patterns across accounts and detect anomalous activity in Amazon Bedrock, Amazon Rekognition, Amazon S3, and AWS KMS. Deploy Amazon Macie to scan and classify the video archive. Use server-side encryption with AWS KMS keys (SSE-KMS) to encrypt all stored data. Configure CloudTrail to capture KMS API usage events for audit purposes. Configure Amazon EventBridge rules to process CloudTrail Insights anomalies and Macie findings. Use CloudWatch alarms to trigger automated notifications and security responses when potential security issues are detected.
+
+Correct answer: B
+
+Explanation:
+IAM attribute-based access control can limit permissions by department, while Amazon Bedrock interface VPC endpoints provide private connectivity for model API calls. IAM policies can enforce an approved guardrail and restrict invocation permissions to approved foundation-model resources. AWS CloudTrail records API activity with identity, action, resource, and time details; logging S3 object-level data events and KMS activity and retaining those records in CloudTrail Lake provides the required auditable record of access to the video archive and encrypted data.
+
+**Learn more:** [Use interface VPC endpoints (AWS PrivateLink) to create a private connection between your VPC and Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/vpc-interface-endpoints.html) · [Enforce the use of specific guardrails in model inference requests](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-permissions-id.html)

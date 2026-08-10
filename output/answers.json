@@ -1,0 +1,470 @@
+{
+ "1": {
+  "answer": "B",
+  "explanation": "Why B is correct: AWS Step Functions is a managed orchestrator. A single state machine can run the three Bedrock agents and the rewards Lambda function as sequential tasks, with per-task Retry and Catch giving the graceful degradation required - all without hand-written orchestration code, so it is the MOST operationally efficient.\nWhy the others fail:\nA - Putting an API Gateway REST API in front of every agent plus a custom orchestration Lambda adds many moving parts and self-managed retry logic.\nC - Same custom Lambda orchestration and an extra API Gateway layer; more code to own, not less.\nD - A one-task state machine just wraps a Lambda that still hand-codes the sequential calls, so it gains none of Step Functions' orchestration benefit."
+ },
+ "2": {
+  "answer": "CD",
+  "explanation": "Two things are required: restrict employees to approved models, and block particular topics / proprietary information in prompts.\nWhy C and D are correct:\nC - An SCP that denies model invocation unless a centrally deployed guardrail ID is supplied, combined with a permissions boundary limiting each role to approved models, enforces both controls org-wide.\nD - A CloudFormation custom guardrail with a block filtering policy, deployed to every account with stack sets, actually creates the guardrail that blocks the disallowed topics and proprietary content.\nWhy the others fail:\nA and B - These reference a guardrail identifier but never deploy the guardrail itself, and an 'allow only approved models' SCP alone does not block topics.\nE - A mask policy only masks matched content instead of blocking it, so proprietary information could still reach the model."
+ },
+ "3": {
+  "answer": "D",
+  "explanation": "Requirement: register data sources, tag metadata for attribution, and keep audit logs of access across the whole pipeline.\nWhy D is correct: AWS Glue Data Catalog registers every source, metadata tags attribute content to its origin, and AWS CloudTrail logs access and activity across all the services involved - full end-to-end traceability.\nWhy the others fail:\nA - Lake Formation centres on access control and tags only in S3, not full source registration.\nB - CloudWatch Logs captures application logs, not the API-level audit trail CloudTrail provides.\nC - CloudTrail is scoped to S3 bucket access only, missing activity elsewhere in the pipeline."
+ },
+ "4": {
+  "answer": "B",
+  "explanation": "Why B is correct: An adaptive retry strategy with exponential backoff plus jitter avoids overwhelming Bedrock, a circuit breaker halts retries when error rates spike, and a streaming handler that buffers received chunks and resumes from the last chunk preserves response streaming - meeting the adaptive, token-aware, streaming requirements.\nWhy the others fail:\nA - A fixed 1-second delay is not adaptive, and restarting streams discards partial progress.\nC - Standard SDK retries plus returning cached completions serves stale data and is not adaptive to changing availability.\nD - Static timeouts and token caps with load shedding drop work rather than adapting to service health."
+ },
+ "5": {
+  "answer": "B",
+  "explanation": "Problem: documents exceed the model's context window, causing truncated output.\nWhy B is correct: Hierarchical chunking (large parent chunks, smaller child chunks) with Amazon Bedrock Knowledge Bases retrieval returns only the relevant parent chunks per query, so the model never has to ingest the whole oversized document, and overlap preserves semantic continuity.\nWhy the others fail:\nA - Linking chunks up to a 200k window still tries to fit everything in context and hits the same limit.\nC - Semantic chunking with RetrieveAndGenerate can work but is less robust for very long structured documents than hierarchical parent/child retrieval.\nD - Splitting and processing segments independently loses cross-segment context and re-implements retrieval by hand."
+ },
+ "6": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Bedrock Intelligent Prompt Routing natively analyzes each inquiry and routes simple ones to a smaller model and complex ones to a larger model - a managed feature, so it meets the goal with the LEAST implementation effort.\nWhy the others fail:\nA - Building a classifier model plus Lambda routing logic is a custom multi-stage system with far more effort.\nC - A single mid-sized model with prompt instructions is not the cost-optimized routing asked for.\nD - Separate endpoints plus rule-based keyword routing is brittle and more to build."
+ },
+ "7": {
+  "answer": "C",
+  "explanation": "Why C is correct: Hosting the MCP server in Lambda behind an API Gateway HTTP API with the Streamable HTTP transport exposes it over HTTP, and Amazon Cognito enforcing OAuth 2.1 ensures only authorized users can reach it.\nWhy the others fail:\nA - Direct async Lambda invocation provides no user-level authorization.\nB and D - STDIO transport is for local co-located processes, not a shared authorized server; a Lambda layer cannot host a running server, and putting user credentials in environment variables is insecure."
+ },
+ "8": {
+  "answer": "D",
+  "explanation": "Why D is correct: AWS Step Functions orchestrating Amazon Comprehend (PII detection) and Amazon Bedrock (embeddings), integrated directly with Amazon OpenSearch Serverless for vector storage and similarity search, is fully serverless and needs no clusters - the LEAST operational overhead while meeting the 4-hour window.\nWhy the others fail:\nA - Hand-tuning Lambda concurrency and memory for 50 GB adds operational burden.\nB - Glue ETL plus SageMaker Processing jobs are more components to manage.\nC - Running an EMR/Spark cluster and Aurora pgvector is the heaviest to operate."
+ },
+ "9": {
+  "answer": "AB",
+  "explanation": "Goal: cut hallucinations while sustaining 1,000+ docs/hour and sub-3-second summaries.\nWhy A and B are correct:\nA - Zero-shot chain-of-thought with explicit fact verification forces step-by-step grounding before the summary, reducing invented details.\nB - RAG with an Amazon Bedrock knowledge base, semantic chunking and tuned embeddings grounds each summary in the actual source content.\nWhy the others fail:\nC - Guardrails matching 'hallucination patterns' cannot reliably detect invented facts.\nD - Raising temperature increases randomness and makes hallucinations worse.\nE - One-pass full-document summarization is exactly the failing approach in use today."
+ },
+ "10": {
+  "answer": "D",
+  "explanation": "Why D is correct: Standardized multilingual test conversations with identical meaning, run in parallel through Amazon Bedrock model evaluation jobs with similarity and hallucination thresholds, and wired into CI/CD to block failing releases, satisfies every bullet - concurrency, automation, per-language coverage, and deployment gating.\nWhy the others fail:\nA - Traffic simulation measures infrastructure load, not answer consistency.\nB - Multi-Region routing improves performance and does only weekly post-deployment audits, so it cannot block a bad release.\nC - A normalization pipeline changes the inputs and does not evaluate cross-language response consistency."
+ },
+ "11": {
+  "answer": "A",
+  "explanation": "Why A is correct: CloudWatch dashboards holding technical metrics plus imported business metrics, CloudWatch composite alarms that combine technical and business data, and Amazon SNS notifications give unified visibility with automatic stakeholder alerting.\nWhy the others fail:\nB - Managed Grafana auto-remediation via Lambda goes beyond the requirement and adds complexity.\nC - Streaming metrics to S3 and using QuickSight is batch-oriented, not real-time correlation and alerting.\nD - Composite alarms combine other alarms; they do not perform anomaly detection as this option claims, so A is the accurate description."
+ },
+ "12": {
+  "answer": "A",
+  "explanation": "Why A is correct: Amazon Bedrock Knowledge Bases with Graph RAG backed by Amazon Neptune Analytics is purpose-built to traverse multi-hop relationships between interconnected entities and surface indirect relationships automatically - a managed capability, so the LEAST operational overhead.\nWhy the others fail:\nB - Sequentially querying vector embeddings with custom Lambda logic re-implements graph traversal by hand.\nC - Manual relationship mapping on an EC2 Auto Scaling group is heavy to build and operate.\nD - DynamoDB custom indexing plus SageMaker cannot express multi-hop relationship queries."
+ },
+ "13": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Bedrock cross-Region inference profiles with geographical codes keep European traffic within European Regions (data residency) while spreading load to absorb Regional quota spikes, and separate API Gateway HTTP APIs route each audience to the right Regional endpoint - resilient with minimal complexity.\nWhy the others fail:\nA - Separate instances plus a custom routing layer is high operational complexity.\nC - Failing over to the nearest secondary Region can move European data outside Europe, breaking residency.\nD - Provisioned throughput in many Regions with Global Accelerator and custom failover is complex and risks residency violations."
+ },
+ "14": {
+  "answer": "B",
+  "explanation": "Why B is correct: A hybrid search on Amazon OpenSearch Service (vector search for semantic relationships plus keyword search for exact legal terms and citations) with an Amazon Bedrock reranker to reorder by relevance delivers the precise, fast retrieval legal research needs.\nWhy the others fail:\nA - A default vector configuration with query expansion misses exact keyword and citation matching.\nC - Kendra query suggestions plus post-processing does not combine semantic and keyword retrieval with reranking.\nD - Vector search plus custom Lambda merging with RDS keyword filters is a clunky, self-built approximation of hybrid search."
+ },
+ "15": {
+  "answer": "A",
+  "explanation": "Why A is correct: Bedrock provisioned throughput hosts the model versions; an EventBridge rule starts a Step Functions workflow that shifts traffic in stages, waits, and calls a Lambda to check CloudWatch metrics, then increases traffic when healthy or automatically rolls back when metrics degrade - fully automated canary with monitoring and rollback.\nWhy the others fail:\nB - Relies on 'external logic' to adjust traffic and roll back, i.e. manual intervention.\nC - SageMaker endpoint variants do not host Amazon Bedrock model versions, so the premise is invalid.\nD - Having OpenSearch invoke an SSM runbook to shift Bedrock traffic is not a coherent automated canary mechanism."
+ },
+ "16": {
+  "answer": "C",
+  "explanation": "Why C is correct: CloudWatch Application Insights plus custom embedded-metric-format metrics (recommendation quality, token usage, latency) dimensioned by request type and user segment, with CloudWatch anomaly detection on the model metrics and Logs Insights pattern analysis, detects departures from established baselines and produces correlated alerts within minutes.\nWhy the others fail:\nA - Container Insights with static latency alarms watches infrastructure, not model-behavior anomalies against a baseline.\nB - X-Ray tracing plus CloudTrail and QuickSight gives request tracing and dashboards, not automated anomaly baselining and alerting.\nD - OpenSearch with Kinesis ingestion and PPL queries works but is far more to build and operate than managed anomaly detection."
+ },
+ "17": {
+  "answer": "C",
+  "explanation": "This is a semantic caching problem: 40% of queries are re-phrasings of the same question.\nWhy C is correct: Amazon OpenSearch Service with k-NN stores query-response pairs, and approximate k-NN finds a semantically similar earlier query so its cached answer is returned - cutting redundant model calls, giving consistent answers, and keeping latency low.\nWhy the others fail:\nA - DAX with a LIKE filter matches text lexically, so paraphrased questions miss the cache.\nB - Using a MemoryDB RANGE query over hash sets is not vector similarity search and will not match semantically equivalent phrasing.\nD - A DynamoDB GSI on stemmed/normalized text is still lexical and misses differently worded questions."
+ },
+ "18": {
+  "answer": "A",
+  "explanation": "Why A is correct: Hybrid search combines vector similarity (semantic understanding) with keyword matching (exact medical terms and acronyms), fixing both failure modes, and it is a native OpenSearch capability so it adds the LEAST operational overhead even at millions of documents.\nWhy the others fail:\nB - Raising embedding dimensions means re-embedding everything, and a post-retrieval Lambda filter is extra custom code.\nC - Replacing OpenSearch with Amazon Kendra is a full migration.\nD - A two-stage re-ranker hosted on SageMaker adds inference infrastructure and latency."
+ },
+ "19": {
+  "answer": "D",
+  "explanation": "Why D is correct: An API Gateway REST API in front of a Lambda function that invokes Amazon Bedrock uses Lambda response streaming for low-latency streaming, enforces token limits inside the function, and handles model timeouts through Lambda and API Gateway timeout configuration - a fully managed, serverless design with the least overhead.\nWhy the others fail:\nB - Client-side polling is not true streaming and frontend-enforced token limits are easily bypassed.\nC - Running an ECS inference server behind a WebSocket API is far more infrastructure to operate.\nA - This is the closest option but connects the same Lambda streaming design through an HTTP API; the intended managed pattern here is the REST API integration, and the container and polling options (B, C) are the clear losers."
+ },
+ "20": {
+  "answer": "A",
+  "explanation": "Why A is correct: Amazon Bedrock Flows is the managed way to build this. S3 action nodes at the start and end retrieve and store the communications and responses, an expression node parses the required portion of the template, and an agent step sends the parsed text to the model for review - little custom code.\nWhy the others fail:\nB - Step Functions intrinsic functions in a Pass state cannot flexibly parse arbitrary template content.\nC - A single agent action group cannot itself retrieve, invoke, and store; agents need backing functions for actions.\nD - Wiring three Lambda functions into an agent action group works but is much more to build than a Bedrock Flow."
+ },
+ "21": {
+  "answer": "AC",
+  "explanation": "Requirement: evaluate FMs on custom e-commerce datasets with accuracy metrics on dashboards, least overhead.\nWhy A and C are correct:\nA - Loading the datasets into S3 with the right IAM and CORS permissions is what Amazon Bedrock model evaluation jobs need to read them.\nC - Scheduling Bedrock model evaluation jobs via Lambda, using RWK score for text generation and BERTScore for summarization, then publishing status to a CloudWatch Logs Insights dashboard, delivers the metrics with minimal build.\nWhy the others fail:\nB - Bedrock evaluation jobs need CORS on the bucket, not a VPC endpoint.\nD - SageMaker Clarify with word error rate and toxicity uses the wrong accuracy metrics and more moving parts.\nE - A SageMaker notebook using fmevals with direct InvokeModel calls is significantly more custom development."
+ },
+ "22": {
+  "answer": "B",
+  "explanation": "The batch must drop from 45 seconds sequential to under 10 seconds, which requires parallelism.\nWhy B is correct: AWS Step Functions with a Parallel state fans out separate Lambda functions for each analysis type simultaneously, with Bedrock client timeouts and CloudWatch tracking - running the FM calls concurrently to meet the 10-second target.\nWhy the others fail:\nA - Provisioned concurrency still processes analysis types sequentially, so the 45-second problem remains.\nC - An SQS queue with Lambdas processing aspects sequentially per report does not parallelize within a batch.\nD - ECS containers processing each report sequentially likewise keep the work serial."
+ },
+ "23": {
+  "answer": "A",
+  "explanation": "Why A is correct: Amazon Bedrock Knowledge Bases with source attribution enabled ties each claim to its source document, the Claude Messages API with RAG and high relevance thresholds produces grounded step-by-step reasoning, and storing reasoning and citations in S3 supports auditing - all managed, so the least overhead within the 3-second target.\nWhy the others fail:\nB - Extended thinking with a 4,000-token budget adds latency and does not itself provide document-level source citations.\nC - A custom Claude model on SageMaker with citations from RDS is far more infrastructure to run.\nD - Chain-of-thought with custom retrieval tracking is more to build than native Knowledge Bases source attribution."
+ },
+ "24": {
+  "answer": "A",
+  "explanation": "Three needs: 99.5% output consistency, sub-1-second latency, and blocked unsafe outputs.\nWhy A is correct: Provisioned throughput stabilizes inference latency, Amazon Bedrock guardrails with semantic denial rules block unsafe recommendations with validated safety controls, and Bedrock Prompt Management with approval workflows locks prompts so identical inputs stay consistent.\nWhy the others fail:\nB - Agents plus log-based A/B testing addresses neither consistency guarantees nor safety enforcement.\nC - ElastiCache caching and X-Ray improve performance only, with no safety control.\nD - Kendra, DynamoDB and Step Functions improve retrieval and orchestration but add no guardrails to block unsafe output."
+ },
+ "25": {
+  "answer": "D",
+  "explanation": "Why D is correct: A Step Functions workflow using built-in Amazon Bedrock guardrails to filter generated content, Amazon Comprehend PII detection to pre-process, and Amazon Rekognition image moderation covers inappropriate text, inappropriate images, and PII entirely with managed services - the least infrastructure to manage, and it fits the existing S3 workflow.\nWhy the others fail:\nA - CloudWatch alarms do not filter content, and the design is a convoluted mix of monitoring tools.\nB - Building custom SageMaker moderation models means training and hosting your own models.\nC - Cognito pre-authentication Lambdas with Textract (which is OCR, not moderation) is complex and mis-uses the services."
+ },
+ "26": {
+  "answer": "D",
+  "explanation": "Need semantic similarity search over fewer than 1M files with least operational overhead.\nWhy D is correct: Amazon Titan Embeddings generate the vectors and Amazon Aurora PostgreSQL Serverless with the pgvector extension stores and searches them - both fully managed and serverless, so almost nothing to operate at this scale.\nWhy the others fail:\nA - Titan embeddings are fine, but running an OpenSearch Service domain (Neural plugin) is more to manage than Aurora Serverless.\nB - Amazon Comprehend topic extraction is not semantic vector similarity between abstracts.\nC - Hosting a sentence-transformer model on SageMaker means managing model infrastructure yourself."
+ },
+ "27": {
+  "answer": "BC",
+  "explanation": "Requirements: on-demand real-time inference, consistent high-throughput batch, and hybrid cloud/on-premises for data residency.\nWhy B and C are correct:\nB - Provisioned throughput in Amazon Bedrock gives the consistent, high-volume performance the batch workloads need.\nC - Deploying FMs to SageMaker endpoints with edge deployment via SageMaker Neo, orchestrated by Lambda, satisfies the hybrid and on-premises data-residency requirement.\nWhy the others fail:\nA - SageMaker asynchronous endpoints are for long-running jobs, not low-latency real-time inference.\nD - Amazon Bedrock is cloud-only, so autoscaling it does not meet the on-premises residency requirement.\nE - SageMaker JumpStart hosting alone does not address hybrid or on-premises deployment."
+ },
+ "28": {
+  "answer": "C",
+  "explanation": "Key constraints: switch models with no code deploy, and hourly-changing rules that must propagate immediately across thousands of requests.\nWhy C is correct: A Lambda function fetching routing configuration from the AWS AppConfig Agent on each request lets business logic pick the FM, and AppConfig pushes updated rules instantly with no redeploy, behind a single API Gateway endpoint.\nWhy the others fail:\nA - Updating Lambda environment variables through the console effectively redeploys the function and does not propagate immediately.\nB - API Gateway stage variables must be updated and the stage redeployed to change models.\nD - Lambda authorizers routing to per-model Lambda functions is more complex and mis-uses authorizers for business routing."
+ },
+ "29": {
+  "answer": "C",
+  "explanation": "Why C is correct: Storing Bedrock model invocation logs (with text output logging) in S3, running Amazon Bedrock guardrails contextual grounding checks to catch hallucinations, and using CloudWatch anomaly-detection alarms on token metrics delivers near-real-time hallucination, token, and cost monitoring with minimal custom code - all managed features.\nWhy the others fail:\nA - Glue and Athena over S3 logs is batch analysis, not near-real-time, and hand-built hallucination detection.\nB - Bedrock evaluation jobs with LLM-as-judge run offline, not near-real-time.\nD - SageMaker Model Monitor watches SageMaker endpoints, not Amazon Bedrock, so it cannot track these summaries."
+ },
+ "30": {
+  "answer": "C",
+  "explanation": "Constraint: fix peak-time throttling with continuous operation and no fixed hourly cost during quiet periods (so provisioned throughput is out).\nWhy C is correct: Enabling invocation logging and monitoring Invocations, token counts and Invocation Throttles, then distributing traffic across cross-Region inference endpoints, spreads load beyond a single Region's quota on demand - no fixed hourly charge.\nWhy the others fail:\nA - Provisioned throughput sized above peak incurs exactly the fixed hourly cost the requirement forbids.\nB - Failing over to a backup Region only after errors is reactive and does not smooth peak load.\nD - Distributing across model versions adds no additional throughput capacity to relieve throttling."
+ },
+ "31": {
+  "answer": "BD",
+  "explanation": "Need event-driven, structured summarization + sentiment of new MP3s.\nWhy B and D are correct:\nB - A Step Functions workflow that runs Amazon Transcribe, validates completion, then directly invokes the Bedrock FM to emit summaries and sentiment as JSON delivers the structured output with the fewest steps.\nD - Configuring the S3 bucket to send Object Created events to EventBridge, with a rule that starts the Step Functions workflow, triggers processing as soon as a file lands.\nWhy the others fail:\nA and C - Both insert an extra Lambda between Transcribe and Bedrock to shape the prompt/text, which is unnecessary when the workflow can invoke the FM directly for JSON output.\nE - S3 cannot send notifications directly to a Step Functions workflow; the event must flow through EventBridge (option D)."
+ },
+ "32": {
+  "answer": "D",
+  "explanation": "MCP servers on Lambda must serve internal apps and third-party partners with strict auth, least overhead.\nWhy D is correct: Exposing the Lambda through an API Gateway HTTP API with the Streamable HTTP transport, using Amazon Cognito OAuth and having API Gateway validate the tokens, gives standards-based authentication that external partners can use and keeps the MCP protocol - minimal to operate.\nWhy the others fail:\nA - A custom Lambda Invoke transport with IAM is awkward for third-party partners who do not have IAM principals.\nB - API keys are weak authentication and the option abandons the MCP protocol for plain HTTP.\nC - Function URLs with SigV4/IAM again force partners into AWS IAM signing, which is impractical for external access."
+ },
+ "33": {
+  "answer": "C",
+  "explanation": "Root cause: the model recommends products that are not in the catalog (hallucination) and is slow.\nWhy C is correct: Creating a Bedrock knowledge base and using Retrieval Augmented Generation grounds recommendations in the actual product catalog so it stops inventing unavailable products, and setting PerformanceConfigLatency to optimized reduces latency.\nWhy the others fail:\nA - Guardrails grounding, Automated Reasoning checks and provisioned throughput do not tie recommendations to the specific catalog contents.\nB - Prompt engineering plus streaming only hides latency and does not reliably prevent out-of-catalog products.\nD - Post-hoc catalog validation plus DynamoDB caching adds custom code, and caching helps little because the interactions are mostly unique."
+ },
+ "34": {
+  "answer": "C",
+  "explanation": "Requirements: keep residency and processing on the same continent, plus audit trails and data classification.\nWhy C is correct: S3 Object Lock with Region-specific bucket policies enforces residency, pre-processing each data point within its own Region before sending it to Bedrock keeps processing local, Amazon Macie provides data classification, and AWS CloudTrail immutable logs give the decision audit trail.\nWhy the others fail:\nA - Bedrock cross-Region inference can move data across continents, and compliance tracking is manual.\nB - SCPs and a custom imported model do not by themselves guarantee that data processing stays in-continent.\nD - Separate accounts with manual reports is heavy operationally and relies on manual compliance tracking."
+ },
+ "35": {
+  "answer": "B",
+  "explanation": "Why B is correct: A Step Functions Standard workflow with Wait for a Callback patterns runs the clarification workflows for ambiguous queries, and storing conversation history in DynamoDB with on-demand capacity and server-side encryption gives the encrypted, per-user context that scales to thousands of concurrent users with fast lookups.\nWhy the others fail:\nA - Amazon RDS keyed by session ID does not scale to thousands of concurrent users as smoothly as DynamoDB.\nC - Writing each interaction as a separate S3 JSON file makes retrieving conversation context slow.\nD - ElastiCache (Redis) is an in-memory cache, not the durable encrypted record store required for long-term personalization; SQS orchestration is also a poor fit for clarification dialogs."
+ },
+ "36": {
+  "answer": "C",
+  "explanation": "Why C is correct: A single guardrail with medium harmful-content filters minimizes false positives, denied topics for investment advice (with clear definitions and sample phrases) block the advice, and sensitive-information filters that mask PII in responses while blocking financial data in inputs give the multiple handling strategies required; enabling both input and output evaluation with custom blocked messages supports audit.\nWhy the others fail:\nA - Setting every filter to high and blocking all PII maximizes false positives and offers only one handling strategy.\nB - Multiple tiered guardrails for public vs internal is unnecessarily complex.\nD - A separate guardrail per concern chained with Step Functions adds orchestration overhead for what one guardrail can do."
+ },
+ "37": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Bedrock Prompt Management provides native version control for the hundreds of templates and parameterized variables for consistent quality, AWS CloudTrail supplies the audit trail of prompt activity, and IAM policies control who can approve - the managed fit for prompt governance.\nWhy the others fail:\nA - Bedrock Studio templates with DynamoDB approval state and Lambda enforcement is custom plumbing.\nC - Storing prompts as S3 documents with tag-based versioning is a manual, error-prone version scheme.\nD - SageMaker Canvas with CloudFormation-based versioning and AWS Config approvals does not fit prompt-template governance."
+ },
+ "38": {
+  "answer": "C",
+  "explanation": "Requirements: show PII to surgeons but redact it for engineers, and reference only reports under 3 years old.\nWhy C is correct: An S3 Lifecycle rule removes reports older than 3 years, a daily Lambda sync keeps the knowledge base current, and calling ApplyGuardrail with the configuration matching the user's Cognito group redacts PII in responses only for engineers while surgeons see it - role-based redaction handled by a managed guardrail.\nWhy the others fail:\nA - Redacting PII from the stored reports removes it for everyone, so surgeons could never see it.\nB - Redacting per request with Comprehend is more custom logic than using ApplyGuardrail, and pre-redaction pipelines are brittle.\nD - Maintaining a second, separately redacted knowledge base doubles storage and sync work."
+ },
+ "39": {
+  "answer": "A",
+  "explanation": "Constraints: customers keep full ownership of their data, no real-time need, high semantic accuracy, low latency, and no per-customer services to deploy.\nWhy A is correct: Each customer builds an Amazon Q Business index over their own internal data and designates Example Corp as a data accessor, so Example Corp retrieves the relevant content through a secure API to enrich prompts - the customer retains ownership and Example Corp deploys nothing in the customer environment.\nWhy the others fail:\nB - Deploying real-time MCP servers per customer adds per-environment components and real-time access that is not needed.\nC - Cross-account Bedrock knowledge base querying is a less clean ownership and access model than Q Business data accessors.\nD - Crawling customer data with Kendra and sharing indexes cross-account is more to build and manage."
+ },
+ "40": {
+  "answer": "D",
+  "explanation": "Why D is correct: A Step Functions Standard workflow whose first state runs a Lambda when a new file is uploaded, then runs a SageMaker Pipelines pipeline to retrain and redeploy the model, cleanly automates continuous retraining and redeployment end to end.\nWhy the others fail:\nA - A Glue ETL job that invokes the endpoint does not retrain the model.\nB - Webhook handlers plus a custom EventBridge event bus wiring Lambda to SageMaker Pipelines is convoluted for what a Step Functions workflow does directly.\nC - The Data Wrangler to Autopilot Express path is heavier and less suited to a straightforward retrain-and-redeploy loop."
+ },
+ "41": {
+  "answer": "C",
+  "explanation": "Why C is correct: Bedrock Agents with Knowledge Bases ground responses to curb hallucinations, Bedrock Guardrails enforce safety, and storing every prompt-response pair in Amazon OpenSearch Service - integrated with Amazon QuickSight - provides the audit trail, compliance reporting, and behavior-drift detection, integrating with the existing dashboard within the timeline and latency budget.\nWhy the others fail:\nA - Bedrock Model Evaluation detects hallucinations offline, not in real time, and a DynamoDB TTL would delete the audit trail regulators require.\nB - Custom Lambda prompt validation with S3 storage is more to build and lacks real-time drift detection.\nD - SageMaker Model Monitor targets SageMaker endpoints, not Bedrock, and AWS WAF filters network traffic, not model content."
+ },
+ "42": {
+  "answer": "A",
+  "explanation": "The AppSync Lambda resolver uses RequestResponse (synchronous), so long questions time out.\nWhy A is correct: The AWS Amplify AI Kit implements streaming responses from the GraphQL API and optimizes client-side rendering, so tokens arrive incrementally and complex answers no longer hit the synchronous timeout.\nWhy the others fail:\nB - Raising the Lambda timeout and retrying does not fix the user-perceived wait and still bumps against AppSync limits.\nC - Routing through an SQS queue with resolver polling adds complexity and is not streaming.\nD - Switching to InvokeModelWithResponseStream behind a WebSocket API discards the existing AppSync and RetrieveAndGenerate design - a major rewrite."
+ },
+ "43": {
+  "answer": "A",
+  "explanation": "Why A is correct: Model-specific tokenizers in a Lambda function estimate token usage before each Bedrock call, publish metrics to CloudWatch with alarms that fire as requests approach model-specific limits (proactive alerting), and store detailed usage in DynamoDB for per-business-unit cost allocation - scaling past 5,000 requests per minute.\nWhy the others fail:\nB - Bedrock Guardrails do not implement token quota policies.\nC - An SQS dead-letter queue analyzing failures is reactive - it reports after limits are hit, not before.\nD - API Gateway usage plans throttle by request count, not tokens, so they cannot alert on token limits."
+ },
+ "44": {
+  "answer": "D",
+  "explanation": "Problem: initial retrieval returns semantically similar but contextually irrelevant documents, so results need reranking.\nWhy D is correct: Using the latest Amazon reranker model through the reranking configuration built into Amazon Bedrock Knowledge Bases rescoring and reorders results by contextual relevance - a native feature, so the LEAST operational overhead.\nWhy the others fail:\nA - A fine-tuned ranking model on a SageMaker endpoint behind API Gateway is infrastructure to build and run.\nB - Comprehend, Textract and Neptune graph scoring is a convoluted custom pipeline.\nC - Calling the Retrieve API then the Rerank API then InvokeModelWithResponseStream by hand is more code than enabling the knowledge base's own reranking configuration."
+ },
+ "45": {
+  "answer": "A",
+  "explanation": "Why A is correct: Isolating each department's data in its own knowledge base with IAM filtering, then using a supervisor agent to classify intent and route to specialized collaborator agents that each run RAG against their department knowledge base, is the scalable multi-agent pattern that delivers domain-specific answers and handles many parallel interactions.\nWhy the others fail:\nB - A separate supervisor per department with manual handoffs does not scale and breaks automation.\nC - A single general-purpose agent with action groups and rule-based routing is not a true multi-agent design and scales poorly across domains.\nD - Multiple supervisors sharing one knowledge base with external response merging loses the per-department data isolation and domain specificity."
+ },
+ "46": {
+  "answer": "B",
+  "explanation": "Constraints: 500,000 concurrent calls, sub-200 ms latency, fixed budget, and auto-scaling.\nWhy B is correct: A low-latency, real-time optimized model on Amazon Bedrock with provisioned throughput plus automatic scaling policies delivers the consistent sub-200 ms suggestions at scale while staying within budget and retaining elasticity.\nWhy the others fail:\nA - A large complex reasoning model optimized for batch cannot meet 200 ms real-time latency.\nC - A large LLM on SageMaker with dedicated GPU instances is costly and does not auto-scale to budget the way provisioned Bedrock does.\nD - A serverless SageMaker endpoint optimized for batch processing is the wrong profile for low-latency real-time inference."
+ },
+ "47": {
+  "answer": "ADF",
+  "explanation": "Guardrails must stop unsuitable advice, competitor content, and unsupported claims (choose three).\nWhy A, D and F are correct:\nA - Adding the high-risk conversation patterns to a denied topics guardrail blocks requests like specific stock picks or guaranteed returns.\nD - Adding competitor names as custom word filters with block on input and output prevents content about competitors.\nF - A high grounding score threshold forces responses to stay grounded in the approved financial guidance, rejecting unsupported claims.\nWhy the others fail:\nB - Content filters target harmful categories (hate, violence, etc.), not custom high-risk financial topics.\nC - Competitor names are handled by word filters, not content filters.\nE - A low grounding threshold is permissive and would allow ungrounded claims through."
+ },
+ "48": {
+  "answer": "C",
+  "explanation": "Why C is correct: One Amazon Bedrock knowledge base per hotel in a multi-account structure gives clean per-hotel access isolation, direct data ingestion delivers near-real-time room availability, and scheduling regular syncs for less critical information keeps performance consistent at peak.\nWhy the others fail:\nA - A single combined knowledge base for all hotels cannot enforce separate per-hotel access controls.\nB - Routing every hotel's changes into one centralized knowledge base again shares data across hotels.\nD - A central agent over multiple knowledge bases with Identity Center controls access but does not provide the per-hotel isolation and direct real-time ingestion this design needs."
+ },
+ "49": {
+  "answer": "ABE",
+  "explanation": "Requirements (choose three): extract structured data with human review of low-confidence results in-Region, redact PII with residency controls, and drive the FM approval workflow.\nWhy A, B and E are correct:\nA - Amazon Textract with Amazon A2I in the same Region extracts the data and routes low-confidence pages to in-Region human reviewers, meeting residency.\nB - Lambda PII redaction before inference, Bedrock guardrails on outputs, and Region-specific IAM roles enforce residency and control access.\nE - Glue Data Quality validation plus a Step Functions workflow that prompt-engineers the validated data before invoking Bedrock produces the loan assessments reliably.\nWhy the others fail:\nC - Kendra/OpenSearch are search tools, not structured field extraction from scanned documents.\nD - Regional storage is already covered by the Region-specific IAM in B, so it is not one of the three core steps.\nF - SageMaker Clarify bias reports are not part of the stated requirements."
+ },
+ "50": {
+  "answer": "A",
+  "explanation": "Key facts: a small proprietary dataset with a low index count, and the goal is maximum accuracy with high performance.\nWhy A is correct: An Amazon MemoryDB cluster using the Flat index performs exact nearest-neighbor search, which maximizes accuracy, and for a small low-index dataset it stays fast; a horizontal scaling policy handles load.\nWhy the others fail:\nB - HNSW is an approximate index meant for large datasets, trading accuracy for speed that is unnecessary here.\nC - Aurora PostgreSQL with IVFFlat is also an approximate index and adds relational database management.\nD - DocumentDB with IVFFlat and a high probe value is likewise approximate and more to operate."
+ },
+ "51": {
+  "answer": "A",
+  "explanation": "Requirements: character-by-character streaming, thousands of concurrent users, responses of 15-45 seconds.\nWhy A is correct: An API Gateway WebSocket API with a Lambda integration that calls Bedrock InvokeModelWithResponseStream pushes partial tokens down the persistent WebSocket connection as they are generated - true incremental streaming that also handles the long response times.\nWhy the others fail:\nB - The standard InvokeModel API with 100 ms client polling returns whole chunks, not character-by-character streaming.\nC - Connecting the frontend directly to Bedrock with IAM user credentials exposes credentials and has no gateway layer.\nD - Caching complete responses in DynamoDB and serving paginated GETs waits for the full response, defeating streaming."
+ },
+ "52": {
+  "answer": "B",
+  "explanation": "Why B is correct: Version-controlling prompts in a code repository, with a test suite of complex clinical documents and quantifiable evaluation metrics run by an automated testing framework, diagnoses the inconsistencies, compares prompt versions against metrics, and preserves the full history of prompt versions.\nWhy the others fail:\nA - Prompt management tested manually with simple documents does not exercise the complex documents that actually fail.\nC - Splitting production traffic across per-version endpoints experiments on real users and is risky.\nD - A Bedrock Flows evaluation with Comprehend Medical scoring can compare variants but does not provide the durable version history a repository does."
+ },
+ "53": {
+  "answer": "D",
+  "explanation": "Why D is correct: An Amazon Q Developer customization built from the approved internal libraries, algorithms, and sample code makes Q Developer suggest the approved resources organization-wide, with no per-project changes required.\nWhy the others fail:\nA - Adding a Git repository to the workspace and using @workspace is a project-level modification.\nB - Creating a .amazonq/rules folder in the project root is a project-level change.\nC - Adding a rules folder to the project is likewise a project-level modification, which the company explicitly wants to avoid."
+ },
+ "54": {
+  "answer": "D",
+  "explanation": "Why D is correct: An Amazon Bedrock agent with action groups integrates with the order-management API for status and returns, an associated knowledge base provides RAG over the 50,000 daily-updated product documents, agents preserve multi-turn context, and enabling trace events captures the audit trail - all managed, so the LEAST operational overhead.\nWhy the others fail:\nA - A fine-tuned model per product category is many models to train and maintain and does not handle daily document updates.\nB - Continued pre-training a custom model cannot keep up with documents that change every day.\nC - SageMaker containers, Kendra, and Step Functions is far more infrastructure to operate."
+ },
+ "55": {
+  "answer": "A",
+  "explanation": "Requirements: 10M embeddings, multilingual semantic search, metadata filtering, low latency, minimal management.\nWhy A is correct: Amazon OpenSearch Serverless provides scalable vector search with metadata filtering and no cluster management, and connecting it to Amazon Bedrock Knowledge Bases gives managed RAG with a Claude model - low latency with the least operational overhead.\nWhy the others fail:\nB - Aurora PostgreSQL with pgvector means managing a database, tables, and SQL similarity queries yourself.\nC - Amazon S3 Vectors here uses non-filterable metadata, so it cannot filter by publication date, agency, or document type.\nD - Neptune Analytics is a graph database, not the right fit for straightforward vector similarity with metadata filters."
+ },
+ "56": {
+  "answer": "B",
+  "explanation": "The symptom - provisioned capacity unused while on-demand is throttled - shows the call is not using the provisioned model. The code passes modelId=\"anthropic.claude-v2\", the on-demand model ID.\nWhy B is correct: Replacing the modelId with the ARN of the provisioned model returned by CreateProvisionedModelThroughput routes invocations to the reserved capacity, resolving the throttling.\nWhy the others fail:\nA - Adding more model units does not help when the existing provisioned capacity is already unused.\nC - Exponential backoff only softens throttling of on-demand calls; it still never uses the provisioned throughput.\nD - Switching to InvokeModelWithResponseStream changes response delivery, not which capacity pool is used."
+ },
+ "57": {
+  "answer": "BD",
+  "explanation": "The error shows an SCP denying invocation of the model in eu-west-3, where the cross-Region inference (CRI) profile routes part of the traffic.\nWhy B and D are correct:\nB - Extending the SCPs to permit CRI for the eu.amazon.nova-pro-v1:0 inference profile lets the profile invoke the model across the EU Regions it uses (including eu-west-3) while keeping data in the EU.\nD - Validating that the developer IAM roles can invoke Nova Pro through the eu.amazon.nova-pro-v1:0 inference profile across all EU Regions that serve the model ensures the request is authorized end to end.\nWhy the others fail:\nA - Attaching AdministratorAccess violates least privilege and the company's governance controls.\nC - Simply enabling model access in eu-west-3 does not lift the SCP denial and weakens precise control.\nE - Enabling CRI for the broad eu.* profile is coarser than required and undermines precise access control."
+ },
+ "58": {
+  "answer": "D",
+  "explanation": "Hard requirement: proprietary data must not leave its immediate geographic area, with near-real-time low latency.\nWhy D is correct: Placing the knowledge base in S3 Express One Zone, a vector database on Amazon RDS, and a self-hosted LLM on EC2 within each AWS Local Zone, then routing each prompt to the model in its own Local Zone, keeps all data and inference local with very low latency.\nWhy the others fail:\nA and B - Cross-Region inference profiles route requests to other Regions, so proprietary data can leave the immediate area.\nC - Deploying the Bedrock model with a cross-Region inference profile in a central Region again moves data out of the local area for inference."
+ },
+ "59": {
+  "answer": "B",
+  "explanation": "Why B is correct: An Amazon Bedrock knowledge base connected to the approved clinical documents, queried with the RetrieveAndGenerate API, grounds every recommendation in approved sources and returns citations automatically - preventing hallucination with the LEAST operational overhead because the API handles retrieval, generation, and citation.\nWhy the others fail:\nA - Kendra retrieval plus custom post-processing to compare responses and add citations is extra code to build and maintain.\nC - Comprehend Medical entity extraction with a custom verification database is a bespoke pipeline.\nD - Using separate Retrieve and InvokeModel calls with your own verification and citation logic is more work than the single managed RetrieveAndGenerate call."
+ },
+ "60": {
+  "answer": "A",
+  "explanation": "Facts: 50,000-150,000 inquiries/day with spikes, 40% repetitive with shared context, need low latency at the MOST cost-effective price.\nWhy A is correct: Latency-optimized inference (setting the latency parameter to optimized) keeps responses fast, and prompt caching serves the 40% of repetitive, shared-context inquiries cheaply - on-demand pricing scales with the spikes so you pay only for what you use.\nWhy the others fail:\nB - Buying provisioned throughput sized for peak means paying for peak capacity around the clock, which is not cost-effective for spiky traffic.\nC - Bedrock Agents with knowledge bases and cross-Region inference is over-engineered for what caching solves.\nD - Custom Lambda routing with a DynamoDB cache re-implements prompt caching with more code and cost."
+ },
+ "61": {
+  "answer": "C",
+  "explanation": "Why C is correct: An Amazon Bedrock guardrail with a sensitive-information policy detects and filters PII so it never reaches the model, a topic policy keeps the assistant off investment advice, and using the Converse API with delivery and image logging to S3 captures audit logs of every interaction including transmitted images and documents - all native features, so the LEAST effort.\nWhy the others fail:\nA - Amazon Macie is for S3 data classification, not inline real-time PII redaction of prompts and responses.\nB - A custom Lambda with Comprehend detection and topic modeling, plus CloudWatch metrics, is more to build and does not log images.\nD - Hand-written regex for PII is brittle and prompt engineering alone does not reliably block investment advice."
+ },
+ "62": {
+  "answer": "A",
+  "explanation": "Why A is correct: Amazon Bedrock Prompt Management holds reusable templates and business-unit-specific variants centrally (consistent format and tone), and Bedrock guardrails with category filters and sensitive-term lists block hate speech, inappropriate topics, and PHI - and the moderation criteria can be adjusted over time with no custom post-processing to maintain.\nWhy the others fail:\nB - Adding an internal administration API to manage guardrails is extra plumbing to maintain.\nC - Instruction injection with DynamoDB rules, Step Functions validation, and Comprehend post-processing is exactly the orchestration and post-processing the company wants to avoid.\nD - Storing templates in DynamoDB with two Lambda functions and Comprehend filtering is custom code to maintain."
+ },
+ "63": {
+  "answer": "B",
+  "explanation": "Why B is correct: SageMaker Processing and Amazon Transcribe pre-process the multimodal data into summaries that feed a Bedrock RAG knowledge base (grounded natural-language answers), Bedrock guardrails restrict speculative outputs, AWS AppConfig manages prompt templates, and CloudTrail logs research activity for ethical audits.\nWhy the others fail:\nA - Rekognition plus basic templates in Parameter Store has no mechanism to prevent speculative interpretation.\nC - OpenSearch with Comprehend and a custom answer layer lacks guardrails to restrict speculation.\nD - Amazon Q Business with custom Lambda output filtering is more custom compliance code and less grounded than RAG with guardrails."
+ },
+ "64": {
+  "answer": "AB",
+  "explanation": "Need memory across interactions, shared state, event-driven and synchronous invocation, and session-based access control - most scalable (choose two).\nWhy A and B are correct:\nA - Amazon Bedrock AgentCore manages memory and session-aware reasoning with built-in identity, event handling, and observability.\nB - Registering the Lambda functions and REST APIs as actions through API Gateway and EventBridge lets AgentCore invoke them for both event-driven and synchronous flows with no custom orchestration code.\nWhy the others fail:\nC - Bedrock Agents plus Step Functions, SQS, and DynamoDB reintroduces the orchestration AgentCore removes.\nD - An ECS container with Aurora is a self-managed build.\nE - A custom Kendra/Bedrock RAG pipeline with Lambda orchestration and S3 state is bespoke and less scalable."
+ },
+ "65": {
+  "answer": "D",
+  "explanation": "Why D is correct: Migrating the restaurant data into an Amazon Bedrock knowledge base that automatically generates embeddings, then querying it with the Retrieve API using natural language, gives semantic search with built-in vector capabilities and managed scaling - the LEAST development effort, and hourly re-ingestion keeps data fresh.\nWhy the others fail:\nA - Keyword search with custom analyzers is not semantic natural-language search.\nB - Generating embeddings, converting queries, and running k-NN in OpenSearch by hand is significantly more code to build and operate.\nC - pgvector in PostgreSQL with a custom Lambda for query embedding and similarity search is also more development and harder to scale cost-effectively at peak."
+ },
+ "66": {
+  "answer": "B",
+  "explanation": "Two needs: assess how well PII exposure is prevented, and keep processing in each customer's Region.\nWhy B is correct: A Bedrock guardrail with sensitive-information filters set to mask mode during development and testing lets the team see and assess what PII would be exposed, switching to block mode for production; deploying a copy of the guardrail to each Region satisfies data residency.\nWhy the others fail:\nA - A cross-Region guardrail violates the requirement to process in each customer's Region.\nC - Content and topic filters do not target PII, and disabling invocation logging removes needed visibility.\nD - A cross-Region guardrail again breaks residency, and content/word filters are not the sensitive-information filters PII requires."
+ },
+ "67": {
+  "answer": "B",
+  "explanation": "Why B is correct: A retrieve-and-generate evaluation job assesses end-to-end generation quality; using custom precision-at-k plus an LLM-as-a-judge metric on a 1-5 scale, including each chunking strategy in the evaluation dataset, and having a supported Claude Sonnet evaluate responses from both FMs, compares chunking strategies and both models against enforceable quality thresholds.\nWhy the others fail:\nA - A retrieve-only job measures retrieval, not generation quality.\nC - Separate jobs per combination with manual review is more overhead and does not enforce thresholds automatically.\nD - Retrieve-only jobs on faithfulness and citation precision again evaluate retrieval, not the generated answers."
+ },
+ "68": {
+  "answer": "B",
+  "explanation": "Why B is correct: An AWS Glue crawler catalogs the sources (auditable metadata), Glue ETL jobs run custom transformation scripts for tailored text chunking, and AWS Glue Data Quality validates and monitors the data - a managed data-integration stack that meets every requirement with the least development effort.\nWhy the others fail:\nA - SageMaker Data Wrangler plus a custom Lambda and CloudWatch alarms is more custom assembly.\nC - Comprehend, a chunking Lambda, and Athena validation is a hand-built pipeline.\nD - Step Functions orchestrating custom EC2 code with SageMaker Model Monitor is the heaviest to build and operate."
+ },
+ "69": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Bedrock evaluations using Claude Sonnet as a judge model score response accuracy and appropriateness at scale, custom Bedrock guardrails check for compliance with financial policies, and Amazon A2I adds targeted human review of flagged critical interactions - combining automated assessment with human review exactly as required.\nWhy the others fail:\nA - Having experts manually score every response does not scale.\nC - An Amazon Lex bot with a static compliance database does not assess factual accuracy or conversational quality of the FM.\nD - CloudWatch pattern monitoring with a human team lacks automated content-quality assessment."
+ },
+ "70": {
+  "answer": "C",
+  "explanation": "The FM is hosted in eu-central-1 and eu-west-3, but accounts are SCP-restricted to eu-north-1/eu-west-1, and requests must stay private within the FM's Regions.\nWhy C is correct: Cross-Region inference through an eu.amazon.* inference profile keeps all calls within Europe, a Bedrock VPC (interface) endpoint keeps them private, and extending the SCPs to allow the FM through inference profiles in the European Regions where it is available grants the needed access.\nWhy the others fail:\nA - Per-Region VPC endpoints for the FM with a Lambda front end is more complex and does not use inference profiles to keep traffic in-Region cleanly.\nB - Hosting the FM on EC2 is self-managed and not Amazon Bedrock.\nD - Deploying the model in SageMaker is likewise self-hosting, not the managed Bedrock FM."
+ },
+ "71": {
+  "answer": "A",
+  "explanation": "Two requirements: private-only connectivity to Bedrock, and fine-grained column-level cross-account access to the data lake.\nWhy A is correct: Interface VPC endpoints for the Bedrock runtimes with Lambda in private subnets keep calls entirely on private connectivity, IAM conditions restrict calls to approved endpoints and roles, and AWS Lake Formation LF-tag-based access control provides table- and column-level cross-account grants.\nWhy the others fail:\nB - A NAT gateway sends traffic over the public internet, not private connectivity, and S3 ACLs cannot do column-level control.\nC - Invoking Bedrock through public endpoints breaks the private-only requirement, and database-level grants are not column-level.\nD - IAM path-based policies do not provide column-level data-lake control, and allowing public fallback violates the private requirement."
+ },
+ "72": {
+  "answer": "C",
+  "explanation": "Why C is correct: AWS AppConfig manages the model configurations, its feature flags drive A/B testing without redeploying code, its JSON schema validators check parameters such as temperature and max tokens before a change is applied, and Lambda retrieves the config via the AppConfig Agent - the LEAST operational overhead.\nWhy the others fail:\nA - Parameter Store with EventBridge-triggered redeployments requires redeploying on every configuration change.\nB - DynamoDB config storage has no built-in parameter validation or feature-flag A/B mechanism.\nD - ElastiCache with custom validation logic re-implements what AppConfig provides natively."
+ },
+ "73": {
+  "answer": "BC",
+  "explanation": "Need real-time token visibility, custom dashboards per stakeholder group, and alerting - least overhead (choose two).\nWhy B and C are correct:\nB - CloudWatch Logs Insights over Bedrock invocation logs analyzes token consumption and attributes it by application, and log widgets on dashboards give continuous monitoring.\nC - Custom CloudWatch dashboards combining the native Bedrock token and invocation metrics, with CloudWatch alarms on token thresholds, provide real-time visibility and alerting.\nWhy the others fail:\nA - QuickSight adds another tool and is more setup than native CloudWatch dashboards.\nD - There is no Bedrock zero-ETL integration with Amazon Managed Grafana for token metrics.\nE - EventBridge to Firehose to OpenSearch Serverless is a heavier pipeline to build and run."
+ },
+ "74": {
+  "answer": "B",
+  "explanation": "Why B is correct: A single acl.json at the top level of the bucket that maps each department's S3 prefix to its IAM Identity Center group, referenced in the data source's Access Control settings, lets Amazon Q Business honor group-based access with one file to maintain - the LEAST operational overhead.\nWhy the others fail:\nA - An acl.json in every department folder multiplies the files to manage.\nC - Per-group permission sets with StringNotEquals conditions is complex IAM configuration that Q Business does not use for document-level ACLs.\nD - A metadata.json AccessControlList referenced in metadata settings is not the Q Business access-control mechanism."
+ },
+ "75": {
+  "answer": "B",
+  "explanation": "Why B is correct: Token batching reduces per-request API overhead, and Amazon Bedrock cross-Region inference profiles automatically distribute traffic across available Regions, absorbing the surge to 30,000 requests/hour while holding latency under 2 seconds.\nWhy the others fail:\nA - Provisioned throughput in a single Region still bottlenecks that Region during peaks, and backoff only adds delay.\nC - Auto-scaling Lambda with client-side round-robin and a single backup MU is custom and under-provisioned for the surge.\nD - Batch inference through S3 and SQS is asynchronous and cannot meet a 2-second real-time response."
+ },
+ "76": {
+  "answer": "B",
+  "explanation": "Why B is correct: Attribute-based IAM mapping departments to permissions controls FM access patterns, VPC endpoints keep model calls private, IAM condition keys pinning GuardrailIdentifier and ModelId enforce secure model I/O, and CloudTrail management and data events (to CloudTrail Lake) plus S3 server access logging and CloudWatch alarms provide the complete who-accessed-what-and-when audit trail.\nWhy the others fail:\nA - Guardrails and trace events cover content and usage but lack the fine-grained access-control mapping and data-event audit of who accessed which archives.\nC - VPC endpoint policies with AWS Config track configuration, not detailed user access to model I/O.\nD - CloudTrail Insights and Macie focus on anomaly detection and classification, not the access-control enforcement and full audit trail required."
+ },
+ "77": {
+  "answer": "C",
+  "explanation": "Why C is correct: Capturing Bedrock model invocation logs in CloudWatch Logs, using metric filters to extract per-tool invocation patterns, and applying CloudWatch anomaly-detection alarms that continuously adjust each tool's baseline detects unusual usage, attributes it to the responsible tool, and adapts thresholds as traffic evolves.\nWhy the others fail:\nA - Static alarm thresholds cannot adapt to evolving traffic patterns.\nB - Scheduled Athena queries over S3 logs are batch reporting, not real-time detection with adaptive thresholds.\nD - Manually updating alarm thresholds is exactly the manual work the adaptive requirement rules out."
+ },
+ "78": {
+  "answer": "A",
+  "explanation": "Why A is correct: Storing document timestamps in S3 system metadata, using S3 object tags for research-domain classification, and custom user-defined metadata for author details gives a consistent per-object metadata structure that FMs can read to understand context without opening the full document.\nWhy the others fail:\nB - S3 Object Lock legal holds are for retention/compliance, not timestamp metadata, and access points do not classify documents.\nC - S3 Inventory reports and Storage Lens are account-level analytics, not per-document metadata.\nD - Object Lock retention periods do not represent document timestamps, and S3 Event Notifications trigger workflows rather than store domain classification."
+ },
+ "79": {
+  "answer": "D",
+  "explanation": "Why D is correct: The Amazon Bedrock Converse API with IAM roles gives consistent authentication in both environments, passing previous messages in the request messages array maintains conversational context natively, and using the language-specific SDKs (Python for Lambda, JavaScript for EKS) gives a consistent API for the same FM.\nWhy the others fail:\nA - InvokeModel with a separate auth method per environment and custom per-language I/O formatting is inconsistent and more work.\nB - ElastiCache and per-language parameter wrappers are unnecessary because Converse handles context through the messages array.\nC - Storing history in process memory loses context between invocations of Lambda or container restarts."
+ },
+ "80": {
+  "answer": "D",
+  "explanation": "Why D is correct: Amazon Comprehend toxicity detection (thresholds at 0.5) blocks offensive content, and running prompt-safety classification and PII detection with entity redaction in parallel keeps the pre-processing fast while protecting privacy and catching inappropriate-advice solicitation - all completing before content reaches the FM, with CloudWatch alarms on the metrics.\nWhy the others fail:\nA - PII detection without redaction does not protect customer privacy.\nB - Building a custom FM classifier is unnecessary development when Comprehend provides these detections.\nC - A sequential multi-stage pipeline adds latency, and routing to human review does not keep pre-processing within the response-time budget."
+ },
+ "81": {
+  "answer": "C",
+  "explanation": "Why C is correct: Amazon SageMaker Clarify is purpose-built for bias and fairness analysis. Analyzing the model outputs with Clarify, publishing the fairness metrics to CloudWatch, and using CloudWatch alarms on those metrics detects the greater-than-15% discrepancy and supports the weekly comparison - the LEAST custom development because the bias metrics are computed for you.\nWhy the others fail:\nA - Custom Lambda post-processing to compute fairness metrics is significant custom development.\nB - Guardrail content filters and InvocationsIntervened metrics measure blocked content, not demographic fairness.\nD - A Bedrock model evaluation job is not a real-time per-demographic fairness monitor and does not natively alert on a 15% discrepancy."
+ },
+ "82": {
+  "answer": "B",
+  "explanation": "Why B is correct: AWS AppConfig stores the active model provider and a Lambda reads it at runtime, so providers switch with no code change or redeploy; AppConfig also provides deployment strategies for safe gradual rollout, configuration validators, and automatic rollback.\nWhy the others fail:\nA - Parameter Store holds the value but offers no safe rollout, validation, or rollback.\nC - Hardcoding providers into separate Lambdas and switching integrations manually requires code and deployment changes.\nD - Referencing an S3 JSON file through AppConfig adds needless indirection when AppConfig can host the configuration directly."
+ },
+ "83": {
+  "answer": "B",
+  "explanation": "Why B is correct: Standardized CloudFormation templates built on the AWS Well-Architected Generative AI Lens, kept in a centralized version-controlled repository and deployed through a CI/CD pipeline with CloudFormation Guard, deliver reusable, versioned, consistently governed security, observability, and RAG components across all business units.\nWhy the others fail:\nA - Running CloudFormation Guard only after deployment validates late and does not establish versioned, repeatable pipeline-enforced deployments.\nC - Service Catalog can standardize products but B's repo plus CI/CD plus Guard more directly meets the versioned and consistently governed requirement.\nD - A shared design document with Macie does not enforce deployment; Macie classifies data and cannot govern IaC."
+ },
+ "84": {
+  "answer": "B",
+  "explanation": "Why B is correct: An AWS Step Functions workflow with a human-approval step using the waitForTaskToken pattern pauses execution until a technician reviews the recommendation, a Lambda then calls SendTaskSuccess with the decision to resume, and the decisions are stored in DynamoDB for audit - the standard managed human-in-the-loop approval pattern.\nWhy the others fail:\nA - A custom Lambda-and-SQS approval flow re-implements what Step Functions provides natively.\nC - AWS Glue is an ETL service, not a human-approval orchestrator, and SendTaskSuccess is a Step Functions API.\nD - EventBridge with Glue jobs and ElastiCache does not provide a durable, auditable human-approval workflow."
+ },
+ "85": {
+  "answer": "D",
+  "explanation": "Why D is correct: A hybrid evaluation system that first screens responses with an automated LLM-as-a-judge and sends only edge cases to human review lowers human-review cost, SageMaker Feature Store maintains the evaluation datasets, and a built-in Amazon Bedrock evaluation tracks retrieval precision and hallucination rates - meeting accuracy, hallucination detection, and cost goals together.\nWhy the others fail:\nA - Comprehend entity classification does not detect hallucinations in generated content.\nB - Fine-tuning a specialized medical evaluation model is heavy and still reviews all responses.\nC - CloudWatch Synthetics with fixed known-answer queries covers only a narrow test set, not general hallucination detection."
+ },
+ "86": {
+  "answer": "D",
+  "explanation": "The customer travel history is structured relational data in Amazon RDS, so retrieval should query it directly.\nWhy D is correct: Text-to-SQL transformations with SQL validation accurately pull the relevant booking patterns, preferences, and loyalty data from RDS, Bedrock guardrails filter responses, and confidence scoring plus semantic similarity checks reduce hallucinations - giving consistent, accurate recommendations across airlines.\nWhy the others fail:\nA - A RAG knowledge base and C's vector search are meant for unstructured data, not the structured relational travel history.\nB - This is the near-identical distractor; it also uses text-to-SQL but relies on generic Step Functions/Lambda validation workflows rather than the confidence-scoring and semantic-similarity hallucination controls that make D the stronger fit."
+ },
+ "87": {
+  "answer": "A",
+  "explanation": "Why A is correct: Enabling tracing on Bedrock agents records the reasoning and audit trail, integrating Bedrock Knowledge Bases provides RAG with source citation, structured prompts present the evidence, and a Multi-AZ deployment with API Gateway, Lambda, and CloudFront scales to 10,000 concurrent users within 2 seconds - all managed, so the least operational overhead.\nWhy the others fail:\nB - A custom RAG pipeline on OpenSearch is more to build and operate than managed Knowledge Bases.\nC - Embedding prompts in the backend with RDS logging does not provide agent reasoning traces or managed citations.\nD - Storing responses in S3 with Glue and Athena gives periodic reports, not transparent per-response reasoning and citations at low latency."
+ },
+ "88": {
+  "answer": "C",
+  "explanation": "Why C is correct: One AWS CDK application that invokes FMs with aws_bedrock.FoundationModel.fromFoundationModelId() lets product owners switch on-demand models by simply changing the model ID, and a single CodePipeline with a deployment stage per environment (via CodeBuild) cleanly delivers to both development and production.\nWhy the others fail:\nA - fromProvisionedModelArn() ties the app to provisioned models, which are harder to swap for quick FM testing, and multiple pipelines add complexity.\nB - Separate CDK applications per environment duplicate code and drift apart.\nD - Building only for production and manually recreating the development environment is error-prone and unmaintainable."
+ },
+ "89": {
+  "answer": "A",
+  "explanation": "Why A is correct: Amazon Bedrock guardrails with content filters set to high defend against prompt-injection attacks, a guardrail profile enabling cross-Region guardrail inference provides the required failover, and CloudWatch Logs with custom metrics captures every safety intervention for audit - a layered, native defense-in-depth design.\nWhy the others fail:\nB - AWS WAF filters network requests, not semantic prompt injection, and CloudTrail logs API calls rather than guardrail interventions.\nC - Comprehend custom classification is a build-it-yourself detector and lacks the cross-Region failover.\nD - Word filters alone miss sophisticated injection, cross-Region guardrail replication is not the correct failover mechanism, and CloudTrail does not capture per-intervention detail."
+ },
+ "90": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Transcribe streaming with partial results emits transcription fragments before the customer stops speaking, forwarding those fragments to Bedrock via InvokeModelWithResponseStream generates incremental suggestions, and streaming them to agents over an API Gateway WebSocket API gives bidirectional real-time updates under 1 second using only managed services.\nWhy the others fail:\nA - The non-streaming InvokeModel API plus a DynamoDB write adds latency that breaks the 1-second budget.\nC - Batch Transcribe waits for the full call, so it cannot deliver suggestions while the customer is still speaking.\nD - Titan Embeddings produce vectors, not agent suggestions, and SNS fan-out is not sub-second bidirectional streaming."
+ },
+ "91": {
+  "answer": "B",
+  "explanation": "Why B is correct: Having the FM authenticate with IAM roles and AWS Lake Formation permissions driven by LF-Tag expressions gives fine-grained, column-level access with PII redaction on specific columns and limits the FM to authorized data subsets; defining business units and Regions as LF-Tags scales the control, and CloudTrail captures the data-access audit trail.\nWhy the others fail:\nA - Separate S3 buckets with bucket policies cannot redact specific PII columns.\nC - Direct IAM grants plus a custom application layer to filter columns is bespoke code to build and maintain.\nD - STS credentials and presigned URLs with an API filter do not provide column-level redaction the way Lake Formation does."
+ },
+ "92": {
+  "answer": "C",
+  "explanation": "Root cause: vector search evaluates too many documents, content types, and time periods, so the fix is smarter scoping with minimal architecture change.\nWhy C is correct: Enabling metadata-aware filtering in the existing Amazon Bedrock knowledge base by indexing the S3 object metadata lets retrieval constrain by content type and time period, sharpening relevance without changing the architecture.\nWhy the others fail:\nA - A domain-adapted embedding model is fine-tuning the company already ruled out.\nB - Migrating to OpenSearch Service is a major architectural change.\nD - Migrating to an Amazon Q Business index is likewise a large re-platforming effort."
+ },
+ "93": {
+  "answer": "B",
+  "explanation": "Why B is correct: Configuring the Bedrock integration to use an S3 bucket URI for large outputs and using the ResultPath and ResultSelector fields to pass lightweight S3 references between the sequential agent steps keeps each Step Functions payload under the 256 KB quota while preserving the existing ReAct workflow and observability - the least change.\nWhy the others fail:\nA - Moving intermediate outputs to DynamoDB with a Map state to re-fetch them restructures the workflow more than needed.\nC - Compressing and decompressing at every state is fragile and adds CPU overhead.\nD - Splitting into separate state machines coordinated by EventBridge is a significant re-architecture."
+ },
+ "94": {
+  "answer": "C",
+  "explanation": "Root cause: fixed 500-token chunks split connected legal context, hurting relevance.\nWhy C is correct: Updating the chunking strategy to semantic boundaries - complete legal arguments, clauses, or sections - and regenerating the embeddings keeps related context together, directly improving retrieval relevance, and better-scoped chunks also help performance as the corpus grows.\nWhy the others fail:\nA - Raising dimensionality to 4,096 without fixing chunking worsens latency and storage and does not solve the context-splitting problem.\nB - Static pre-written summaries abandon dynamic retrieval and go stale, matching the outdated-information complaint.\nD - Migrating to DynamoDB keyword indexes discards semantic vector search entirely."
+ },
+ "95": {
+  "answer": "B",
+  "explanation": "Why B is correct: An Amazon Bedrock knowledge base storing the medical documents, with query decomposition enabled, breaks complex queries into focused sub-queries to reduce semantic dilution and grounds answers in domain terminology, and a Bedrock flow ties the FM and knowledge base together - all managed, so the LEAST operational overhead at 1,000 queries/minute under 2 seconds.\nWhy the others fail:\nA - Using an agent with a Claude model to decompose and a Titan model to expand adds components and orchestration.\nC - Hosting custom decomposition and expansion models on SageMaker is significant operational overhead.\nD - Orchestrating multiple Lambda functions with an agent and added reasoning is more to build than native knowledge base query decomposition."
+ },
+ "96": {
+  "answer": "AD",
+  "explanation": "Two needs: four required inputs with a consistent output format, and notification (not blocking) when a response contains bullying language (choose two).\nWhy A and D are correct:\nA - Bedrock Prompt Management defines the four required inputs as variables, selects Nova Pro, and specifies the output format, added to the flow's prompts node - enforcing structure and consistent formatting.\nD - A guardrail applying the insults content filter set to detect (not block) flags bullying language so the company is notified while the response is still returned.\nWhy the others fail:\nB - Setting the hate filter to block would block flagged responses, which the company explicitly does not want.\nC - A prompt router selects among models and does not enforce input variables or detection.\nE - An application inference profile is for tracking usage, not defining required inputs or content detection."
+ },
+ "97": {
+  "answer": "B",
+  "explanation": "Why B is correct: Configuring the AWS SDK with standard retry mode and exponential backoff with jitter handles transient errors and prevents the synchronized retries that cause cascading failures during throttling, while AWS X-Ray tracing with annotations provides distributed tracing across service boundaries and lets you filter and correlate latency with specific FM characteristics.\nWhy the others fail:\nA - A fixed 1-second retry can synchronize retries into cascading failures, and CloudWatch alarms give no distributed tracing.\nC - Caching all responses is unsafe for dynamic answers and custom logging is not distributed tracing.\nD - Adaptive retry helps, but AWS CloudTrail is an API audit log, not a distributed tracing tool."
+ },
+ "98": {
+  "answer": "B",
+  "explanation": "Why B is correct: A multi-stage pipeline using Amazon Bedrock Guardrails to filter the natural-language inputs (catching injection attempts), AWS Lambda with SQL parsing libraries to validate the generated query syntax, and the Amazon RDS Data API to verify queries against the defined schemas while collecting audit logs before execution satisfies all three requirements.\nWhy the others fail:\nA - Amazon GuardDuty detects AWS account threats, not SQL injection embedded in prompts.\nC - CloudTrail, IAM least privilege, and WAF do not validate generated SQL against schemas.\nD - Training a custom SageMaker text-to-SQL model is heavy and still does not provide schema validation or injection filtering as described."
+ },
+ "99": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Bedrock Data Automation with FMs processes the documents, integrating Textract for PDF extraction and Transcribe for the recorded videos covers both document and multimedia sources at scale, S3 with versioning stores the summaries with version control, and AWS AppSync GraphQL subscriptions over DynamoDB provide real-time collaboration.\nWhy the others fail:\nA - SNS topic subscriptions are notifications, not real-time collaborative editing, and using Bedrock Agents to track changes is a mismatch.\nC - Neptune is a graph database, not suited to storing document files for time-series analysis, and Bedrock Chat is not a collaboration store.\nD - ElastiCache is an in-memory cache, not durable versioned storage, and Prompt Management is not document version control."
+ },
+ "100": {
+  "answer": "A",
+  "explanation": "Why A is correct: A dataset of 50-100 anonymized patient records satisfies the data-privacy policy, implementing RAG with a secure knowledge base keeps data controlled, and using a judge model to compute accuracy metrics across three FMs delivers the quantitative accuracy and processing-time evaluation the 3-week proof of concept needs.\nWhy the others fail:\nB - Fine-tuning on patient records and testing with 500 staff is too much for a 3-week POC and uses non-anonymized data.\nC - Relying on qualitative stakeholder feedback on actual patient records provides no accuracy metrics and risks privacy.\nD - A multi-agent Strands deployment focused on systems integration is over-scoped and does not center on accuracy metrics."
+ },
+ "101": {
+  "answer": "B",
+  "explanation": "Why B is correct: Combining the sample prompts into a JSONL file in S3 and creating an Amazon Bedrock model evaluation job that uses a judge model - with the S3 location as input, a different S3 location as output, and the FM under test selected as the generator - automates report generation and quality/safety evaluation, run once per candidate FM.\nWhy the others fail:\nA - A knowledge base with RetrieveAndGenerate performs RAG, not model evaluation with scored reports.\nC - Evaluation job output must go to S3, not QuickSight, and the FM under test is the generator while the judge model is the evaluator.\nD - The retrieval-and-response evaluation type is for RAG systems, not for directly comparing base FM quality on sample prompts."
+ },
+ "102": {
+  "answer": "C",
+  "explanation": "Why C is correct: Sending requests to an SQS queue processed by AWS Fargate decouples and scales the components; the small model runs first for near-real-time high-confidence results, and any request scoring below 0.65 is placed on a second SQS queue to be processed asynchronously by the larger model - invoking the expensive model only when needed.\nWhy the others fail:\nA - Calling both models synchronously behind API Gateway is not asynchronous or decoupled for low-confidence requests.\nB - Running both models in parallel for every request wastes the expensive model on high-confidence cases.\nD - Deploying both models on EC2 with heuristic phrase-length routing is not confidence-based, decoupled, or cost-optimized."
+ },
+ "103": {
+  "answer": "A",
+  "explanation": "Why A is correct: A Step Functions workflow that pre-checks inputs with a Lambda calling ApplyGuardrail blocks harmful prompts before invocation, InvokeModelWithResponseStream with the guardrail attached filters streamed output in real time, a post-check Lambda calling ApplyGuardrail evaluates outputs, flagged items are routed to an SQS queue for human review, and a bedrock:GuardrailIdentifier IAM condition enforces that the guardrail is always used.\nWhy the others fail:\nB - InvokeModel without streaming cannot filter streamed output in real time.\nC - Skipping the pre-inference check fails the requirement to block harmful prompts before invocation.\nD - Relying on code reviews instead of an IAM condition does not technically enforce that guardrails are always applied."
+ },
+ "104": {
+  "answer": "B",
+  "explanation": "Why B is correct: A hybrid design handles simple file-extension routing directly in application code for minimal latency, and routes content-semantics decisions through an AWS Step Functions state machine that uses JSONata for content analysis and the InvokeModel API for the specialized FMs - Step Functions also provides the detailed execution history and fallback paths when a primary FM fails.\nWhy the others fail:\nA - Sending even simple extension-based routing through Lambda calls to FMs adds unnecessary latency.\nC - Separate per-type workflows coordinated by EventBridge is more complex than needed and scatters the history.\nD - SQS queues per content type add latency for the simple, low-latency routing path."
+ },
+ "105": {
+  "answer": "A",
+  "explanation": "Why A is correct: Step Functions Map states run the agent workflows in parallel and pass freshly resolved secret metadata through each Lambda function's outputs, so agents receive refreshed, non-stale secrets in time, and using AWS AppConfig to version the prompt flows lets the company gate and roll back faulty templates - resolving the expired-secret, stale-data, and outdated-template failures.\nWhy the others fail:\nB - AgentCore with guardrails and a single inline schema does not address timely secret refresh or template rollback.\nC - An EventBridge pipeline with DynamoDB and TTL-based backoff does not fix outdated prompt templates or guarantee fresh secrets.\nD - EventBridge Pipes with Q Developer-generated fallback prompts is convoluted and does not directly solve the refresh, drift, and template-versioning problems."
+ },
+ "106": {
+  "answer": "AC",
+  "explanation": "Requirements: compare prompt variants, version control, audit, and clean integration into the main application - least overhead (choose two).\nWhy A and C are correct:\nA - Amazon Bedrock Prompt Management creates versioned prompts with parameterized variables per use case, giving variant comparison, version control, and audited prompt changes natively.\nC - Amazon Bedrock Flows builds workflows that combine the FMs and AWS services, integrating the managed prompts consistently into the application.\nWhy the others fail:\nB - Storing prompts in S3 and orchestrating with Step Functions is custom plumbing with no built-in prompt versioning.\nD - AWS Config does not record Bedrock prompt changes.\nE - Intelligent prompt routing selects models at runtime; it does not provide prompt versioning or variant testing."
+ },
+ "107": {
+  "answer": "D",
+  "explanation": "Facts: responses exceed 4 MB and take 15-20 seconds, yet must appear within 10 seconds and be retained for 10 years.\nWhy D is correct: Response streaming displays partial output well within 10 seconds despite the 15-20 second total, a 30-second Lambda timeout covers the full generation, and storing the complete response records in Amazon S3 handles the 4 MB+ size and the 10-year retention.\nWhy the others fail:\nA - A 15-second Lambda timeout can cut off the 15-20 second generation, and X-Ray does not provide 10-year record retention.\nB - SQS asynchronous invocation does not return an interactive response within 10 seconds.\nC - ElastiCache is not durable 10-year storage, and its 4 MB+ responses do not fit a caching model well."
+ },
+ "108": {
+  "answer": "A",
+  "explanation": "Why A is correct: Enabling AgentCore Observability with trace collection is a built-in Bedrock capability needing no custom instrumentation; AWS X-Ray captures distributed traces across the custom tools, and CloudWatch dashboards visualize errors, throttling, and latency during peaks - all with minimal performance overhead.\nWhy the others fail:\nB - Polling the Bedrock API with a custom Lambda for tool metrics is custom instrumentation.\nC - A custom ETL pipeline over CloudWatch logs into DynamoDB and QuickSight is exactly the custom build the requirement excludes.\nD - Extracting metrics with a custom Lambda and visualizing in Managed Grafana again adds custom instrumentation."
+ },
+ "109": {
+  "answer": "C",
+  "explanation": "Why C is correct: Amazon Bedrock model evaluation jobs compare the new FM version against the current one across the 500 test cases, compute semantic similarity metrics to detect meaning changes, and store results in S3 for historical comparison - a managed evaluation, so the LEAST operational complexity.\nWhy the others fail:\nA - CloudWatch Synthetics with manual semantic review is labor-intensive and not quantitative.\nB - A Step Functions workflow computing cosine similarity from embeddings into DynamoDB is a custom pipeline to build and maintain.\nD - Training a SageMaker anomaly classifier is the most operationally complex option."
+ },
+ "110": {
+  "answer": "AE",
+  "explanation": "Symptoms: context-length-exceeded errors and ignored input because too much data is stuffed into one call; the fix must consider all data and use Knowledge Bases (choose two).\nWhy A and E are correct:\nA - Chunking the customer data into smaller segments, processing each separately, then synthesizing a final response ensures all data is considered without exceeding the context window.\nE - Implementing RAG with a knowledge base that indexes the customer data as vector embeddings retrieves only the most relevant information per request, keeping inputs within limits while staying grounded.\nWhy the others fail:\nB - Truncating less important data discards input, contradicting the goal of using all customer data.\nC - A larger-context model plus a longer timeout does not use Knowledge Bases and still degrades with very large inputs.\nD - No request field can push token usage beyond the model's fixed context window."
+ },
+ "111": {
+  "answer": "B",
+  "explanation": "Why B is correct: Amazon Bedrock evaluation jobs compare outputs from multiple prompt templates on custom datasets with quantitative metrics and support human review feedback; wiring them into AWS CodePipeline to run whenever templates change, and deploying only configurations that clear the quality threshold, enforces the quality gate automatically.\nWhy the others fail:\nA - A Lambda plus QuickSight with daily manual review is not automated quality gating.\nC - CloudWatch alarms on latency and error rates do not evaluate response quality.\nD - Amazon Comprehend sentiment analysis measures tone, not response quality against prompt templates."
+ },
+ "112": {
+  "answer": "C",
+  "explanation": "The requirement is to guarantee the promotional message always appears and reads smoothly - a prompt instruction alone is probabilistic and is exactly what is failing.\nWhy C is correct: Running the prompt through Bedrock, then processing the response through Bedrock Agents to add the promotional message, deterministically guarantees the message is present, and reranking with the original prompt and desired message as context makes it flow smoothly.\nWhy the others fail:\nA - A guardrails input filter blocks content; it does not insert a required message.\nB - Generating variants and reranking still does not guarantee the message appears in every response.\nD - An output indicator in the prompt is still a probabilistic instruction, the same approach that already fails to include the message reliably."
+ },
+ "113": {
+  "answer": "A",
+  "explanation": "Why A is correct: SAML federation between Microsoft Entra ID and IAM authenticates users, department-specific IAM roles that allow only the required ModelId values restrict each department to specific model families, AWS PrivateLink interface VPC endpoints keep all Bedrock runtime calls on private network paths, and CloudTrail plus Bedrock model invocation logging provide the full audit trail.\nWhy the others fail:\nB - A NAT gateway to public Bedrock endpoints is not a private network path.\nC - Public Bedrock endpoints with VPC routing still traverse public endpoints, and permissions boundaries are a coarser control than per-ModelId roles.\nD - Relying on Microsoft Entra ID's built-in logging does not capture AWS-side model interaction audit trails, and SCP-only family restriction is less precise here."
+ },
+ "114": {
+  "answer": "A",
+  "explanation": "Why A is correct: Amazon Titan Text Embeddings process the English, French, and German documents in their original language, preserving specialized medical terminology without lossy translation, and semantic chunking at the medical-section level keeps terminology in context with moderate vector dimensions - high accuracy with minimal custom code and maintenance.\nWhy the others fail:\nB - Translating all non-English documents to English before embedding loses medical-terminology nuance and adds a translation step to maintain.\nC - Converting pages to images and captioning them is unnecessary complexity for text-heavy documents.\nD - Adding Kendra with automatic per-query translation is more moving parts, and translation again risks terminology accuracy."
+ },
+ "115": {
+  "answer": "AD",
+  "explanation": "Goal: p95 under 800 ms and a fast first token on a SageMaker real-time LLM endpoint (choose two).\nWhy A and D are correct:\nA - Preloading the model on container startup removes model-load latency, and dynamic batching processes concurrent requests efficiently to hold latency down under load.\nD - Setting the minimum instance count above zero avoids cold starts, and enabling response streaming delivers the first token quickly so users no longer abandon after 2 seconds.\nWhy the others fail:\nB - Setting minimum instances to 0 with lazy weight loading reintroduces cold-start latency on the first request.\nC - A multi-model endpoint with lazy loading and no batching adds load latency and misses batching gains.\nE - Asynchronous inference is for long-running non-interactive jobs, not sub-800 ms interactive chat."
+ },
+ "116": {
+  "answer": "A",
+  "explanation": "Why A is correct: AWS AppConfig feature flags hold the model-selection criteria so models switch with no code change or redeploy, validation rules enforce the error-rate check, the AppConfig Agent Lambda extension retrieves configurations at runtime, and a linear deployment strategy rolls new models out starting at 20% of traffic with automatic rollback when validation (error rate) is breached.\nWhy the others fail:\nB - DynamoDB global tables with EventBridge and custom query code is a custom build, not a managed gradual rollout with rollback.\nC - Lambda versions and aliases with CodeDeploy shift traffic between code versions, but switching models this way still ties model choice to deployments.\nD - CloudWatch dashboards with custom selection logic and Parameter Store variables is custom code and lacks built-in staged rollout and automatic rollback."
+ },
+ "117": {
+  "answer": "AB",
+  "explanation": "Two distinct errors: a 400 Bad Authorization from the BedrockAgentRuntime API and a 403 Forbidden from OpenSearch Serverless (choose two).\nWhy A and B are correct:\nA - Adding bedrock:InvokeAgent to the Lambda execution role fixes the 400 authorization error, and adding aoss:APIAccessAll grants the IAM side of OpenSearch Serverless access.\nB - Creating an OpenSearch Serverless data access policy with pattern-based resource rules grants the data-plane permission that clears the 403 Forbidden and scales access to matching collections and indexes.\nWhy the others fail:\nC - A VPC endpoint policy addresses network reachability, not these authorization errors.\nD - OpenSearch Serverless uses IAM and data access policies, not Secrets Manager credentials.\nE - es:ESHttp* and IAM authentication apply to managed OpenSearch Service domains, not Serverless collections, which use aoss: permissions."
+ }
+}

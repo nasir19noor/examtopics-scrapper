@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 4
+
+A company is developing a generative AI (GenAI) application that uses Amazon Bedrock APIs to process complex customer inquiries. During periods of peak use, the application has intermittent API timeouts that result in issues such as broken response chunks and delayed data delivery. The application has difficulty ensuring prompts stay within token limits when processing complex customer inquiries of different lengths. Users have reported truncated inputs and incomplete responses. The company has also identified foundation model (FM) invocation failures.  
+  
+The company requires a retry strategy that automatically manages transient service errors and avoids overwhelming Amazon Bedrock during peak usage periods. The strategy must adapt to changing service availability and support response streaming and token-aware request handling.  
+  
+Which solution meets these requirements?
+
+A. Implement a standard retry strategy that uses a 1-second fixed delay between attempts and a 3-retry maximum for all errors. Handle streaming response timeouts by restarting streams. Cap token usage for each session.
+B. Implement an adaptive retry strategy that uses exponential backoff with jitter and a circuit breaker pattern that temporarily disables retries when error rates exceed a predefined threshold. Implement a streaming response handler that monitors for chunk delivery timeouts. Configure the handler to buffer successfully received chunks and intelligently resume streaming from the last received chunk when connections are re-established.
+C. Use the AWS SDK to configure a retry strategy in standard mode. Wrap Amazon Bedrock API calls in try-catch blocks that handle timeout exceptions. Return cached completions for failed streaming requests. Enforce a global token limit for all users. Add jitter-based retry logic and lightweight token trimming for each request. Resume broken streams by requesting only the missing chunks from the point of failure. Maintain a small in-memory buffer of the most recent chunks to minimize redundant data transfer.
+D. Set Amazon Bedrock client request timeouts to 30 seconds. Implement client-side load shedding. Buffer partial results and stop new requests when the application performance begins to degrade. Set static token usage caps for all requests. Configure exponential backoff retries, dynamic chunk sizing, and context-aware token limits.
+
+Correct answer: B
+
+Explanation:
+The requirement to "adapt to changing service availability" without overwhelming Bedrock points to the AWS SDK adaptive retry mode, which layers dynamic client-side rate limiting (a token bucket that adjusts the call rate based on observed throttling) on top of standard mode's exponential backoff with jitter and circuit-breaking. Option B combines adaptive retries, exponential backoff with jitter, and a circuit breaker with a streaming handler that buffers received chunks and resumes from the last chunk, satisfying transient-error handling, streaming support, and adaptability. Option C fixes the retry mode to "standard," which does not adapt the call rate to changing availability, and its "return cached completions for failed streaming requests" would serve stale or incorrect data. Options A (fixed 1-second delay) and D (static timeouts/caps) are neither adaptive nor jittered.
+
+**Learn more:** [AWS SDK retry behavior (standard vs adaptive)](https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html) · [Optimize applications on Amazon Bedrock](https://aws.amazon.com/blogs/machine-learning/optimize-your-applications-for-scale-and-reliability-on-amazon-bedrock/)

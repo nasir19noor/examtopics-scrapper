@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 80
+
+A company is building a customer communication platform that uses an AI assistant powered by an Amazon Bedrock foundation model (FM). The AI assistant summarizes customer messages and creates initial response drafts.  
+  
+The company plans to use Amazon Comprehend to implement layered content filtering. The layered filtering must prevent the sharing of offensive content, protect customer privacy, and identify potential solicitation of inappropriate advice. Inappropriate advice solicitation includes requests for unethical practices, harmful activities, or manipulative behaviors. The solution must preserve acceptable overall response times; therefore, all pre-processing filters must complete before content reaches the FM.  
+  
+Which solution meets these requirements?
+
+A. Use parallel processing with asynchronous API calls. Use toxicity detection for offensive content. Use prompt safety classification for inappropriate advice solicitation. Use personally identifiable information (PII) detection without redaction.
+B. Use custom classification to build an FM that detects offensive content and inappropriate advice solicitation. Apply personally identifiable information (PII) detection as a secondary filter only when messages pass the custom classifier.
+C. Deploy a multi-stage process. Configure the process to use prompt safety classification first, then toxicity detection on safe prompts only, and finally personally identifiable information (PII) detection in streaming mode. Route flagged messages through Amazon EventBridge for human review.
+D. Use toxicity detection with thresholds configured to 0.5 for all categories. Use parallel processing for both prompt safety classification and personally identifiable information (PII) detection with entity redaction. Apply Amazon CloudWatch alarms to filter metrics.
+
+Correct answer: D
+
+Explanation:
+Amazon Comprehend toxicity detection identifies harmful, offensive, or inappropriate content; prompt safety classification identifies unsafe prompts, including requests for inappropriate advice; and PII detection can identify entities for redaction before the text is passed to the foundation model. Running these independent pre-processing checks in parallel minimizes overall latency while ensuring that offensive, unsafe, and personally identifiable content is filtered before FM inference.
+
+**Learn more:** [Amazon Comprehend trust and safety](https://docs.aws.amazon.com/comprehend/latest/dg/trust-safety.html) · [PII real-time analysis (API)](https://docs.aws.amazon.com/comprehend/latest/dg/realtime-pii-api.html)

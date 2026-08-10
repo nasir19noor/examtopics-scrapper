@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 62
+
+A company is building an internal generative AI (GenAI) assistant with Amazon Bedrock to summarize corporate documents for several business units. The GenAI assistant must produce responses in a consistent format that includes a document summary, business-risk classification, and terms flagged for review. The GenAI assistant must tailor the response tone to each user’s business unit, such as legal, human resources, or finance. The GenAI assistant must block hate speech, inappropriate topics, and sensitive information such as personal health information.  
+  
+The company needs a solution for centrally managing prompt variants across business units and teams. The company wants to minimize ongoing orchestration work and maintenance of post-processing logic. The company also needs to be able to adjust the GenAI assistant’s content-moderation criteria over time.  
+  
+Which solution meets these requirements with the **LEAST** maintenance overhead?
+
+A. Use Amazon Bedrock Prompt Management to configure reusable templates and business unit-specific prompt variants. Apply Amazon Bedrock guardrails that have category filters and sensitive term lists to block prohibited content.
+B. Use Amazon Bedrock Prompt Management to define base templates. Enforce business unit-specific tone by using system prompt variables. Configure Amazon Bedrock guardrails to apply audience-based threshold tuning. Manage the guardrails by using an internal administration API.
+C. Use Amazon Bedrock with business unit-based instruction injection in API calls. Store response formatting rules in Amazon DynamoDB. Use AWS Step functions to validate responses. Use Amazon Comprehend to apply content filters after the GenAI assistant generates responses.
+D. Use Amazon Bedrock with custom prompt templates that are stored in Amazon DynamoDB. Create one AWS Lambda function to select business unit-specific prompts. Create a second Lambda function to call Amazon Comprehend to filter prohibited content from responses.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock Prompt Management centrally stores reusable prompts and prompt variants, allowing the same required response structure to be maintained while using variants for legal, human resources, and finance tone. Amazon Bedrock Guardrails provides configurable content filters for harmful categories such as hate, denied topics for inappropriate subjects, word filters, and sensitive-information filters that can block or mask PII. Guardrail policies can be modified as moderation requirements evolve, avoiding custom workflow orchestration and separate post-processing services.
+
+**Learn more:** [Construct and store reusable prompts with Prompt management in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management.html) · [Create your guardrail - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html)

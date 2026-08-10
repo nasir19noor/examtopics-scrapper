@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 43
+
+A financial services company uses multiple foundation models (FMs) through Amazon Bedrock for its generative AI (GenAI) applications. To meet a new regulation governing GenAI use with sensitive financial data, the company requires a token-management solution.  
+  
+The token-management solution must proactively alert when applications near model-specific token limits. It must also handle more than 5,000 requests per minute and retain token-usage metrics to allocate costs among business units.  
+  
+Which solution will satisfy these requirements?
+
+A. Develop model-specific tokenizers in an AWS Lambda function. Configure the Lambda function to estimate token usage before sending requests to Amazon Bedrock. Configure the Lambda function to publish metrics to Amazon CloudWatch and trigger alarms when requests approach thresholds. Store detailed token usage in Amazon DynamoDB to report costs.
+B. Implement Amazon Bedrock Guardrails with token quota policies. Capture metrics on rejected requests. Configure Amazon EventBridge rules to trigger notifications based on Amazon Bedrock Guardrails metrics. Use Amazon CloudWatch dashboards to visualize token usage trends across models.
+C. Deploy an Amazon SQS dead-letter queue for failed requests. Configure an AWS Lambda function to analyze token-related failures. Use Amazon CloudWatch Logs Insights to generate reports on token usage patterns based on error logs from Amazon Bedrock API responses.
+D. Use Amazon API Gateway to create a proxy for all Amazon Bedrock API calls. Configure request throttling based on custom usage plans with predefined token quotas. Configure API Gateway to reject requests that will exceed token limits.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock enforces token quotas per model, so token usage must be estimated with the applicable model’s tokenization rules before inference to identify approaching limits. A scalable Lambda layer can perform that pre-request estimation, emit model- and business-unit-specific custom CloudWatch metrics for threshold alarms, and store detailed usage records in DynamoDB for chargeback reporting. Amazon Bedrock Guardrails do not implement token quota policies, dead-letter queues operate after failed requests, and API Gateway usage plans apply request quotas rather than model-specific token calculations.
+
+**Learn more:** [CountTokens — Amazon Bedrock API Reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_CountTokens.html) · [Quotas for the bedrock-runtime endpoint — Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/quotas-runtime.html)

@@ -1,0 +1,26 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 56
+
+A financial services company uses an AI application to process financial documents with Amazon Bedrock. During business hours, the application processes approximately 10,000 requests per hour and therefore requires consistent throughput.  
+  
+The company uses the `CreateProvisionedModelThroughput` API to buy provisioned throughput. Amazon CloudWatch metrics show that the provisioned capacity is unused while on-demand requests are being throttled. The company discovers the following code in the application:  
+  
+```python  
+response = bedrock_runtime.invoke_model(modelId="anthropic.claude-v2", body=json.dumps(payload))  
+```  
+  
+The company needs the application to use the provisioned throughput and resolve the throttling issues.  
+  
+Which solution will meet these requirements?
+
+A. Increase the number of model units (MUs) in the provisioned throughput configuration.
+B. Replace the model ID parameter with the ARN of the provisioned model that the CreateProvisionedModelThroughput API returns.
+C. Add exponential backoff retry logic to handle throttling exceptions during peak hours.
+D. Modify the application to use the InvokeModelWithResponseStream API instead of the InvokeModel API.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock routes inference to Provisioned Throughput only when the runtime request supplies that provisioned model's ARN as the `modelId`. Supplying the foundation-model ID invokes on-demand capacity instead, leaving purchased provisioned capacity unused and subjecting the workload to on-demand throttling. [Use a Provisioned Throughput with an Amazon Bedrock resource](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-thru-use.html)
+
+**Learn more:** [Use a Provisioned Throughput with an Amazon Bedrock resource](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-thru-use.html) · [CreateProvisionedModelThroughput - Amazon Bedrock API Reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_CreateProvisionedModelThroughput.html)

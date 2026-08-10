@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 83
+
+A company plans to deploy multiple generative AI (GenAI) applications to five independent business units operating across multiple countries in Europe and the Americas. Each application uses Amazon Bedrock Retrieval Augmented Generation (RAG) patterns with knowledge bases specific to each business unit that store terabytes of unstructured data.  
+  
+The company must create well-architected, standardized components for security controls, observability practices, and deployment patterns across all GenAI applications. The components must be reusable, versioned, and governed consistently.  
+  
+Which solution meets these requirements?
+
+A. Configure Amazon API Gateway REST API endpoints for the GenAI applications. Deploy common security, observability, and RAG patterns based on the AWS Well-Architected Generative AI Lens in standardized AWS CloudFormation templates. Use CloudFormation Guard after the deployment to validate policy compliance in each business unit.
+B. Create standardized AWS CloudFormation templates to implement security, observability, and RAG patterns based on the AWS Well-Architected Generative AI Lens. Establish a centralized repository that performs version control. Integrate a CI/CD pipeline with CloudFormation Guard to enforce consistent and repeatable deployments across business units.
+C. Use AWS Service Catalog to define standardized portfolios and versioned products for each business unit. Use the portfolios to enforce security, observability, and RAG patterns based on the AWS Well-Architected Generative AI Lens. Require the business units to use the Service Catalog console to deploy resources.
+D. Document security controls, observability requirements, and RAG patterns based on the AWS Well-Architected Generative AI Lens in a shared design document. Use Amazon Macie to enforce deployment. Delegate implementation responsibility to each business unit.
+
+Correct answer: B
+
+Explanation:
+Version-controlled AWS CloudFormation templates make the security, observability, and RAG configurations reusable infrastructure as code. A centralized repository preserves controlled versions, and a CI/CD pipeline delivers the templates consistently across business units. Integrating AWS CloudFormation Guard into that pipeline validates policy-as-code rules before deployment, preventing noncompliant infrastructure from being deployed.
+
+**Learn more:** [CloudFormation best practices](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/best-practices.html) · [What is AWS CloudFormation Guard?](https://docs.aws.amazon.com/cfn-guard/latest/ug/what-is-guard.html)

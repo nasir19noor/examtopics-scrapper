@@ -1,0 +1,26 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 102
+
+A media company is building an AI-powered content moderation system using Amazon Bedrock. The system first classifies text using a small, low-latency model, then escalates requests whose confidence score is below 0.65 to a larger, more expensive model.  
+  
+The solution must meet the following requirements:  
+  
+- Respond in near real time for high-confidence results.  
+- Process low-confidence requests asynchronously.  
+- Scale to handle sudden spikes in demand.  
+- Optimize costs by invoking the larger model only when required.  
+- Use decoupled components to achieve high resiliency.  
+  
+Which solution will meet these requirements?
+
+A. Use Amazon API Gateway to invoke the small model synchronously. If the small model’s confidence score is below 0.65, synchronously call the larger model. Use provisioned concurrency to handle traffic spikes.
+B. Use an AWS Step Functions workflow that has parallel branches to run both the small model and the large model for every request. Choose the large model result when confidence score values differ.
+C. Send requests to an Amazon SQS queue. Use AWS Fargate to process messages. Invoke the small model first. If the confidence score is below 0.65, place the request in a second SQS queue to process asynchronously by using the large model.
+D. Deploy both models on Amazon EC2 instances and enable auto scaling. Use a custom application heuristic to route requests to the appropriate instance based on phrase length and keyword rules.
+
+Correct answer: C
+
+Explanation:
+Sending requests to an Amazon SQS queue and processing them with AWS Fargate decouples the ingestion layer from the compute layer, enabling the system to absorb sudden traffic spikes and scale the processing tier independently and resiliently. Invoking the small, low-latency model first and only forwarding low-confidence results (score below 0.65) to a second SQS queue for asynchronous processing by the larger model ensures the expensive model is invoked only when necessary, directly optimizing cost while still allowing high-confidence results to be handled quickly. This queue-based, decoupled architecture (SQS + Fargate) satisfies the asynchronous processing, scalability, cost-optimization, and resiliency requirements simultaneously, unlike synchronous API Gateway calls, always-invoking both models in parallel, or static EC2 instances with custom routing heuristics.
+
+**Learn more:** [Amazon SQS Developer Guide - Decoupling application components](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html) · [AWS Fargate - Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/what-is-fargate.html)

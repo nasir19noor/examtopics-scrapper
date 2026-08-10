@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 93
+
+An ecommerce company uses Amazon Bedrock to develop a generative AI (GenAI) application. The application uses AWS Step Functions to orchestrate a multi-agent workflow that produces detailed product descriptions. The workflow contains three sequential states: a description generator, a technical-specifications validator, and a brand-voice consistency checker. Each state generates intermediate reasoning traces and outputs that are passed to the following state. The application uses an Amazon S3 bucket for process storage and output storage.  
+  
+During testing, the company finds that outputs passed between Step Functions states frequently exceed the 256 KB quota, causing workflow failures.  
+  
+A GenAI Developer must revise the application architecture to efficiently handle the Step Functions 256 KB quota while maintaining workflow observability. The revised architecture must retain the existing multi-agent reasoning and acting (ReAct) pattern.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Store intermediate outputs in Amazon DynamoDB. Pass only references between states. Create a Map state that retrieves the complete data from DynamoDB when required for each agent's processing step.
+B. Configure an Amazon Bedrock integration to use the S3 bucket URI in the input parameter for large outputs. Use the ResultPath field and the ResultSelector field to route S3 references between the agent steps while maintaining the sequential validation workflow.
+C. Use AWS Lambda functions to compress outputs to less than 256 KB before each agent state. Configure each agent task to decompress the outputs before processing and to compress results before passing them to the next state.
+D. Configure a separate Step Functions state machine to handle each agent's processing. Use Amazon EventBridge to coordinate the execution flow between state machines. Use S3 references for the outputs as event data.
+
+Correct answer: B
+
+Explanation:
+The optimized Amazon Bedrock integration for AWS Step Functions can read large model input from an Amazon S3 URI and write model output to an S3 URI. When an output URI is specified, the state receives an S3 reference instead of the full response body, keeping the data passed between sequential states below the 256 KiB limit. `ResultSelector` and `ResultPath` can preserve and route these references while retaining the sequential multi-agent workflow and its observable artifacts in S3.
+
+**Learn more:** [Invoke and customize Amazon Bedrock models with Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/connect-bedrock.html) · [Manipulate parameters in Step Functions workflows](https://docs.aws.amazon.com/step-functions/latest/dg/input-output-inputpath-params.html)

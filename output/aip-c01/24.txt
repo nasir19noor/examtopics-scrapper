@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 24
+
+A specialty coffee company has a mobile app that uses Amazon Bedrock and a three-stage prompt chain to generate personalized coffee roast profiles. The prompt chain converts user inputs into structured metadata, retrieves relevant coffee-roast logs, and produces a personalized roast recommendation for each customer.  
+  
+Users across multiple AWS Regions report inconsistent roast recommendations for identical inputs, slow inference in the retrieval step, and unsafe recommendations, such as brewing at excessively high temperatures. The company must improve output stability for repeated inputs, application performance, and the safety of the application's outputs. The updated solution must ensure 99.5% output consistency for identical inputs and inference latency of less than 1 second. The solution must also block unsafe or hallucinated recommendations by using validated safety controls.  
+  
+Which solution will meet these requirements?
+
+A. Deploy Amazon Bedrock with provisioned throughput to stabilize inference latency. Apply Amazon Bedrock guardrails that have semantic denial rules to block unsafe outputs. Use Amazon Bedrock Prompt Management to manage prompts by using approval workflows.
+B. Use Amazon Bedrock Agents to manage chaining. Log model inputs and outputs to Amazon CloudWatch Logs. Use logs from Amazon CloudWatch to perform A/B testing for prompt versions.
+C. Cache prompt results in Amazon ElastiCache. Use AWS Lambda functions to pre-process metadata and to trace end-to-end latency. Use AWS X-Ray to identify and remediate performance bottlenecks.
+D. Use Amazon Kendra to improve roast log retrieval accuracy. Store normalized prompt metadata within Amazon DynamoDB. Use AWS Step Functions to orchestrate multistep prompts.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock Provisioned Throughput supplies dedicated model capacity for more predictable inference performance. Amazon Bedrock Guardrails can block undesirable recommendations through denied-topic policies and can detect or filter hallucinated responses with contextual grounding checks. Amazon Bedrock Prompt Management supports versioned prompt configurations, enabling a consistent approved prompt version to be deployed across application environments.
+
+**Learn more:** [Purchase a Provisioned Throughput for an Amazon Bedrock model](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-thru-purchase.html) · [Amazon Bedrock Guardrails components](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html)

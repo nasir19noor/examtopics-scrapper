@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 61
+
+A bank is building a generative AI (GenAI)-powered AI assistant that uses Amazon Bedrock to help the bank’s website users with account inquiries and financial guidance. The bank must ensure that the AI assistant does not disclose any personally identifiable information (PII) during customer interactions.  
+  
+The AI assistant must not transmit PII in prompts to the GenAI model. It must not respond to customer requests for investment advice. The bank must gather audit logs for all customer interactions, including any images or documents transmitted during those interactions.  
+  
+Which solution meets these requirements with the **LEAST** operational effort?
+
+A. Use Amazon Macie to detect and redact PII in user inputs and in the model responses. Apply prompt engineering techniques to force the model to avoid investment advice topics. Use AWS CloudTrail to capture conversation logs.
+B. Use an AWS Lambda function and Amazon Comprehend to detect and redact PII. Use Amazon Comprehend topic modeling to prevent the AI assistant from discussing investment advice topics. Set up custom metrics in Amazon CloudWatch to capture customer conversations.
+C. Configure Amazon Bedrock guardrails to apply a sensitive information policy to detect and filter PII. Set up a topic policy to ensure that the AI assistant avoids investment advice topics. Use the Converse API to log model invocations. Enable delivery and image logging to Amazon S3.
+D. Use regex controls to match patterns for PII. Apply prompt engineering techniques to avoid returning PII or investment advice topics to customers. Enable model invocation logging, delivery logging, and image logging to Amazon S3.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock Guardrails can apply sensitive-information filters to input prompts and model responses, blocking or masking PII, and can use a denied-topics policy to block investment-advice content. Amazon Bedrock model invocation logging supports Converse API calls; when Amazon S3 delivery and image logging are enabled, images and documents passed through Converse are logged to Amazon S3. These native managed controls satisfy the safety and audit requirements without custom detection or prompt-engineering logic.
+
+**Learn more:** [How Amazon Bedrock Guardrails works](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-how.html) · [Monitor model invocation using CloudWatch Logs and Amazon S3](https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html)

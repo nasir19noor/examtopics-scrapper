@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 97
+
+A company operates a generative AI (GenAI) application that uses Amazon Bedrock to deliver real-time responses to customer queries. The company has observed intermittent API-call failures to foundation models (FMs) during periods of peak traffic.  
+  
+The company requires a solution that handles transient errors and delivers detailed observability into FM performance. The solution must prevent cascading failures during throttling events and provide distributed tracing across service boundaries to identify contributors to latency. The solution must also support correlating performance issues with specific FM characteristics.  
+  
+Which solution satisfies these requirements?
+
+A. Implement a custom retry mechanism with a fixed delay of 1 second between retries. Configure Amazon CloudWatch alarms to monitor the application's error rates and latency metrics.
+B. Configure the AWS SDK with standard retry mode and exponential backoff with jitter. Use AWS X-Ray tracing with annotations to identify and filter service components.
+C. Implement client-side caching of all FM responses. Add custom logging statements in the application code to record API call durations.
+D. Configure the AWS SDK with adaptive retry mode. Use AWS CloudTrail distributed tracing to monitor throttling events.
+
+Correct answer: B
+
+Explanation:
+AWS SDK standard retry mode retries transient and throttling errors with exponential backoff and jitter, and its retry quota limits retry traffic when failures persist, reducing the risk of cascading failures. AWS X-Ray traces requests across service boundaries, while annotations provide indexed fields that can be used to filter and correlate latency or error behavior with foundation-model characteristics. CloudTrail records API activity for auditing; it is not a distributed tracing service.
+
+**Learn more:** [Retry behavior - AWS SDKs and Tools](https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html) · [Trace user requests to REST APIs using X-Ray in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-xray.html)

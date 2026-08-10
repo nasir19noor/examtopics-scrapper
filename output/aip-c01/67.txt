@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 67
+
+A company uses Amazon Bedrock to implement a Retrieval Augmented Generation (RAG)-based system that provides medical information to users. The company must compare multiple chunking strategies, assess the generation quality of two foundation models (FMs), and enforce quality thresholds for deployment.  
+  
+Which Amazon Bedrock evaluation configuration meets these requirements?
+
+A. Create a retrieve-only evaluation job that uses a supported version of Anthropic Claude Sonnet as the evaluator model. Configure metrics for context relevance and context coverage. Define deployment thresholds in a separate CI/CD pipeline.
+B. Create a retrieve-and-generate evaluation job that uses custom precision at k metrics and an LLM-as-a-judge metric that uses a scale of 1-5. Include each chunking strategy in the evaluation dataset. Use a supported version of Anthropic Claude Sonnet to evaluate responses from both FMs.
+C. Create a separate evaluation job for each chunking strategy and FM combination. Use Amazon Bedrock built-in metrics for correctness and completeness. Manually review scores before deployment approval.
+D. Set up a pipeline that uses multiple retrieve-only evaluation jobs to assess retrieval quality. Create separate evaluation jobs for both FMs that use Amazon Nova Pro as the LLM-as-a-judge model. Evaluate based on faithfulness and citation precision metrics.
+
+Correct answer: B
+
+Explanation:
+A retrieve-and-generate RAG evaluation measures both retrieval and response-generation performance. Custom precision-at-k can evaluate retrieval effectiveness across chunking strategies, and a custom LLM-as-a-judge metric with a defined 1–5 rating scale produces structured quality scores for comparing both FMs and applying deployment thresholds. Amazon Bedrock supports Anthropic Claude Sonnet models as evaluator models for custom RAG metrics. [Evaluate the performance of RAG sources using Amazon Bedrock evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-kb.html) [Use metrics to understand RAG system performance](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation-metrics.html)
+
+**Learn more:** [Evaluate the performance of RAG sources using Amazon Bedrock evaluations](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-kb.html) · [Use metrics to understand RAG system performance](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation-metrics.html)

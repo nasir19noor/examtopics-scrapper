@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 65
+
+A company offers a service that helps users worldwide discover new restaurants. The service has 50 million monthly active users. The company plans to implement a semantic search solution over a database containing 20 million restaurants and 200 million reviews. The company currently stores this data in a PostgresQL database.  
+  
+The solution must support complex natural-language queries and return results for at least 95% of queries within 500 ms. It must preserve data freshness for restaurant details that are updated hourly. The solution must also scale cost-effectively during periods of peak usage.  
+  
+Which solution meets these requirements with the **LEAST** development effort?
+
+A. Migrate the restaurant data to Amazon OpenSearch Service. Implement keyword-based search rules that use custom analyzers and relevance tuning to find restaurants based on attributes such as cuisine type, feature, and location. Create Amazon API Gateway HTTP API endpoints to transform user queries into structured search parameters.
+B. Migrate the restaurant data to Amazon OpenSearch Service. Use a foundation model (FM) in Amazon Bedrock to generate vector embeddings from restaurant descriptions, reviews, and menu items. When users submit natural language queries, convert the queries to embeddings by using the same FM. Perform k-nearest neighbors (k-NN) searches to find semantically similar results.
+C. Keep the restaurant data in PostgresQL and implement a pgvector extension. Use a foundation model (FM) in Amazon Bedrock to generate vector embeddings from restaurant data. Store the vector embeddings directly in PostgreSQL. Create an AWS Lambda function to convert natural language queries to vector representations by using the same FM. Configure the Lambda function to perform similarity searches within the database.
+D. Migrate restaurant data to an Amazon Bedrock knowledge base by using a custom ingestion pipeline. Configure the knowledge base to automatically generate embeddings from restaurant information. Use the Amazon Bedrock Retrieve API with built-in vector search capabilities to query the knowledge base directly by using natural language input.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock Knowledge Bases is a managed retrieval service that ingests source content, automatically converts it into vector embeddings, stores those embeddings in a configured vector store, and retrieves relevant content through the Retrieve API using natural-language input. A custom data source can ingest or update documents directly, supporting hourly restaurant-detail refreshes. This avoids building the separate embedding pipeline, query-embedding logic, and similarity-search implementation required by self-managed OpenSearch or pgvector designs. Amazon Bedrock documentation: https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-data.html
+
+**Learn more:** [Turning data into a knowledge base - Amazon Bedrock](https://docs.aws.amazon.com/en_us/bedrock/latest/userguide/kb-how-data.html) · [Connect your knowledge base to a custom data source - Amazon Bedrock](https://docs.aws.amazon.com/en_us/bedrock/latest/userguide/custom-data-source-connector.html)

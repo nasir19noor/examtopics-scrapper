@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 15
+
+A company is developing a canary deployment strategy for a payment-processing API. The system must support automated, gradual traffic shifting among multiple Amazon Bedrock models based on real-time inference metrics, historical traffic patterns, and service health. The solution must be able to progressively increase traffic to new model versions. It must increase traffic when metrics stay healthy and reduce traffic when performance degrades below acceptable thresholds.  
+  
+The company needs comprehensive monitoring of inference latency and error rates throughout the deployment phase. The company must also be able to stop deployments and roll back to a previous model version without manual intervention.  
+  
+Which solution meets these requirements?
+
+A. Use Amazon Bedrock with provisioned throughput to host the versions of the model. Configure an Amazon EventBridge rule to invoke an AWS Step Functions workflow when a new model version is released. Configure the workflow to shift traffic in stages, wait for a specified time period, and invoke an AWS Lambda function to check Amazon CloudWatch performance metrics. Configure the workflow to increase traffic if the metrics meet thresholds and to trigger a traffic rollback if performance metrics fall below thresholds.
+B. Use AWS Lambda functions to invoke various Amazon Bedrock model versions. Use an Amazon API Gateway HTTP API with stage variables and weighted routing to shift traffic gradually to new model versions. Use Amazon CloudWatch to monitor performance metrics. Use external logic to adjust traffic between model versions and to roll back if performance falls below thresholds.
+C. Use Amazon SageMaker AI endpoint variants to represent multiple Amazon Bedrock model versions. Use variant weights to shift traffic. Use Amazon CloudWatch to monitor performance metrics. Use SageMaker Model Monitor to trigger AWS Lambda functions to roll back a model deployment if performance drops below a specified threshold. Configure an Amazon EventBridge rule to roll back model deployments if an anomaly is detected.
+D. Use Amazon OpenSearch Service to track inference logs. Configure OpenSearch Service to invoke an AWS Systems Manager Automation runbook to update Amazon Bedrock model endpoints to shift traffic based on the inference logs.
+
+Correct answer: A
+
+Explanation:
+AWS Step Functions can orchestrate a staged deployment by waiting between traffic changes and using conditional workflow logic after a Lambda function evaluates Amazon CloudWatch metrics. This creates an automated feedback loop: healthy latency and error-rate metrics permit the next traffic increase, while a threshold breach triggers an immediate rollback to the prior model version. Amazon Bedrock Provisioned Throughput supplies dedicated capacity for the model versions being invoked. AWS documents that Step Functions rolling deployments can monitor CloudWatch alarms and automatically route all traffic back to the prior version when an alarm is triggered.
+
+**Learn more:** [Perform gradual deployment of state machine versions in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/version-rolling-deployment.html) · [Use a Provisioned Throughput with an Amazon Bedrock resource](https://docs.aws.amazon.com/bedrock/latest/userguide/prov-thru-use.html)

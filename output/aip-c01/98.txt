@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 98
+
+A financial services company is developing a generative AI application that lets business analysts query sensitive customer data using natural language. A GenAI developer needs to implement a content safety framework that performs text-to-SQL transformations while preventing harmful outputs. The solution must:  
+  
+- Detect and block SQL injection attempts embedded in natural language prompts  
+- Validate generated SQL queries against predefined schemas  
+- Create an audit trail of query transformations  
+  
+Which solution will meet these requirements?
+
+A. Use Amazon Bedrock with an integrated content filtering system. Deploy Amazon GuardDuty with custom SQL threat detection rules. Use AWS Lambda functions to check generated queries against schema definitions in AWS Systems Manager Parameter Store. Use Amazon EventBridge to store records of all transformations in Amazon S3.
+B. Implement a multi-stage validation pipeline that uses Amazon Bedrock Guardrails to filter inputs. Configure AWS Lambda functions to use with SQL parsing libraries to validate query syntax. Use the Amazon RDS Data API to verify queries against defined schemas and collect audit logs before the pipeline runs each query.
+C. Configure AWS CloudTrail to log all database API calls. Implement IAM roles that have least privilege access to the application. Use AWS WAF to filter malicious inputs to the application.
+D. Train a custom Amazon SageMaker AI model to securely transform text to SQL. Attach VPC endpoints to isolate the customer data database. Store query history in Amazon DynamoDB.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Guardrails is designed to filter and detect undesirable or malicious content in user inputs (including prompt-injection style attacks) before it reaches the foundation model, addressing the SQL-injection detection requirement at the natural-language stage. Pairing this with AWS Lambda functions that use SQL parsing libraries allows syntactic and semantic validation of the generated SQL statements, catching injection patterns or disallowed operations. The Amazon RDS Data API can be used both to verify that generated queries conform to the defined database schema (correct tables, columns, and structure) and to collect audit logs of the query transformations prior to executing each query against the database, satisfying the audit-trail requirement. This multi-stage pipeline — input filtering, syntax validation, schema verification, and audit logging — mirrors AWS's recommended architecture pattern for building secure, governed text-to-SQL generative AI applications on Bedrock. The other options misapply AWS services: GuardDuty and Parameter Store are not designed for natural-language SQL-injection detection or schema validation; CloudTrail/IAM/WAF alone lack text-to-SQL-specific validation and schema checks; and a custom SageMaker model with VPC endpoints and DynamoDB storage does not inherently provide content-safety filtering, SQL syntax/schema validation, or a structured audit trail of transformations.
+
+**Learn more:** [Detect and filter harmful content by using Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html) · [Build an AI-powered text-to-SQL chatbot using Amazon Bedrock, Amazon MemoryDB, and Amazon RDS](https://aws.amazon.com/blogs/database/build-an-ai-powered-text-to-sql-chatbot-using-amazon-bedrock-amazon-memorydb-and-amazon-rds/)

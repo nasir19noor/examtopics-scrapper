@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 45
+
+A healthcare company uses Amazon Bedrock to build a real-time patient-care AI assistant that answers queries for separate departments responsible for clinical inquiries, insurance verification, appointment scheduling, and insurance claims. The company wants to use a multi-agent architecture.  
+  
+The company must ensure that the AI assistant is scalable and can onboard new patient features. The AI assistant must be capable of handling thousands of parallel patient interactions. The company must ensure that patients receive suitable domain-specific responses to their queries.  
+  
+Which solution will meet these requirements?
+
+A. Isolate data for each agent by using separate knowledge bases. Use IAM filtering to control access to each knowledge base. Deploy a supervisor agent to perform natural language intent classification on patient inquiries. Configure the supervisor agent to route queries to specialized collaborator agents to respond to department-specific queries. Configure each specialized collaborator agent to use Retrieval Augmented Generation (RAG) with the agent's department-specific knowledge base.
+B. Create a separate supervisor agent for each department. Configure individual collaborator agents to perform natural language intent classification for each specialty domain within each department. Integrate each collaborator agent with department-specific knowledge bases only. Implement manual handoff processes between the supervisor agents.
+C. Isolate data for each department in separate knowledge bases. Use IAM filtering to control access to each knowledge base. Deploy a single general-purpose agent. Configure multiple action groups within the general-purpose agent to perform specific department functions. Implement rule-based routing logic within the general-purpose agent instructions.
+D. Implement multiple independent supervisor agents that run in parallel to respond to patient inquiries for each department. Configure multiple collaborator agents for each supervisor agent. Integrate all agents with the same knowledge base. Use external routing logic to merge responses from multiple supervisor agents.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock multi-agent collaboration supports a supervisor agent that routes requests to specialized collaborator agents. Each collaborator can be configured for a distinct department and use its own knowledge base for Retrieval Augmented Generation, which preserves domain specialization and allows capabilities to expand by adding collaborators. The supervisor-with-routing model is designed to send a request to the appropriate collaborator and reduce latency. [Use multi-agent collaboration with Amazon Bedrock Agents](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-multi-agent-collaboration.html) [Create multi-agent collaboration](https://docs.aws.amazon.com/bedrock/latest/userguide/create-multi-agent-collaboration.html)
+
+**Learn more:** [Use multi-agent collaboration with Amazon Bedrock Agents](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-multi-agent-collaboration.html) · [Create multi-agent collaboration](https://docs.aws.amazon.com/bedrock/latest/userguide/create-multi-agent-collaboration.html)

@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 12
+
+A financial services company is building a Retrieval Augmented Generation (RAG) application to help investment analysts query complex financial relationships spanning multiple investment vehicles, market sectors, and regulatory environments. The dataset includes highly interconnected entities with multi-hop relationships. Analysts must be able to review these relationships holistically to deliver accurate investment guidance. The application must provide comprehensive answers that include indirect relationships among financial entities. The application must return responses in under 3 seconds.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Use Amazon Bedrock Knowledge Bases with Graph RAG and Amazon Neptune Analytics to store the financial data. Analyze the multi-hop relationships between entities and automatically identify related information across documents.
+B. Use Amazon Bedrock Knowledge Bases and an Amazon OpenSearch Service vector store to implement custom relationship identification logic that uses AWS Lambda functions to query multiple vector embeddings in sequence.
+C. Use an Amazon OpenSearch Serverless vector database with k-nearest neighbor (k-NN) searches. Implement manual relationship mapping in an application layer that runs in an Amazon EC2 Auto Scaling group.
+D. Use Amazon DynamoDB to store financial data in a custom indexing system. Use an AWS Lambda function to query relevant records based on input questions. Use Amazon SageMaker AI to generate responses.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock Knowledge Bases GraphRAG with Amazon Neptune Analytics is a fully managed graph-based RAG solution that automatically identifies entity relationships and traverses related graph nodes. It is designed to connect information through multiple logical steps, producing comprehensive, contextually relevant responses for highly interconnected data while avoiding custom relationship-mapping and query-orchestration infrastructure.
+
+**Learn more:** [Build a knowledge base with Amazon Neptune Analytics graphs](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-build-graphs.html) · [Create an Amazon Bedrock knowledge base with Amazon Neptune Analytics graphs](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-build-graphs-build.html)

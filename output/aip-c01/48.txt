@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 48
+
+A hotel company wants to improve a legacy Java-based property management system (PMS) by adding AI capabilities. The company plans to use Amazon Bedrock Knowledge Bases to give staff room-availability information and hotel-specific details. The solution must keep separate access controls for every hotel the company manages. It must deliver room-availability information in near real time and maintain consistent performance during peak-use periods.  
+  
+Which solution will satisfy these requirements?
+
+A. Deploy a single Amazon Bedrock knowledge base that contains combined data for all hotels. Configure AWS Lambda functions to synchronize data from each hotel's PMS database through direct API connections. Implement AWS CloudTrail logging with hotel-specific filters to audit access logs for each hotel's data.
+B. Create an Amazon EventBridge rule for each hotel that is invoked by changes to the PMS database for each hotel. Configure the rule to send updates to a centralized Amazon Bedrock knowledge base in a management AWS account. Configure resource-based policies to enforce hotel-specific access controls for hotel staff.
+C. Implement one Amazon Bedrock knowledge base for each hotel in a multi-account structure. Use direct data ingestion to provide real-time room availability information. Schedule regular synchronization for less critical information.
+D. Build a centralized Amazon Bedrock agent that uses multiple knowledge bases. Implement AWS IAM Identity Center with hotel-specific permission sets to control hotel staff data access.
+
+Correct answer: C
+
+Explanation:
+A separate Amazon Bedrock knowledge base for each hotel, deployed in a multi-account structure, isolates each hotel's data and access controls while allowing capacity and performance to be managed independently. Amazon Bedrock Knowledge Bases direct ingestion supports adding, updating, and deleting documents in a single operation without waiting for a data-source sync, which supports near-real-time room-availability updates. Regular synchronization is appropriate for less time-sensitive hotel information.
+
+**Learn more:** [Ingest changes directly into a knowledge base - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-direct-ingestion.html) · [Ingest documents directly into a knowledge base - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-direct-ingestion-add.html)

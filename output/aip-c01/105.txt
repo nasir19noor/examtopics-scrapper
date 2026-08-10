@@ -1,0 +1,34 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 105
+
+A company is building a multicloud generative AI (GenAI)-powered secret resolution application that uses Amazon Bedrock and Agent Squad. The application resolves secrets from multiple sources, including key stores and hardware security modules (HSMs), using AWS Lambda functions to retrieve the secrets.  
+  
+The application has the following characteristics:  
+  
+- Uses AWS AppConfig to implement dynamic feature gating  
+- Supports secret chaining and detects secret drift  
+- Handles short-lived and expiring secrets  
+- Supports prompt flows for templated instructions  
+- Uses AWS Step Functions to orchestrate agents that resolve secrets and manage secret validation and drift detection  
+  
+During testing, the company identifies the following issues:  
+  
+- The application does not refresh expired secrets in time for agents to use them  
+- The application sends alerts for secret drift, but agents continue to use stale data  
+- Prompt flows within the application reuse outdated templates, causing cascading failures  
+  
+The company must resolve these performance issues.  
+  
+Which solution will meet this requirement?
+
+A. Use Step Functions Map states to run agent workflows in parallel. Pass updated secret metadata through Lambda function outputs. Use AWS AppConfig to version all prompt flows to gate and roll back faulty templates.
+B. Use Amazon Bedrock AgentCore only. Configure Amazon Bedrock guardrails to restrict prompt variation. Use an inline JSON schema for a single agent’s workflow definition to chain tool calls.
+C. Use a centralized Amazon EventBridge pipeline to invoke each event agent. Store intermediate prompts in Amazon DynamoDB. Resolve agent ordering by using TTL-based backoff and retries.
+D. Use Amazon EventBridge Pipes to invoke resolvers based on Amazon CloudWatch log patterns. Store response metadata in Amazon DynamoDB. Configure a TTL and versioned writes. Use Amazon Q Developer to dynamically generate fallback prompts that are routed through a Lambda coordinator.
+
+Correct answer: A
+
+Explanation:
+Step Functions Map states let agent workflows run concurrently instead of sequentially, eliminating the delay that prevents expired secrets from being refreshed in time. Passing updated secret metadata directly through Lambda function outputs (rather than relying solely on drift alerts) ensures agents actually consume the refreshed values instead of stale data. Versioning prompt flow templates in AWS AppConfig, and using AppConfig's feature-gating/rollback capability, prevents agents from reusing outdated templates and lets the company quickly roll back a faulty template before it causes cascading failures. This approach extends the already-adopted AWS-native orchestration stack (Step Functions, Lambda, AppConfig) rather than replacing it with unrelated services.
+
+**Learn more:** [Using Map state in Distributed mode for large-scale parallel workloads in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/state-map-distributed.html) · [AWS AppConfig feature flags and dynamic configuration](https://docs.aws.amazon.com/appconfig/latest/userguide/what-is-appconfig.html)

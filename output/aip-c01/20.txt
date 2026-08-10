@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 20
+
+A company is building a workflow to review customer-facing communications before it sends them. The company uses a predefined message template to generate the communications and stores the communications in an Amazon S3 bucket. The workflow must extract a specific portion of the template and send it to an Amazon Bedrock model. The workflow must save model responses back to the original S3 bucket.  
+  
+Which solution meets these requirements?
+
+A. Create a flow in Amazon Bedrock Flows. Configure S3 action nodes at the beginning and end of the flow to retrieve and store the communications and the model responses. In the middle of the flow, configure an expression to parse each communication. Configure an agent step to send the parsed input to the model for review.
+B. Create an AWS Step Functions Express workflow state machine. Use an Amazon S3 integration GetObject step to retrieve the original communications. Use an intrinsic function Pass step to parse the communications and to pass the results to an Amazon Bedrock InvokeModel step. Configure an Amazon S3 integration PutObject step to store the model responses back to the S3 bucket.
+C. Create an Amazon Bedrock agent that has an action group. Configure instructions to define how the agent should parse the communications. Configure the action group to retrieve the communications from the S3 bucket, invoke the Amazon Bedrock model, and store the model responses back to the S3 bucket.
+D. Create an Amazon Bedrock agent that has a single action group. Configure three AWS Lambda functions in the action group. Configure the functions to retrieve the communications from the S3 bucket, parse the communications and invoke the Amazon Bedrock model, and store the model responses back to the S3 bucket.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock Flows includes S3 retrieval nodes to read content from an Amazon S3 location, S3 storage nodes to write flow data to an S3 bucket, expressions to extract the relevant part of the input for a node, and agent nodes to send input to an agent for model-based processing. These capabilities form the required retrieve, extract, review, and store workflow.
+
+**Learn more:** [Node types for Amazon Bedrock Flows](https://docs.aws.amazon.com/bedrock/latest/userguide/flows-nodes.html) · [Key definitions for Amazon Bedrock Flows](https://docs.aws.amazon.com/bedrock/latest/userguide/key-definitions-flow.html)

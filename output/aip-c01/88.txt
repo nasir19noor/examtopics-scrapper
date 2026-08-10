@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 88
+
+A company uses an AI assistant application to summarize its website content and provide information to customers. The company plans to use Amazon Bedrock to provide the application with access to a foundation model (FM).  
+  
+The company must deploy the AI assistant application to both a development environment and a production environment. The solution must integrate the environments with the FM. The company wants to evaluate the effectiveness of different FMs in each environment. The solution must allow product owners to easily switch between FMs for testing in each environment.  
+  
+Which solution meets these requirements?
+
+A. Create one AWS CDK application. Create multiple pipelines in AWS CodePipeline. Configure each pipeline to have its own settings for each FM. Configure the application to invoke the Amazon Bedrock FMs by using the aws_bedrock.ProvisionedModel.fromProvisionedModelArn() method.
+B. Create a separate AWS CDK application for each environment. Configure the applications to invoke the Amazon Bedrock FMs by using the aws_bedrock.FoundationModel.fromFoundationModelId() method. Create a separate pipeline in AWS CodePipeline for each environment.
+C. Create one AWS CDK application. Configure the application to invoke the Amazon Bedrock FMs by using the aws_bedrock.FoundationModel.fromFoundationModelId() method. Create a pipeline in AWS CodePipeline pipeline that has a deployment stage for each environment that uses AWS CodeBuild deploy actions.
+D. Create one AWS CDK application for the production environment. Configure the application to invoke the Amazon Bedrock FMs by using the aws_bedrock.ProvisionedModel.fromProvisionedModelArn() method. Create a pipeline in AWS CodePipeline. Configure the pipeline to deploy to the production environment by using an AWS CodeBuild deploy action. For the development environment, manually recreate the resources by referring to the production application code.
+
+Correct answer: C
+
+Explanation:
+`FoundationModel.fromFoundationModelId()` imports a Bedrock base foundation model by its model identifier, making it suitable for selecting different FMs. A single CDK application deployed through a CodePipeline pipeline with separate deployment stages supports independent development and production deployments and environment-specific model configuration. A provisioned-model ARN is appropriate only for an existing provisioned-throughput model, not ordinary switching among base FMs.
+
+**Learn more:** [AWS CDK FoundationModel class](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_bedrock.FoundationModel.html) · [AWS CDK Pipelines guide](https://docs.aws.amazon.com/cdk/v2/guide/cdk-pipeline.html)

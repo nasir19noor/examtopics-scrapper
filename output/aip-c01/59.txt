@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 59
+
+A healthcare company uses Amazon Bedrock to develop a system that assists practitioners with clinical decision-making. The system must give physicians treatment recommendations based only on approved medical documentation and must cite the specific sources. The system must not hallucinate or generate factually incorrect information.  
+  
+Which solution will satisfy these requirements with the **LEAST** operational overhead?
+
+A. Integrate Amazon Bedrock with Amazon Kendra to retrieve approved documents. Implement custom post-processing to compare generated responses against source documents and to include citations.
+B. Deploy an Amazon Bedrock knowledge base and connect it to approved clinical source documents. Use the Amazon Bedrock RetrieveAndGenerate API to return citations from the knowledge base.
+C. Use Amazon Bedrock and Amazon Comprehend Medical to extract medical entities. Implement verification logic against a medical terminology database.
+D. Use an Amazon Bedrock knowledge base with Retrieve API calls and InvokeModel API calls to retrieve approved clinical source documents. Implement verification logic to compare against retrieved sources and to cite sources.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Knowledge Bases provides managed retrieval-augmented generation over approved documents. The `RetrieveAndGenerate` API retrieves relevant knowledge-base content, generates a response grounded in that content, and returns citations to the specific source chunks. This removes the need to build separate retrieval, response-verification, and citation-generation logic while improving accuracy through approved-source grounding.
+
+**Learn more:** [Retrieving information from data sources using Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-retrieval.html) · [Query a knowledge base and generate responses based off the retrieved data](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-test-retrieve-generate.html)

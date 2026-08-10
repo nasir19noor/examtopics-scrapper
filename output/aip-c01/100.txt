@@ -1,0 +1,21 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 100
+
+A healthcare company wants to build a proof-of-concept application that uses Amazon Bedrock to automatically summarize medical documents. The company has 3 weeks to validate the accuracy of the application. The solution must:  
+  
+- Comply with the company's data privacy policies  
+- Include metrics to evaluate summarization accuracy and processing time  
+  
+Which solution will meet these requirements?
+
+A. Create a dataset that includes 50-100 anonymized patient records. Implement Retrieval Augmented Generation (RAG) with a secure knowledge base. Use a judge model to evaluate accuracy metrics across three foundation models (FMs).
+B. Fine-tune a single foundation model (FM) on patient records. Deploy the FM on Amazon Bedrock. Use Amazon Bedrock AgentCore to configure the FM as an agent. Conduct user testing on 500 company staff members.
+C. Select the most powerful available AWS foundation model (FM). Create a chat interface by using Converse APIs. Test the application on 50-100 actual patient records by using only qualitative feedback from stakeholders. Use a custom web interface to gather real-world performance metrics.
+D. Use the Strands SDK to deploy multiple agents that connect to multiple knowledge bases that contain specialized medical documents. Compare the responses of the agents. Evaluate the integration of the agents with the company’s existing systems.
+
+Correct answer: A
+
+Explanation:
+Using a small set of anonymized patient records satisfies healthcare data privacy requirements by removing identifiable information before it is processed by the model. Implementing RAG with a secure knowledge base ensures the summaries are grounded in approved, access-controlled source documents rather than relying solely on the model's training data. Using a judge model (as supported by Amazon Bedrock model evaluation) to compare accuracy across multiple foundation models provides objective, quantifiable accuracy metrics, and this evaluation-driven approach can be stood up quickly without model training or fine-tuning, making it achievable within the 3-week POC timeline — unlike fine-tuning (too time-consuming) or approaches that use non-anonymized records or purely qualitative feedback, which fail the privacy and quantitative-metrics requirements respectively.
+
+**Learn more:** [Evaluate the performance of Amazon Bedrock resources - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html) · [Use RAG to improve responses in model evaluation - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-evaluation.html)

@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 25
+
+A media company is releasing a platform that enables thousands of users each hour to upload images and text content. The platform uses Amazon Bedrock to process uploaded content and generate creative compositions.  
+  
+The company requires a solution that ensures the platform neither processes nor produces inappropriate content. The platform must not reveal personally identifiable information (PII) in the compositions. The solution must integrate with the company’s existing Amazon S3 storage workflow.  
+  
+Which solution meets these requirements with the **LEAST** infrastructure-management overhead?
+
+A. Enable the Enhanced Monitoring tool. Use an Amazon CloudWatch alarm to filter traffic to the platform. Use Amazon Comprehend PII detection to pre-process the data. Create a CloudWatch alarm to monitor for Amazon Comprehend PII detection events. Create an AWS Step Functions workflow that includes an Amazon Rekognition image moderation step.
+B. Use an Amazon API Gateway HTTP API with request validation templates to screen content before storing the uploaded content in Amazon S3. Use Amazon SageMaker AI to build custom content moderation models that process content before sending the processed content to Amazon Bedrock.
+C. Create an Amazon Cognito user pool that uses pre-authentication AWS Lambda functions to run content moderation checks. Use Amazon Textract to filter text content and Amazon Rekognition to filter image content before allowing users to upload content to the platform.
+D. Create an AWS Step Functions workflow that uses built-in Amazon Bedrock guardrails to filter content. Use Amazon Comprehend PII detection to pre-process the content. Use Amazon Rekognition image moderation.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock Guardrails supplies managed content filters for harmful text and images and sensitive-information controls for PII in model inputs and responses. Amazon Comprehend PII detection can preprocess uploaded text, and Amazon Rekognition moderation can evaluate uploaded images. AWS Step Functions can orchestrate these managed checks as part of an Amazon S3-based workflow without building and operating custom moderation models or separate request-screening infrastructure.
+
+**Learn more:** [Create your guardrail - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-components.html) · [Remove PII from conversations by using sensitive information filters - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html)

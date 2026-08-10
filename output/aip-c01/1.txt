@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 1
+
+A company plans to establish an annual customer rewards program. The rewards customers earn differ according to various parameters, including the categories of items they order and the customers' purchase history.  
+  
+The company requires a generative AI (GenAI) solution that uses three Amazon Bedrock agents to assist customers while they browse an online catalog. The agents must use knowledge bases and action groups to manage the search, recommendation, and order modules. The modules must run sequentially. An AWS Lambda function must calculate estimated rewards for every recommended item. The solution must offer graceful degradation during service disruptions.  
+  
+Which solution meets these requirements with the **MOST** operational efficiency?
+
+A. Define an Amazon API Gateway REST API behind each agent. Create a second Lambda function to orchestrate the calls to the agents and the rewards Lambda function. Configure the second Lambda function with a retry/fallback mechanism.
+B. Create an AWS Step Functions state machine with four tasks that run the agents and the rewards Lambda function. Set up retry and catch branches for each of the task steps.
+C. Configure each agent with a separate retry/fallback mechanism. Create a second Lambda function to orchestrate the calls to the agents and the rewards Lambda function. Define an Amazon API Gateway REST API behind the second Lambda function.
+D. Create a second Lambda function to orchestrate the calls to the agents and the rewards Lambda function. Create an AWS Step Functions state machine with one task that runs the second Lambda function. Set up retry and catch branches for the task step.
+
+Correct answer: B
+
+Explanation:
+AWS Step Functions provides managed orchestration for sequential service tasks and supports task-level `Retry` and `Catch` error handling. A state machine can invoke the three Amazon Bedrock agents in order and then invoke the rewards-calculation Lambda function. Configuring retry and catch branches for each task enables targeted recovery or fallback behavior when an individual agent or function fails, without maintaining custom Lambda orchestration and error-handling code.
+
+**Learn more:** [Handling errors in Step Functions workflows](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html) · [Orchestrating Lambda functions with Step Functions](https://docs.aws.amazon.com/lambda/latest/dg/with-step-functions.html)

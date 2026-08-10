@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 38
+
+A medical device company wants to provide an AI assistant with reports of medical procedures that used the company’s devices. To safeguard patient privacy, the AI assistant must reveal patient personally identifiable information (PII) only to surgeons. For engineers, the AI assistant must redact PII. The AI assistant must reference only medical reports that are less than 3 years old.  
+  
+The company stores reports in an Amazon S3 bucket immediately after each report is published. The company has already configured an Amazon Bedrock knowledge base. The AI assistant uses Amazon Cognito for user authentication.  
+  
+Which solution meets these requirements?
+
+A. Enable Amazon Macie PII detection on the S3 bucket. Use an S3 trigger to invoke an AWS Lambda function that redacts PII from the reports. Configure the Lambda function to delete outdated documents from the bucket and to invoke knowledge base syncing.
+B. Invoke an AWS Lambda function to sync the S3 bucket and the knowledge base when a new report is uploaded to the bucket. Use a second Lambda function to invoke Amazon Comprehend to detect and redact PII if a user is part of the engineer Cognito user group. Set up an S3 Lifecycle configuration to remove reports that are older than 3 years from the bucket.
+C. Set up an S3 Lifecycle configuration on the bucket to remove reports that are older than 3 years. Schedule an AWS Lambda function to run daily syncs between the bucket and the knowledge base. When users interact with the AI assistant, call the ApplyGuardrail configuration that matches the user's Cognito user group to redact PII from the agent’s responses if appropriate.
+D. Create a second knowledge base. Set up an S3 Lifecycle configuration on the bucket to remove reports that are older than 3 years. Invoke an AWS Lambda function that syncs the bucket with the original knowledge base when a new report is uploaded to the bucket. Use Amazon Comprehend to detect and redact PII before syncing the bucket with the second knowledge base. When a user interacts with the AI assistant, redirect the model to the appropriate knowledge base depending on the user’s Cognito user group.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock Guardrails sensitive-information filters can anonymize PII in model responses. Applying the guardrail appropriate to the authenticated Cognito group allows PII to remain available to surgeons while masking it for engineers. An S3 Lifecycle expiration rule removes reports older than three years, and scheduled daily synchronization updates the Amazon Bedrock knowledge base for S3 additions, changes, and deletions, so expired reports are no longer eligible for retrieval.
+
+**Learn more:** [Remove PII from conversations by using sensitive information filters - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html) · [Connect to Amazon S3 for your knowledge base - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/s3-data-source-connector.html)

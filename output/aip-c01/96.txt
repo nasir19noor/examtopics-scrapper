@@ -1,0 +1,21 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 96
+
+A company uses Amazon Bedrock to build an application that helps researchers apply for grants. The application is based on an Amazon Nova Pro foundation model (FM). It has four required inputs and must return responses in a consistent text format. The company wants to receive a notification in Amazon Bedrock when a response contains bullying language, but does not want every flagged response to be blocked.  
+  
+The company creates an Amazon Bedrock flow that accepts an input prompt and sends it to the Amazon Nova Pro FM. The Amazon Nova Pro FM returns a response.  
+  
+Which additional steps must the company take to meet these requirements? (Choose two.)
+
+A. Use Amazon Bedrock Prompt Management to specify the required inputs as variables. Select an Amazon Nova Pro FM. Specify the output format for the response. Add the prompt to the prompts node of the flow.
+B. Create an Amazon Bedrock guardrail that applies the hate content filter. Set the filter response to block. Add the guardrail to the prompts node of the flow.
+C. Create an Amazon Bedrock prompt router. Specify an Amazon Nova Pro FM. Add the required inputs as variables to the input node of the flow. Add the prompt router to the prompts node. Add the output format to the output node.
+D. Create an Amazon Bedrock guardrail that applies the insults content filter. Set the filter response to detect. Add the guardrail to the prompts node of the flow.
+E. Create an Amazon Bedrock application inference profile that specifies an Amazon Nova Pro FM. Specify the output format for the response in the description. Include a tag for each of the input variables. Add the profile to the prompts node of the flow.
+
+Correct answer: AD
+
+Explanation:
+Amazon Bedrock Prompt Management supports prompt variables, model selection, and instructions that specify an expected response format; a flow prompt node can use such a managed prompt. Amazon Bedrock Guardrails defines bullying as the Insults content category. Its Detect action returns detection information without blocking the model response, whereas Block replaces the content with blocking messaging.
+
+**Learn more:** [Create a prompt using Prompt management - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management-create.html) · [Node types for your flow - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/flows-nodes.html)

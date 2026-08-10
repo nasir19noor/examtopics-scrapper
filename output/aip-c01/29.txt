@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 29
+
+A healthcare company uses Amazon Bedrock to deploy an application that produces summaries of clinical documents. The application has inconsistent response quality, including occasional factual hallucinations. Monthly costs are 40% higher than the company projected. A GenAI developer must implement a near-real-time monitoring solution that detects hallucinations, identifies abnormal token consumption, and provides early warnings for cost anomalies. The solution must involve minimal custom development and maintenance overhead.  
+  
+Which solution meets these requirements?
+
+A. Configure Amazon CloudWatch alarms to monitor InputTokenCount and OutputTokenCount metrics to detect anomalies. Store model invocation logs in an Amazon S3 bucket. Use AWS Glue and Amazon Athena to identify potential hallucinations.
+B. Run Amazon Bedrock evaluation jobs that use LLM-based judgments to detect hallucinations. Configure Amazon CloudWatch to track token usage. Create an AWS Lambda function to process CloudWatch metrics. Configure the Lambda function to send usage pattern notifications.
+C. Configure Amazon Bedrock to store model invocation logs in an Amazon S3 bucket. Enable text output logging. Configure Amazon Bedrock guardrails to run contextual grounding checks to detect hallucinations. Create Amazon CloudWatch anomaly detection alarms for token usage metrics.
+D. Use AWS CloudTrail to log all Amazon Bedrock API calls. Create a custom dashboard in Amazon QuickSight to visualize token usage patterns. Use Amazon SageMaker Model Monitor to detect quality drift in generated summaries.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock Guardrails contextual grounding checks detect and filter hallucinations by assessing whether generated content is factually grounded in a supplied reference source, including for summarization. Amazon Bedrock provides `InputTokenCount` and `OutputTokenCount` CloudWatch metrics, and CloudWatch anomaly-detection alarms identify departures from expected metric patterns, enabling early warning of unusual token-driven costs. Bedrock model invocation logging can retain text input and output data in Amazon S3.
+
+**Learn more:** [Use contextual grounding check to filter hallucinations in responses](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html) · [Monitor bedrock-runtime inference using CloudWatch metrics](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-runtime-metrics.html)

@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 95
+
+A healthcare company is building an application to process medical queries. The application must answer complex queries with high accuracy while reducing semantic dilution. It must reference domain-specific terminology in medical documents to reduce ambiguity in medical terms. The application must also respond to 1,000 queries per minute with response times of less than 2 seconds.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Use Amazon API Gateway to route incoming queries to an Amazon Bedrock agent. Configure the agent to use an Anthropic Claude model to decompose queries and an Amazon Titan model to expand queries. Create an Amazon Bedrock knowledge base to store the reference medical documents.
+B. Configure an Amazon Bedrock knowledge base to store the reference medical documents. Enable query decomposition in the knowledge base. Configure an Amazon Bedrock flow that uses a foundation model (FM) and the knowledge base to support the application.
+C. Use Amazon SageMaker Al to host custom ML models for both query decomposition and query expansion. Configure Amazon Bedrock knowledge bases to store the reference medical documents. Encrypt the documents in the knowledge base.
+D. Create an Amazon Bedrock agent to orchestrate multiple AWS Lambda functions to decompose queries. Create an Amazon Bedrock knowledge base to store the reference medical documents. Use the agent's built-in knowledge base capabilities. Add deep research and reasoning capabilities to the agent to reduce ambiguity in the medical terminology.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Knowledge Bases provide managed retrieval-augmented generation that grounds responses in the medical-document corpus, allowing medical terminology from those documents to inform the response. Knowledge-base query decomposition splits complex, multifaceted queries into smaller subqueries to improve retrieval accuracy. Amazon Bedrock Flows natively connects a foundation model and a knowledge base in a managed workflow, avoiding custom SageMaker model hosting, Lambda orchestration, and separate agent-driven query-transformation components. Capacity must be supported by the selected model’s applicable Bedrock quota in the deployment Region.
+
+**Learn more:** [Configure and customize queries and response generation - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-test-config.html) · [Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)

@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 70
+
+A GenAI developer is assessing Amazon Bedrock foundation models (FMs) to improve a Europe-based company’s internal business application. The company has a multi-account landing zone in AWS Control Tower. The company uses SCPs to permit its accounts to use only the eu-north-1 Region and the eu-west-1 Region. All customer data must stay in private networks within the approved AWS Regions.  
+  
+The GenAI developer chooses an FM after analysis and testing and hosts the model in the eu-central-1 Region and the eu-west-3 Region. The GenAI developer must enable the company’s employees to access the FM. The GenAI developer must ensure that FM requests are private and remain in the same Regions as the FM.  
+  
+Which solution meets these requirements?
+
+A. Deploy an AWS Lambda function that is exposed by a private Amazon API Gateway REST API to a VPC in eu-north-1. Create a VPC endpoint for the selected FM in eu-central-1 and eu-west-3. Extend existing SCPs to allow employees to use the FM. Integrate the REST API with the business application.
+B. Deploy the FM on Amazon EC2 instances in eu-north-1. Deploy a private Amazon API Gateway REST API in front of the EC2 instances. Configure an Amazon Bedrock VPC endpoint. Integrate the REST API with the business application.
+C. Configure the FM to use cross-Region inference through an eu.amazon.* endpoint to ensure that all calls remain within Europe. Configure an Amazon Bedrock VPC endpoint. Extend existing SCPs to allow employees to use the FM through inference profiles in Europe-based Regions where the FM is available. Use an inference profile to integrate Amazon Bedrock with the business application.
+D. Deploy the FM in Amazon SageMaker AI in eu-north-1. Configure a SageMaker AI VPC endpoint. Extend existing SCPs to allow employees to use the SageMaker AI endpoint. Integrate the FM in SageMaker AI with the business application.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock geographic cross-Region inference uses an EU inference profile to route inference only among the profile’s EU destination Regions. Every destination Region in the profile must be permitted by the organization’s SCPs, so the SCPs must be extended for the required Bedrock actions in those Regions. An Amazon Bedrock interface VPC endpoint, powered by AWS PrivateLink, lets the application invoke Bedrock privately without internet access. [Increase throughput with cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) [Use interface VPC endpoints (AWS PrivateLink) to create a private connection between your VPC and Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/vpc-interface-endpoints.html)
+
+**Learn more:** [Increase throughput with cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) · [Supported Regions and models for inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html)

@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 11
+
+A large ecommerce company has deployed a foundation model (FM) to create product descriptions. The company’s engineering team uses Amazon CloudWatch to monitor technical metrics such as token usage, latency, and error rates. Its marketing team tracks business metrics, including conversion rates and revenue impact, in separate systems.  
+  
+The company requires a unified observability solution that correlates technical performance with business outcomes. The solution must automatically alert stakeholders when operational metrics show degradation. It must also deliver comprehensive visibility across both technical and business metrics.  
+  
+Which solution meets these requirements?
+
+A. Create CloudWatch dashboards that include technical metrics and imported business metrics. Configure CloudWatch composite alarms that combine technical data and business data. Use Amazon SNS to set up notifications to stakeholders.
+B. Use Amazon Managed Grafana to visualize technical metrics from CloudWatch with business metrics from external sources. Configure Amazon Managed Grafana alerts to invoke AWS Lambda functions. Configure the Lambda functions to remediate issues automatically when metrics exceed predefined thresholds.
+C. Stream CloudWatch metrics to Amazon S3 by using CloudWatch metric streams. Create Amazon QuickSight dashboards to visualize the combined technical metrics and business metrics. Set up Amazon EventBridge rules to send notifications to stakeholders when metrics exceed predefined thresholds.
+D. Configure CloudWatch custom dashboards that integrate operational metrics with imported business metrics. Set up CloudWatch composite alarms with anomaly detection. Use Amazon SNS to create alarm actions to notify stakeholders when correlated metrics indicate performance issues.
+
+Correct answer: A
+
+Explanation:
+Business metrics can be imported or published as CloudWatch custom metrics and shown with operational metrics in CloudWatch dashboards. Metric alarms can monitor each metric, and CloudWatch composite alarms use Boolean logic over underlying alarm states to represent correlated technical and business conditions. A composite alarm can send state-change notifications to stakeholders through Amazon SNS.
+
+**Learn more:** [Publish custom metrics (PutMetricData / EMF)](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html) · [Combining alarms](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Create_Composite_Alarm.html)

@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 42
+
+A company has deployed an AI assistant as a React application that uses AWS Amplify, an AWS AppSync GraphQL API, and Amazon Bedrock Knowledge Bases. The application uses the GraphQL API to invoke the Amazon Bedrock RetrieveAndGenerate API for knowledge base interactions. The company configures an AWS Lambda resolver with the `RequestResponse` invocation type.  
+  
+Application users report frequent timeouts and slow response times. Users report these issues more often for complex questions that require longer processing.  
+  
+The company needs a solution to resolve these performance issues and improve the user experience.  
+  
+Which solution will meet these requirements?
+
+A. Use AWS Amplify AI Kit to implement streaming responses from the GraphQL API and to optimize client-side rendering.
+B. Increase the timeout value of the Lambda resolver. Implement retry logic with exponential backoff.
+C. Update the application to send an API request to an Amazon SQS queue. Update the AWS AppSync resolver to poll and process the queue.
+D. Change the RetrieveAndGenerate API to the InvokeModelWithResponseStream API. Update the application to use an Amazon API Gateway WebSocket API to support the streaming response.
+
+Correct answer: A
+
+Explanation:
+AWS Amplify AI Kit supports streamed LLM responses for React applications. Its Lambda integration calls Amazon Bedrock by using a streaming request and sends response chunks to the browser through an AWS AppSync WebSocket connection, where the client can render them incrementally. This avoids waiting for the entire long-running generation required by a synchronous `RequestResponse` resolver.
+
+**Learn more:** [AWS Amplify AI Kit streaming](https://docs.amplify.aws/react/ai/concepts/streaming/) · [AWS AppSync Lambda resolver invocation types](https://docs.aws.amazon.com/appsync/latest/devguide/resolver-reference-lambda-js.html)

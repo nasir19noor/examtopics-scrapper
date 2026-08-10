@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 103
+
+A social messaging company is building an AI chat assistant using Amazon Bedrock. The company must ensure that every inference complies with an approved safety policy. Specifically, the company wants to:  
+  
+- Block harmful prompts before model invocations  
+- Filter streamed model outputs in real time  
+- Route flagged cases for human review  
+  
+Which solution will meet these requirements?
+
+A. Configure an AWS Step Functions workflow. Configure a step to use an AWS Lambda function to pre-check inputs by using the ApplyGuardrail API. Use an InvokeModelWithResponseStream API step that has the guardrail attached. Configure a second Lambda function step to post-check outputs by using the ApplyGuardrail API. Route flagged items to an Amazon SQS queue. Enforce guardrail use by using a bedrock:GuardrailIdentifier IAM condition.
+B. Configure an AWS Step Functions workflow. Configure a step to call the ApplyGuardrail API before inference. Then call the InvokeModel API without streaming and use the guardrail. Store the results in Amazon S3. Use the client UI to hide problematic tokens.
+C. Configure an AWS Step Functions workflow. Configure a step to use the InvokeModelWithResponseStream API that has the guardrail attached for in-stream filtering. Run an AWS Lambda post-check step by using the ApplyGuardrail API to check flagged cases. Do not perform pre-inference.
+D. Configure an AWS Step Functions workflow that includes steps to perform pre-checks and post-checks by using the ApplyGuardrail API and the InvokeModelWithResponseStream API. Attach the guardrail to the check steps. Use process controls such as code reviews instead of IAM enforcement to ensure that guardrails are always applied.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock's ApplyGuardrail API can independently evaluate INPUT text (prompts) before a model is invoked and OUTPUT text (model responses) after generation, without requiring a model call — making it suitable for both a pre-inference block of harmful prompts and a post-inference check of generated content. Attaching a guardrail directly to the InvokeModelWithResponseStream API enables real-time filtering of streamed tokens as they are generated. Routing guardrail-flagged content to a queue such as Amazon SQS enables asynchronous human review of borderline or blocked cases. To guarantee that every inference request actually uses the approved guardrail (rather than relying on developers to remember to specify it), Bedrock supports the bedrock:GuardrailIdentifier IAM condition key, which can be enforced in an IAM policy attached to the InvokeModel/InvokeModelWithResponseStream/Converse/ConverseStream actions; any request lacking or mismatching the required guardrail identifier is denied. This combination — Step Functions orchestrating Lambda pre-check (ApplyGuardrail), streaming inference with an attached guardrail, Lambda post-check (ApplyGuardrail), SQS routing for review, and IAM-based enforcement — comprehensively satisfies all stated requirements.
+
+**Learn more:** [Enforce the use of specific guardrails in model inference requests - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-permissions-id.html) · [Use the ApplyGuardrail API in your application - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-independent-api.html)

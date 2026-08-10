@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 75
+
+A company uses Amazon Bedrock and Anthropic Claude 3 Haiku to build an AI assistant. The AI assistant typically handles 10,000 requests per hour, but during peak-use periods it experiences surges of up to 30,000 requests per hour. The AI assistant must respond within 2 seconds while operating across multiple AWS Regions.  
+  
+The company finds that, during peak-use periods, the AI assistant has throughput bottlenecks that result in increased latency and occasional request timeouts. The company must address these performance issues.  
+  
+Which solution will meet this requirement?
+
+A. Purchase provisioned throughput and sufficient model units (MUs) in a single Region. Configure the application to retry failed requests with exponential backoff.
+B. Implement token batching to reduce API overhead. Use cross-Region inference profiles to automatically distribute traffic across available Regions.
+C. Set up auto scaling AWS Lambda functions in each Region. Implement client-side round-robin request distribution. Purchase one model unit (MU) of provisioned throughput as a backup.
+D. Implement batch inference for all requests by using Amazon S3 buckets across multiple Regions. Use Amazon SQS to set up an asynchronous retrieval process.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock cross-Region inference profiles automatically route model-invocation requests to available destination Regions, distributing traffic to increase throughput and manage unplanned traffic bursts. Token batching reduces API overhead, while keeping the workload on the synchronous inference path needed for a 2-second response target. [Increase throughput with cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html)
+
+**Learn more:** [Increase throughput with cross-Region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) · [Set up a model invocation resource using inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles.html)

@@ -1,0 +1,24 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 104
+
+A company built a multimodal content-analysis application on Amazon Bedrock. The application routes different content types (text, images, and code) to specialized foundation models (FMs).  
+  
+The application must handle multiple types of routing decisions:  
+  
+- Simple routing based on file extension must have minimal latency.  
+- Complex routing based on content semantics requires analysis before FM selection.  
+- The application must provide detailed history and support fallback options when primary FMs fail.  
+  
+Which solution will meet these requirements?
+
+A. Configure AWS Lambda functions that call Amazon Bedrock FMs for all routing logic. Use conditional statements to determine the appropriate FM based on content type and semantics.
+B. Create a hybrid solution. Handle simple routing based on file extensions in application code. Handle complex content-based routing by using an AWS Step Functions state machine with JSONata for content analysis and the InvokeModel API for specialized FMs.
+C. Deploy separate AWS Step Functions workflows for each content type with routing logic in AWS Lambda functions. Use Amazon EventBridge to coordinate between workflows when fallback to alternate FMs is required.
+D. Use Amazon SQS with different SQS queues for each content type. Configure AWS Lambda consumers that analyze content and invoke appropriate FMs based on message attributes by using Amazon Bedrock with an AWS SDK.
+
+Correct answer: B
+
+Explanation:
+A hybrid approach best fits the differing needs of the two routing scenarios. Handling extension-based routing directly in application code avoids the overhead of an orchestration service call, keeping latency minimal for the simple case. For complex, semantics-driven routing, an AWS Step Functions state machine can use JSONata expressions to analyze and transform the content/state data before selecting a model, then invoke the chosen specialized FM through the Bedrock optimized service integration (the InvokeModel API action, arn:aws:states:::bedrock:invokeModel). Step Functions state machines inherently log every state transition, giving detailed execution history, and support built-in Retry and Catch error-handling constructs, which provide automatic fallback to alternate FMs when a primary model invocation fails. This combination — lightweight code-based routing for the simple case and a Step Functions/JSONata/InvokeModel workflow for the complex case — satisfies all the stated latency, analysis, auditability, and fallback requirements.
+
+**Learn more:** [Invoke and customize Amazon Bedrock models with Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/connect-bedrock.html) · [AWS Step Functions Developer Guide - Error handling in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/concepts-error-handling.html)

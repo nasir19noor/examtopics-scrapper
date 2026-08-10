@@ -1,0 +1,29 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 110
+
+An ecommerce company uses an Anthropic Claude Sonnet model in Amazon Bedrock to generate product recommendations. An AWS Lambda function retrieves:  
+  
+- Customer purchase data from Amazon DynamoDB  
+- Product reviews from Amazon S3  
+- Customer profile information from Amazon RDS  
+  
+The function then sends this data directly to the Amazon Bedrock model through API calls. Recently, customers with extensive purchase histories have started receiving incomplete recommendations.  
+  
+Amazon CloudWatch logs for the Lambda function show execution timeouts, and CloudWatch logs for the Amazon Bedrock API calls show intermittent errors. Upon reviewing the logs, the company finds that some requests fail with context length exceeded errors, while other requests complete but appear to ignore portions of the input data.  
+  
+The company wants the recommendation system to take into account all customer data when generating recommendations, and it wants to use Amazon Bedrock Knowledge Bases to improve how the data is organized and retrieved.  
+  
+Which combination of solutions will meet these requirements? (Choose two.)
+
+A. Implement a chunking strategy that divides the customer data into smaller segments. Configure the model to process each segment separately. Invoke the model a final time to synthesize the individual responses into comprehensive recommendations.
+B. Modify the prompt structure to place the most critical information at the beginning and end of the context window. Implement token-counting logic to truncate less important data when the interaction approaches the model’s maximum context length.
+C. Replace Claude Sonnet with a model that has a larger context window capacity. Increase the Lambda function timeout to accommodate longer processing times for larger inputs.
+D. Configure the recommendation system to use the Converse API. Modify the additionalModelRequestFields parameter to increase the maximum token limit beyond the model’s default context window size.
+E. Implement RAG by using a knowledge base to index the customer data with vector embeddings. Retrieve only the most semantically relevant information for each recommendation request based on the current customer context.
+
+Correct answer: AE
+
+Explanation:
+Amazon Bedrock Knowledge Bases enable a Retrieval-Augmented Generation (RAG) pattern in which customer data is indexed as vector embeddings, allowing the system to retrieve only the most semantically relevant information for each recommendation request instead of forwarding the entire dataset into the model's context window. This resolves both the context length exceeded errors and the issue of the model ignoring portions of large inputs. Pairing this with a chunking strategy — splitting large customer data into smaller segments, processing each segment within the model's context limits, and then invoking the model once more to synthesize the partial outputs into a single comprehensive recommendation — ensures that no customer data, even for customers with extensive purchase histories, is dropped or truncated. Truncating data (as in option B) would violate the requirement to consider all customer data, and simply switching models or expanding token limits (options C and D) does not address the requirement to use Bedrock Knowledge Bases for better data organization and retrieval.
+
+**Learn more:** [Retrieve data and generate AI responses with knowledge bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) · [Best practices for chunking data in Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking-parsing.html)

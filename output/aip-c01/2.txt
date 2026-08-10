@@ -1,0 +1,19 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 2
+
+A company uses an AWS Organizations organization with all features enabled to manage multiple AWS accounts. Employees use Amazon Bedrock in multiple accounts. The company must prevent particular topics and proprietary information from being included in prompts submitted to Amazon Bedrock models. The company must ensure that employees can use only approved Amazon Bedrock models. The company centrally administers IAM roles for employees.  
+  
+Which combination of solutions will satisfy these requirements? (Choose two.)
+
+A. Create an IAM permissions boundary for each employee's IAM role. Configure the permissions boundary to require an approved Amazon Bedrock guardrail identifier to invoke Amazon Bedrock models. Create an SCP that allows employees to use only approved models.
+B. Create an SCP that allows employees to use only approved models. Configure the SCP to require employees to specify a guardrail identifier in calls to invoke an approved model.
+C. Create an SCP that prevents an employee from invoking a model if a centrally deployed guardrail identifier is not specified in a call to the model. Create a permissions boundary on each employee's IAM role that allows each employee to invoke only approved models.
+D. Use AWS CloudFormation to create a custom Amazon Bedrock guardrail that has a block filtering policy. Use stack sets to deploy the guardrail to each account in the organization.
+E. Use AWS CloudFormation to create a custom Amazon Bedrock guardrail that has a mask filtering policy. Use stack sets to deploy the guardrail to each account in the organization.
+
+Correct answer: CD
+
+Explanation:
+Amazon Bedrock Guardrails can block denied topics and sensitive information in model input prompts. A block filtering policy prevents the content from being processed, whereas a mask policy redacts detected values. Deploying the guardrail configuration through AWS CloudFormation StackSets provides consistent central deployment to member accounts. An SCP can explicitly deny model invocations that do not include the required guardrail identifier, while permissions boundaries on centrally managed employee roles restrict invocation permissions to approved model resources.
+
+**Learn more:** [Enforce the use of specific guardrails in model inference requests](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-permissions-id.html) · [Remove PII from conversations by using sensitive information filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html)

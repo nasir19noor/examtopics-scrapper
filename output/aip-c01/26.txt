@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 26
+
+A university has recently digitized a collection of archival documents, academic journals, and manuscripts. The university keeps the digital files in an AWS Lake Formation data lake.  
+  
+The university employs a GenAI developer to build a solution that lets users search the digital files with text queries. The solution must return journal abstracts that are semantically similar to a user's query. Users must be able to search the digitized collection using text and metadata associated with the journal abstracts. The digitized-file metadata contains no keywords. The solution must match similar abstracts to each other based on the similarity of their text. The data lake contains fewer than 1 million files.  
+  
+Which solution will satisfy these requirements with the **LEAST** operational overhead?
+
+A. Use Amazon Titan Embeddings in Amazon Bedrock to create vector representations of the digitized files. Store embeddings in the OpenSearch Neural Plugin for Amazon OpenSearch Service.
+B. Use Amazon Comprehend to extract topics from the digitized files. Store the topics and file metadata in an Amazon Aurora PostgreSQL database. Query the abstract metadata against the data in the Aurora database.
+C. Use Amazon SageMaker AI to deploy a sentence-transformer model. Use the model to create vector representations of the digitized files. Store embeddings in an Amazon Aurora PostgreSQL database that has the pgvector extension.
+D. Use Amazon Titan Embeddings in Amazon Bedrock to create vector representations of the digitized files. Store embeddings in an Amazon Aurora PostgreSQL Serverless database that has the pgvector extension.
+
+Correct answer: D
+
+Explanation:
+Amazon Titan Embeddings produces vector representations that capture the semantic meaning of abstract text. Aurora PostgreSQL Serverless with the pgvector extension can store those embeddings, perform vector similarity searches, and retain associated metadata for filtering. Using Bedrock and Aurora Serverless avoids operating a custom SageMaker model endpoint and reduces database capacity-management overhead; pgvector is supported for vector search in Aurora PostgreSQL.
+
+**Learn more:** [Using Aurora PostgreSQL as a Knowledge Base for Amazon Bedrock](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.VectorDB.html) · [Supported models and Regions for Amazon Bedrock knowledge bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-supported.html)

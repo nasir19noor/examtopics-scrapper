@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 101
+
+A company wants to select a new foundation model (FM) for its AI assistant. A GenAI developer needs to generate evaluation reports to help a data scientist assess the quality and safety of various foundation models (FMs). The data scientist provides the GenAI developer with sample prompts for evaluation. The GenAI developer wants to use Amazon Bedrock to automate report generation and evaluation.  
+  
+Which solution will meet this requirement?
+
+A. Combine the sample prompts into a single JSON document. Create an Amazon Bedrock knowledge base with the document. Write a prompt that asks the FM to generate a response to each sample prompt. Use the RetrieveAndGenerate API to generate a report for each model.
+B. Combine the sample prompts into a single JSONL document. Store the document in an Amazon S3 bucket. Create an Amazon Bedrock evaluation job that uses a judge model. Specify the S3 location as input and a different S3 location as output. Run an evaluation job for each FM and select the FM as the generator.
+C. Combine the sample prompts into a single JSONL document. Store the document in an Amazon S3 bucket. Create an Amazon Bedrock evaluation job that uses a judge model. Specify the S3 location as input and Amazon Quick Sight as output. Run an evaluation job for each FM and select the FM as the evaluator.
+D. Combine the sample prompts into a single JSON document. Create an Amazon Bedrock knowledge base from the document. Create an Amazon Bedrock evaluation job that uses the retrieval and response generation evaluation type. Specify an Amazon S3 bucket as the output. Run an evaluation job for each FM.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock model evaluation jobs that use an LLM as a judge require the prompt dataset to be a JSONL file (one JSON object per line) stored in Amazon S3, and the job requires selecting both a generator model (the FM being tested, which responds to the prompts) and a judge/evaluator model (which scores those responses for quality and safety). The job output, including the evaluation report, is written to a specified S3 location. Running a separate evaluation job for each candidate FM, with that FM designated as the generator, produces automated comparative reports for the data scientist. QuickSight is not a supported output target for Bedrock evaluation jobs, and assigning the FM under test as the 'evaluator' (rather than generator) is incorrect, since the judge model performs the scoring, not the model being tested.
+
+**Learn more:** [Create a model evaluation job that uses an LLM as a judge - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-type-judge.html) · [Create a prompt dataset for a model evaluation job that uses a model as judge - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-prompt-datasets-judge.html)

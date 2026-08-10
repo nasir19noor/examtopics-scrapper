@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 14
+
+A company is developing a legal-research AI assistant that uses Amazon Bedrock with an Anthropic Claude foundation model (FM). The AI assistant must retrieve highly relevant case-law documents to augment the FM’s responses. It must recognize semantic relationships among legal concepts, specific legal terminology, and citations. The AI assistant must operate quickly and return precise results.  
+  
+Which solution meets these requirements?
+
+A. Configure an Amazon Bedrock knowledge base to use a default vector search configuration. Use Amazon Bedrock to expand queries to improve retrieval for legal documents based on specific terminology and citations.
+B. Use Amazon OpenSearch service to deploy a hybrid search architecture that combines vector search with keyword search. Apply an Amazon Bedrock reranker model to optimize result relevance.
+C. Enable the Amazon Kendra query suggestion feature for end users. Use Amazon Bedrock to perform post-processing of search results to identify semantic similarity in the documents and to produce precise results.
+D. Use Amazon OpenSearch Service with vector search and Amazon Bedrock Titan embeddings to index and search legal documents. Use custom AWS Lambda functions to merge results with keyword-based filters that are stored in an Amazon RDS database.
+
+Correct answer: B
+
+Explanation:
+Amazon OpenSearch Service hybrid search combines vector-based semantic retrieval with keyword search, enabling retrieval based on both conceptual legal relationships and exact legal terminology or citations. An Amazon Bedrock reranker evaluates and reorders the retrieved documents by query relevance, improving precision and allowing fewer, more relevant results to be passed to the foundation model, which can also reduce latency.
+
+**Learn more:** [Vector search in Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vector-search.html) · [Improve the relevance of query responses with a reranker model in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/rerank.html)

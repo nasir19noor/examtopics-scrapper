@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 47
+
+A finance company is building an AI assistant to help clients plan investments and manage their portfolios. The company identifies several high-risk conversation patterns, such as requests for specific stock recommendations or guaranteed returns. These high-risk conversation patterns could result in regulatory violations if the company cannot apply appropriate controls.  
+  
+The company must ensure that the AI assistant does not provide unsuitable financial advice, produce content about competitors, or make claims that are not factually supported by the company's approved financial guidance. The company wants to use Amazon Bedrock Guardrails to implement a solution.  
+  
+Which combination of steps will satisfy these requirements? (Choose three.)
+
+A. Add the high-risk conversation patterns to a denied topics guardrail.
+B. Configure a content filter guardrail to filter prompts that contain the high-risk conversation patterns.
+C. Configure a content filter guardrail to filter prompts that contain competitor names.
+D. Add the names of competitors as custom word filters. Set the input and output actions to block.
+E. Set a low grounding score threshold.
+F. Set a high grounding score threshold.
+
+Correct answer: ADF
+
+Explanation:
+Amazon Bedrock denied topics block undesirable contextual subjects in prompts and model responses, making them suitable for high-risk financial-advice patterns. Custom word filters block exact words or phrases, including competitor names, and can block both input and output. Contextual grounding checks assess whether a response is factually grounded in supplied approved source material; a high threshold requires a stronger confidence score before content is allowed.
+
+**Learn more:** [Block denied topics to help remove harmful content](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-denied-topics.html) · [Remove a specific list of words and phrases from conversations with word filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-word-filters.html)

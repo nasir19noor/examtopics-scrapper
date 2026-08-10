@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 63
+
+A wildlife conservation agency runs zoos around the world. It uses a variety of sensors, trackers, and audiovisual recorders to observe animal behavior. The agency wants to introduce a generative AI (GenAI) assistant that can ingest multimodal data to analyze animal behavior.  
+  
+The GenAI assistant must support natural-language queries, avoid speculative interpretations of behavior, and retain audit logs for ethical research audits.  
+  
+Which solution fulfills these requirements?
+
+A. Ingest raw videos into Amazon Rekognition to detect animal postures and expressions. Use Amazon Data Firehose to stream sensor and GPS data into an Amazon S3 data lake. Prompt an Amazon Bedrock foundation model (FM) by using basic templates that are stored in AWS Systems Manager Parameter Store. Use IAM policies to control access. Use AWS CloudTrail for audit logging.
+B. Use Amazon SageMaker Processing and Amazon Transcribe to pre-process multimodal data. Ingest summaries into an Amazon Bedrock Retrieval Augmented Generation (RAG) knowledge base. Apply Amazon Bedrock guardrails to restrict speculative outputs. Use AWS AppConfig to manage prompt templates. Use AWS CloudTrail to log research activity for audits.
+C. Use Amazon OpenSearch Serverless to index behavioral logs and telemetry events. Use Amazon Comprehend to extract entities. Use Amazon Bedrock to build a layer to answer questions. Embed study summaries into OpenSearch Serverless documents. Use IAM to control access. Use AWS CloudTrail to log user interactions with the AI assistant.
+D. Configure Amazon Q Business to federate data across Amazon S3, Amazon Kinesis, and Amazon SageMaker Feature Store. Configure Amazon EventBridge to invoke data ingestion jobs. Use custom AWS Lambda functions to filter large language model (LLM) outputs for ethical compliance before returning results to users.
+
+Correct answer: B
+
+Explanation:
+Amazon SageMaker Processing and Amazon Transcribe can prepare multimodal source material for retrieval. An Amazon Bedrock knowledge base implements retrieval-augmented generation (RAG), retrieving relevant proprietary evidence to answer natural-language queries. Amazon Bedrock Guardrails contextual grounding checks can filter responses that are not factually grounded in the supplied source material, preventing unsupported behavioral interpretations. AWS AppConfig can manage prompt-template configuration, and AWS CloudTrail records AWS user and API activity for auditing and compliance.
+
+**Learn more:** [Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) · [Use contextual grounding check to filter hallucinations in responses](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-contextual-grounding-check.html)

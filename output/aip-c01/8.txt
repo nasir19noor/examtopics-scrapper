@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 8
+
+A GenAI developer is developing a Retrieval Augmented Generation (RAG)-based customer-support application that uses Amazon Bedrock foundation models (FMs). The application must process 50 GB of historical customer conversations stored as JSON files in an Amazon S3 bucket. It must use the processed data as its retrieval corpus.  
+  
+The application's data-processing workflow must extract relevant data from customer-support documents, remove customer personally identifiable information (PII), and generate embeddings for vector storage. The workflow must be cost-effective and complete within 4 hours.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Use AWS Lambda and Amazon Comprehend to process files in parallel, remove PII, and call Amazon Bedrock APIs to generate vectors. Configure Lambda concurrency limits and memory settings to optimize throughput.
+B. Create an AWS Glue ETL job to run PII detection scripts on the data. Use Amazon SageMaker Processing to run the HuggingFaceProcessor to generate embeddings by using a pre-trained model. Store the embeddings in Amazon OpenSearch Service.
+C. Deploy an Amazon EMR cluster that runs Apache Spark with user-defined functions (UDFs) that call Amazon Comprehend to detect PII. Use Amazon Bedrock APIs to generate vectors. Store outputs in Amazon Aurora PostgreSQL with the pgvector extension.
+D. Implement a data processing pipeline that uses AWS Step Functions to orchestrate a workload that uses Amazon Comprehend to detect PII and Amazon Bedrock to generate embeddings. Directly integrate the workflow with Amazon OpenSearch Serverless to store vectors and provide similarity search capabilities.
+
+Correct answer: D
+
+Explanation:
+AWS Step Functions can orchestrate managed service integrations for PII detection and embedding generation without operating compute fleets or custom processing infrastructure. Amazon Comprehend detects PII, Amazon Bedrock generates embeddings, and Amazon OpenSearch Serverless stores vectors and supports similarity search. This serverless pipeline minimizes operational administration while supporting scalable parallel processing.
+
+**Learn more:** [What is Amazon OpenSearch Serverless?](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless.html) · [DetectPiiEntities API Reference](https://docs.aws.amazon.com/comprehend/latest/dg/API_DetectPiiEntities.html)

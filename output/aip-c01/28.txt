@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 28
+
+An ecommerce company runs a global product recommendation system that must switch among multiple foundation models (FMs) in Amazon Bedrock based on regulations, cost optimization, and performance requirements. The company must enforce custom controls based on proprietary business logic, including dynamic cost thresholds, AWS Region-specific compliance rules, and real-time A/B testing across multiple FMs. The system must be capable of switching between FMs without deploying new code. It must route user requests according to complex rules that include user tier, transaction value, regulatory zone, and real-time cost metrics that change hourly and need immediate propagation across thousands of concurrent requests.  
+  
+Which solution meets these requirements?
+
+A. Deploy an AWS Lambda function that uses environment variables to store routing rules and Amazon Bedrock FM IDs. Use the Lambda console to update the environment variables when business requirements change. Configure an Amazon API Gateway REST API to read request parameters to make routing decisions.
+B. Deploy Amazon API Gateway REST API request transformation templates to implement routing logic based on request attributes. Store Amazon Bedrock FM endpoints as REST API stage variables. Update the variables when the system switches between models.
+C. Configure an AWS Lambda function to fetch routing configurations from the AWS AppConfig Agent for each user request. Run business logic in the Lambda function to select the appropriate FM for each request. Expose the FM through a single Amazon API Gateway REST API endpoint.
+D. Use AWS Lambda authorizers for an Amazon API Gateway REST API to evaluate routing rules that are stored in AWS AppConfig. Return authorization contexts based on business logic. Route requests to model-specific Lambda functions for each Amazon Bedrock FM.
+
+Correct answer: C
+
+Explanation:
+AWS AppConfig lets applications use centrally managed configuration that can be updated independently of application code. A Lambda function can obtain the current routing configuration through the AWS AppConfig Agent and execute arbitrary business logic for each request to select and invoke the appropriate Amazon Bedrock foundation model. This supports dynamically changing thresholds, Region-specific rules, and A/B-routing logic behind one API endpoint. API Gateway transformations and variables are not a suitable engine for complex dynamic routing, and Lambda authorizers are designed for authorization rather than model selection.
+
+**Learn more:** [Retrieving configuration data in AWS Lambda](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-integration-lambda-extensions.html) · [What is AWS AppConfig?](https://docs.aws.amazon.com/appconfig/latest/userguide/what-is-appconfig.html)

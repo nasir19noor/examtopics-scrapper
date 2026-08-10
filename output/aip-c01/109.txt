@@ -1,0 +1,26 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 109
+
+A company is building a customer support chat assistant that relies on an Amazon Bedrock foundation model (FM). The company plans to upgrade to a newer FM version but needs a validation system that can detect semantic drift in the assistant's responses, so that performance and functionality remain consistent for end users.  
+  
+The company needs a solution that can:  
+  
+- Compare responses between the current and new FM versions across 500 test cases  
+- Detect changes in the meaning of responses  
+- Generate quantitative similarity scores  
+- Complete the validations  
+- Log detailed results for historical comparison  
+  
+Which solution will meet these requirements with the LEAST operational complexity?
+
+A. Configure Amazon CloudWatch Synthetics canaries that use custom JavaScript code to send identical prompts to both new and existing FM versions. Store responses in Amazon S3. Perform manual reviews to identify semantic differences between FM versions.
+B. Configure an AWS Step Functions workflow that sends test prompts to both new and existing FM versions. Use Amazon Bedrock embedding models to calculate cosine similarity scores. Store the results in Amazon DynamoDB with a composite key schema.
+C. Use Amazon Bedrock model evaluation jobs to compare the new FM version against the current version using the 500 test cases. Configure the evaluation to calculate semantic similarity metrics. Store results in Amazon S3 for historical comparison.
+D. Build a custom solution by using Amazon SageMaker AI to train a classifier model on historical responses to detect anomalies when the solution compares responses from the new FM version to previous patterns.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock model evaluation jobs are a built-in, fully managed feature designed exactly for this use case: comparing model outputs across a dataset of prompts, computing automatic metrics such as semantic similarity, and producing a report that can be stored in Amazon S3 for historical tracking. Because this capability is native to Bedrock, it requires no custom orchestration, embedding invocation code, database schema design, or model training, making it the lowest-operational-complexity option compared to building custom pipelines with Step Functions/DynamoDB, manual review workflows with CloudWatch Synthetics, or training a custom SageMaker anomaly-detection classifier.
+
+**Learn more:** [Evaluate the performance of Amazon Bedrock resources](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html) · [Evaluate models or RAG systems using Amazon Bedrock Evaluations – Now generally available](https://aws.amazon.com/blogs/machine-learning/evaluate-models-or-rag-systems-using-amazon-bedrock-evaluations-now-generally-available/)

@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 16
+
+A company operates a recommendation system whose applications run on Amazon EC2 instances. The applications make API calls to Amazon Bedrock foundation models (FMs) to analyze customer behavior and produce personalized product recommendations.  
+  
+The system is having intermittent problems. Some recommendations fail to align with customer preferences. The company requires an observability solution that monitors operational metrics and identifies patterns of operational performance degradation against established baselines. The solution must also produce alerts containing correlation data within 10 minutes when FM behavior departs from expected patterns.  
+  
+Which solution meets these requirements?
+
+A. Configure Amazon CloudWatch Container Insights for the application infrastructure. Set up CloudWatch alarms for latency thresholds. Add custom metrics for token counts by using the CloudWatch embedded metric format. Create CloudWatch dashboards to visualize the data.
+B. Implement AWS X-Ray to trace requests through the application components. Enable CloudWatch Logs Insights for error pattern detection. Set up AWS CloudTrail to monitor all API calls to Amazon Bedrock. Create custom dashboards in Amazon QuickSight.
+C. Enable Amazon CloudWatch Application Insights for the application resources. Create custom metrics for recommendation quality, token usage, and response latency by using the CloudWatch embedded metric format with dimensions for request types and user segments. Configure CloudWatch anomaly detection on the model metrics. Establish log pattern analysis by using CloudWatch Logs Insights.
+D. Use Amazon OpenSearch Service with the Observability plugin. Ingest model metrics and logs by using Amazon Kinesis. Create custom Piped Processing Language (PPL) queries to analyze model behavior patterns. Establish operational dashboards to visualize anomalies in real time.
+
+Correct answer: C
+
+Explanation:
+Amazon CloudWatch Application Insights monitors applications and underlying EC2 resources, continuously analyzes metrics and logs, detects anomalies based on historical patterns, and correlates metric anomalies with log errors into detected problems. Application-specific recommendation-quality, token-usage, and latency metrics can be published through the CloudWatch embedded metric format, and CloudWatch anomaly detection can identify deviations from established metric baselines. Application Insights can generate events and SNS notifications for detected problems, with dashboards that include correlated diagnostic information.
+
+**Learn more:** [What is Amazon CloudWatch Application Insights?](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/appinsights-what-is.html) · [Detect common application problems with CloudWatch Application Insights](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/cloudwatch-application-insights.html)

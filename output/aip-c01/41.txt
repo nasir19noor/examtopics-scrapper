@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 41
+
+A financial services company is rolling out a generative AI (GenAI) application that uses Amazon Bedrock to help customer service representatives deliver personalized investment advice to customers. The company must implement a comprehensive governance solution that follows responsible AI practices and satisfies regulatory requirements.  
+  
+The solution must detect and prevent hallucinations in recommendations. It must include safety controls for customer interactions, monitor model behavior drift in real time, and retain audit trails of all prompt-response pairs for regulatory review.  
+  
+The company must deploy the solution within 60 days. The solution must integrate with the company's existing compliance dashboard and respond to customers within 200 ms.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Configure Amazon Bedrock guardrails to apply custom content filters and toxicity detection. Use Amazon Bedrock Model Evaluation to detect hallucinations. Store prompt-response pairs in Amazon DynamoDB to capture audit trails and set a TTL. Integrate Amazon CloudWatch custom metrics with the existing compliance dashboard.
+B. Deploy Amazon Bedrock and use AWS PrivateLink to access the application securely. Use AWS Lambda functions to implement custom prompt validation. Store prompt-response pairs in an Amazon S3 bucket and configure S3 Lifecycle policies. Create custom Amazon CloudWatch dashboards to monitor model performance metrics.
+C. Use Amazon Bedrock Agents and Amazon Bedrock Knowledge Bases to ground responses. Use Amazon Bedrock Guardrails to enforce content safety. Use Amazon OpenSearch Service to store and index prompt-responses pairs. Integrate OpenSearch Service with Amazon QuickSight to create compliance reports and to detect model behavior drift.
+D. Use Amazon SageMaker Model Monitor to detect model behavior drift. Use AWS WAF to filter content. Store customer interactions in an encrypted Amazon RDS database. Use Amazon API Gateway to create custom HTTP APIs to integrate with the compliance dashboard.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock Knowledge Bases provides a managed retrieval-augmented generation workflow that grounds responses in enterprise data and supplies source attribution, reducing hallucination risk. Amazon Bedrock Guardrails evaluates inputs and responses against configured safety policies. Storing and indexing prompt-response records in Amazon OpenSearch Service supports searchable regulatory audit trails, and Amazon QuickSight can use the collected data for compliance reporting and behavior-trend analysis. This managed-service combination minimizes the custom code and operational infrastructure required for rapid deployment.
+
+**Learn more:** [Amazon Bedrock documentation overview](https://aws.amazon.com/documentation-overview/bedrock/) · [Detect and filter harmful content by using Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)

@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 90
+
+A financial services company is building a real-time generative AI (GenAI) assistant to assist human call center agents. The GenAI assistant must transcribe live customer speech, analyze context, and deliver incremental suggestions to call center agents while the customer is still speaking. To maintain responsiveness, the GenAI assistant must keep end-to-end latency below 1 second from speech to the initial response display. The architecture must use only managed AWS services and support bidirectional streaming so that call center agents receive real-time updates.  
+  
+Which solution meets these requirements?
+
+A. Use the Amazon Transcribe streaming API to transcribe calls. Pass the text to Amazon Comprehend to perform sentiment analysis. Feed the results to Anthropic Claude on Amazon Bedrock by using the InvokeModel API. Store results in Amazon DynamoDB. Use a WebSocket API to display the results.
+B. Use Amazon Transcribe streaming with partial results enabled to deliver fragments of transcribed text before customers finish speaking. Forward text fragments to Amazon Bedrock by using the InvokeModelWithResponseStream API. Stream responses to call center agents through an Amazon API Gateway WebSocket API.
+C. Use Amazon Transcribe batch processing to convert calls to text. Pass complete transcripts to Anthropic Claude on Amazon Bedrock by using the ConverseStream API. Return responses through an Amazon Lex chatbot interface that call center agents can access from their work computers.
+D. Use the Amazon Transcribe streaming API with an AWS Lambda function to transcribe each audio segment. Configure the Lambda function to call the Amazon Titan Embeddings model on Amazon Bedrock by using the InvokeModel API. Configure the Lambda function to publish results to an Amazon SNS topic. Subscribe the call center agents to the SNS topic.
+
+Correct answer: B
+
+Explanation:
+Amazon Transcribe streaming produces partial transcription results as audio is received, allowing processing to begin before a speech segment is complete. Amazon Bedrock `InvokeModelWithResponseStream` returns inference output as a stream, and an API Gateway WebSocket API supports bidirectional communication and backend-initiated messages to connected clients. Together, these managed services enable incremental, real-time agent suggestions without waiting for full transcripts or complete model responses.
+
+**Learn more:** [Streaming and partial results - Amazon Transcribe](https://docs.aws.amazon.com/transcribe/latest/dg/streaming-partial-results.html) · [InvokeModelWithResponseStream - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModelWithResponseStream.html)

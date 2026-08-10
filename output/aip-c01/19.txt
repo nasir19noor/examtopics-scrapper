@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 19
+
+A company is developing an API for a generative AI (GenAI) application that uses a foundation model (FM) hosted on a managed model service. The API must stream responses to lower latency, enforce token limits to control compute resource usage, and implement retry logic for model timeouts and partial responses.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Integrate an Amazon API Gateway HTTP API with an AWS Lambda function to invoke Amazon Bedrock. Use Lambda response streaming to stream responses. Enforce token limits within the Lambda function. Implement retry logic for model timeouts by using Lambda and API Gateway timeout configurations.
+B. Connect an Amazon API Gateway HTTP API directly to Amazon Bedrock. Simulate streaming by using client-side polling. Enforce token limits on the frontend. Configure retry behavior by using API Gateway integration settings.
+C. Connect an Amazon API Gateway WebSocket API to an Amazon ECS service that hosts a containerized inference server. Stream responses by using the WebSocket protocol. Enforce token limits within Amazon ECS. Handle model timeouts by using ECS task lifecycle hooks and restart policies.
+D. Integrate an Amazon API Gateway REST API with an AWS Lambda function that invokes Amazon Bedrock. Use Lambda response streaming to stream responses. Enforce token limits within the Lambda function. Implement retry logic by using Lambda and API Gateway timeout configurations.
+
+Correct answer: D
+
+Explanation:
+API Gateway response payload streaming is supported for REST APIs and Lambda proxy integrations, allowing Lambda to relay incremental Amazon Bedrock model output rather than waiting for a complete response. Lambda is also an appropriate centralized layer for enforcing token limits and handling timeout or partial-response retries, while avoiding the operational management of a containerized inference service. API Gateway HTTP APIs do not support this response-streaming capability.
+
+**Learn more:** [Stream the integration response for your proxy integrations in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/response-transfer-mode.html) · [Response streaming for Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html)

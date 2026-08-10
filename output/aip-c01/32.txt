@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 32
+
+A company is building a new AI-powered application that must integrate with several specialized tools. The tools currently operate as Model Context Protocol (MCP) servers on developers’ local machines and retain no state between invocations. The company intends to deploy each MCP server as an AWS Lambda function to support the production application.  
+  
+The solution must be reachable by both internal applications and authorized third-party partners, and it must enforce strict authentication and authorization controls.  
+  
+Which additional steps will satisfy these requirements with the **LEAST** operational overhead?
+
+A. Create a custom Lambda invocation transport by using the Lambda Invoke API. Implement IAM authentication and grant InvokeFunction permissions to authorized users and roles.
+B. Expose the Lambda functions through Amazon API Gateway REST API endpoints. Implement API keys for authentication. Configure the applications that need to access the MCP servers to use standard HTTP requests instead of the MCP protocol.
+C. Create Lambda function URLs and enable a custom Streamable HTTP transport and SigV4. Implement AWS IAM authentication. Grant InvokeFunctionUrl permissions to authorized users and roles.
+D. Expose the Lambda function through Amazon API Gateway HTTP API endpoints with the Streamable HTTP transport. Use Amazon Cognito to implement OAuth authentication. Configure API Gateway to validate OAuth tokens.
+
+Correct answer: D
+
+Explanation:
+Amazon API Gateway HTTP APIs can integrate directly with Lambda functions and support OAuth 2.0/OpenID Connect authorization. Amazon Cognito can provide OAuth tokens for internal and third-party clients, and API Gateway can validate those tokens before forwarding MCP Streamable HTTP requests to Lambda. This preserves the MCP-compatible transport while using managed token validation and scope- or claim-based access control, avoiding custom transports and direct IAM credential administration for partner clients.
+
+**Learn more:** [API Gateway HTTP APIs](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api.html) · [Accessing resources with API Gateway after sign-in](https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-accessing-resources-api-gateway-and-lambda.html)

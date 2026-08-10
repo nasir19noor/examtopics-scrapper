@@ -11,8 +11,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# App code (scraper engine + web frontend)
-COPY scraper.py webapp.py ./
+# App code (scraper engine + bulk finder + examcademy source + web frontend)
+COPY scraper.py finder.py examcademy.py webapp.py ./
 
 # Run as non-root
 RUN useradd --create-home --uid 1000 scraper && chown -R scraper:scraper /app
@@ -21,10 +21,14 @@ USER scraper
 EXPOSE 8000
 
 # Serve the Flask app with gunicorn.
-#  - gthread workers: each worker handles several requests concurrently
-#    via threads, so a single slow upstream can't starve the whole worker.
-#  - --timeout 120: generous safety net; the scraper itself enforces a
-#    tight (connect=10s, read=30s) timeout in code.
+#  - gthread + a SINGLE worker: bulk jobs are tracked in process memory, so
+#    with 2+ workers a status poll could land on the worker that doesn't
+#    know the job and 404. Threads give us the concurrency instead.
+#  - --timeout 60: the scraper enforces a 25s wall-clock budget across all
+#    retries (SCRAPER_TOTAL_TIMEOUT), so this only fires if something is
+#    badly wrong. It must stay *above* that budget, or gunicorn kills the
+#    worker before the app can render its own error page. Bulk work runs on
+#    a background thread and so is not bound by it.
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", \
-     "--worker-class", "gthread", "--workers", "2", "--threads", "4", \
-     "--timeout", "120", "--access-logfile", "-", "webapp:app"]
+     "--worker-class", "gthread", "--workers", "1", "--threads", "16", \
+     "--timeout", "60", "--access-logfile", "-", "webapp:app"]

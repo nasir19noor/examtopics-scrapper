@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 77
+
+A company is building a generative AI (GenAI) application that uses Amazon Bedrock foundation models (FMs). The application includes several custom tool integrations. Despite steady user traffic, the application has encountered unexpected surges in token consumption.  
+  
+The company requires a solution that uses Amazon Bedrock model invocation logging to monitor `InputTokenCount` and `OutputTokenCount` metrics. The solution must detect unusual tool-usage patterns and determine which specific tool integrations are responsible for abnormal token consumption. It must also automatically adjust thresholds as traffic patterns evolve.  
+  
+Which solution meets these requirements?
+
+A. Use Amazon CloudWatch Logs to capture model invocation logs. Create CloudWatch dashboards based on InputTokenCount metrics and OutputTokenCount metrics. Configure static CloudWatch alarms with fixed thresholds for each tool integration.
+B. Store model invocation logs in an Amazon S3 bucket. Use AWS Glue to catalog the logs. Analyze token consumption patterns by using scheduled Amazon Athena queries that generate reports on tool usage trends.
+C. Use Amazon CloudWatch Logs to capture model invocation logs. Create CloudWatch metric filters to extract tool-specific invocation patterns. Apply CloudWatch anomaly detection alarms that adjust baselines for each tool's metrics.
+D. Store model invocation logs in an Amazon S3 bucket. Create an AWS Lambda function to process logs in real time. Manually update Amazon CloudWatch alarm thresholds based on token consumption trends that the Lambda function identifies.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock model invocation logs can be delivered to CloudWatch Logs and contain input and output token counts. CloudWatch metric filters can create tool-specific metrics from the logged invocation data, allowing token anomalies to be attributed to individual integrations. CloudWatch anomaly detection alarms compare values with a learned expected range instead of a fixed threshold, automatically adapting as normal traffic patterns change.
+
+**Learn more:** [Monitor model invocation using CloudWatch Logs and Amazon S3](https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html) · [Using CloudWatch anomaly detection](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Anomaly_Detection.html)

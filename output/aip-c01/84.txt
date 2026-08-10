@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 84
+
+An elevator service company has developed an AI assistant application using Amazon Bedrock. The application produces elevator maintenance recommendations to support the company’s elevator technicians. The company uses Amazon Kinesis Data Streams to collect elevator sensor data.  
+  
+New regulatory rules require a human technician to review every AI-generated recommendation. The company needs to establish human-oversight workflows to review and approve AI recommendations. The company must retain all human technician review decisions for audit purposes.  
+  
+Which solution meets these requirements?
+
+A. Create a custom approval workflow by using AWS Lambda functions and Amazon SQS queues for human review of AI recommendations. Store all review decisions in Amazon DynamoDB for audit purposes.
+B. Create an AWS Step Functions workflow that has a human approval step that uses the waitForTaskToken API to pause execution. After a human technician completes a review, use an AWS Lambda function to call the SendTaskSuccess API that has the approval decision. Store all review decisions in Amazon DynamoDB.
+C. Create an AWS Glue workflow that has a human approval step. After the human technician review, integrate the application with an AWS Lambda function that calls the SendTaskSuccess API. Store all human technician review decisions in Amazon DynamoDB.
+D. Configure Amazon EventBridge rules with custom event patterns to route AI recommendations to human technicians for review. Create AWS Glue jobs to process human technician approval queues. Use Amazon ElastiCache to cache all human technician review decisions.
+
+Correct answer: B
+
+Explanation:
+AWS Step Functions can pause an execution for a human approval by using the callback task-token pattern. A technician’s approval decision can be returned through a Lambda function calling `SendTaskSuccess`, allowing the workflow to proceed only after review. Persisting each decision in Amazon DynamoDB provides durable records for auditing.
+
+**Learn more:** [Deploying a workflow that waits for human approval in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-human-approval.html) · [Discover service integration patterns in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html)

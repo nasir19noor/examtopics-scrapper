@@ -1,0 +1,24 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 94
+
+A legal research company operates a Retrieval Augmented Generation (RAG) application that uses Amazon Bedrock and Amazon OpenSearch Service. The application stores 768-dimensional vector embeddings for 15 million legal documents, including statutes, court rulings, and case summaries.  
+  
+The company’s current chunking strategy divides text into fixed-length blocks of 500 tokens. This strategy frequently separates contextually connected information, such as legal arguments, court opinions, or statute references, into different chunks. Researchers report that generated outputs often leave out critical context or reference outdated legal information.  
+  
+Recent application logs show a 40% rise in response times. The p95 latency metric is greater than 2 seconds. The company anticipates that the application’s storage requirements will increase from 90 GB to 360 GB within one year.  
+  
+The company needs a solution that improves retrieval relevance and system performance at scale.  
+  
+Which solution meets these requirements?
+
+A. Increase the embedding vector dimensionality from 768 to 4,096 without changing the existing chunking or pre-processing strategy.
+B. Replace dynamic retrieval with static, pre-written summaries that are stored in Amazon S3. Use Amazon CloudFront to serve the summaries to reduce compute demand and improve predictability.
+C. Update the chunking strategy to use semantic boundaries such as complete legal arguments, clauses, or sections rather than fixed token limits. Regenerate vector embeddings to align with the new chunk structure.
+D. Migrate from OpenSearch Service to Amazon DynamoDB. Implement keyword-based indexes to enable faster lookups for legal concepts.
+
+Correct answer: C
+
+Explanation:
+Semantic chunking keeps complete legal arguments, clauses, and sections together, so retrieved passages retain the context required for relevant, grounded legal responses. Recreating embeddings is necessary because vectors must represent the content of the newly defined chunks. This directly addresses the fragmentation that causes missing context, whereas larger vectors, static summaries, and keyword-only indexing do not.
+
+**Learn more:** [Amazon Bedrock Knowledge Bases chunking configuration](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html)

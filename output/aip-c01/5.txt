@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 5
+
+An enterprise application uses an Amazon Bedrock foundation model (FM) to process and analyze technical documents of 50 to 200 pages. Users experience inconsistent responses and truncated outputs when processing documents that exceed the FM's context-window limits.  
+  
+Which solution will solve this problem?
+
+A. Configure fixed-size chunking at 4,000 tokens for each chunk with 20% overlap. Use application-level logic to link multiple chunks sequentially until the FM's maximum context window of 200,000 tokens is reached before making inference calls.
+B. Use hierarchical chunking with parent chunks of 8,000 tokens and child chunks of 2,000 tokens. Use Amazon Bedrock Knowledge Bases built-in retrieval to automatically select relevant parent chunks based on query context. Configure overlap tokens to maintain semantic continuity.
+C. Use semantic chunking with a breakpoint percentile threshold of 95% and a buffer size of 3 sentences. Use the Amazon Bedrock RetrieveAndGenerate API call to dynamically select the most relevant chunks based on embedding similarity scores.
+D. Create a pre-processing AWS Lambda function that analyzes document token count by using the FM's tokenizer. Configure the lambda function to split documents into equal segments that fit within 80% of the context window. Configure the Lambda function to process each segment independently before aggregating the results.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Knowledge Bases hierarchical chunking indexes smaller child chunks for precise retrieval and replaces retrieved child chunks with their broader parent chunks, providing the FM with more comprehensive relevant context while keeping each inference within its context window. Bedrock semantic chunking does not support a buffer size of 3; its valid buffer-size range is 0–1.
+
+**Learn more:** [How content chunking works for knowledge bases - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-chunking.html) · [SemanticChunkingConfiguration - Amazon Bedrock API Reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent_SemanticChunkingConfiguration.html)

@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 69
+
+A financial technology company uses Amazon Bedrock to develop an assessment system for its customer-service AI assistant. The AI assistant must give financial recommendations that are factually correct, compliant with financial regulations, and appropriate in conversation. The company must combine automated quality assessments at scale with targeted human review of critical interactions.  
+  
+Which solution will satisfy these requirements?
+
+A. Configure a pipeline in which financial experts manually score all responses for accuracy, compliance, and conversational quality. Use Amazon SageMaker notebooks to analyze results to identify improvement areas.
+B. Configure Amazon Bedrock evaluations that use Anthropic Claude Sonnet as a judge model to assess response accuracy and appropriateness. Configure custom Amazon Bedrock guardrails to check responses for compliance with financial policies. Add Amazon Augmented AI (Amazon A2I) human reviews for flagged critical interactions.
+C. Create an Amazon Lex bot to manage the customer service interactions. Configure AWS Lambda functions to check responses against a static compliance database. Configure intents in the bot that call the Lambda functions to check the responses. Add an additional intent to collect end-user reviews.
+D. Configure Amazon CloudWatch to monitor response patterns from the AI assistant. Configure CloudWatch alerts for potential compliance violations. Establish a team of human evaluators to review flagged interactions.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock model evaluation jobs can use an LLM as a judge to score generated responses using selected or custom quality metrics, enabling automated evaluation at scale. Amazon Bedrock Guardrails can apply configurable policies to model inputs and outputs, including controls relevant to financial applications. Amazon A2I custom task types support application-defined conditions for routing selected interactions to human reviewers, which enables targeted review of critical cases. [Evaluate model performance using another LLM as a judge](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-judge.html), [Detect and filter harmful content by using Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html), [Use Amazon Augmented AI with Custom Task Types](https://docs.aws.amazon.com/sagemaker/latest/dg/a2i-task-types-custom.html)
+
+**Learn more:** [Evaluate model performance using another LLM as a judge](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation-judge.html) · [Detect and filter harmful content by using Amazon Bedrock Guardrails](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html)

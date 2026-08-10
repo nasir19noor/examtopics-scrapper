@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 60
+
+An ecommerce company uses Amazon Bedrock to build a customer-service AI assistant. The AI assistant must process more than 50,000 customer inquiries each day. During promotional events, the AI assistant occasionally has traffic spikes of up to 150,000 inquiries per day. Analysis indicates that 40% of inquiries follow similar patterns and share the same context.  
+  
+A GenAI developer must design a solution that ensures low latency and consistent performance for the AI assistant during traffic spikes.  
+  
+Which solution will meet these requirements in the **MOST** cost-effective way?
+
+A. Configure latency-optimized inference by setting the latency parameter to optimized in the performance configuration of the request to Amazon Bedrock. Use prompt caching to handle the repetitive inquiries.
+B. Purchase provisioned throughput and model units (MUs) that are sized to handle peak traffic loads. Use Amazon ElastiCache (Redis OSS) to cache repetitive inquiries.
+C. Use Amazon Bedrock Agents and custom knowledge bases to pre-process customer inquiries. Configure cross-Region inference to distribute traffic.
+D. Use AWS Lambda functions to pre-process requests by using a custom prompt routing mechanism. Use Amazon DynamoDB as a caching layer to handle frequently asked questions.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock latency-optimized inference provides faster responses by setting the request performance configuration latency value to `optimized`. Prompt caching reuses static, repeated prompt context, avoiding recomputation and reducing both inference latency and input-token costs. This is well suited to the 40% of inquiries that share context, while avoiding the ongoing expense of provisioned throughput sized for infrequent peak demand.
+
+**Learn more:** [Optimize model inference for latency - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/latency-optimized-inference.html) · [Prompt caching for faster model inference - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html)

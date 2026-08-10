@@ -1,0 +1,19 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 115
+
+A publishing company is building a chat assistant powered by a containerized large language model (LLM) that runs on Amazon SageMaker AI. The architecture includes an Amazon API Gateway REST API that forwards user requests to an AWS Lambda function, which in turn invokes a SageMaker AI real-time endpoint hosting the LLM.  
+  
+Users are experiencing inconsistent response times. Analytics reveal that many chats are abandoned after users wait 2 seconds for the first token to appear. The company needs a solution that keeps p95 latency under 800 ms for interactive requests to the chat assistant.  
+  
+Which combination of solutions will meet this requirement? (Choose two.)
+
+A. Enable model preload upon container startup. Implement dynamic batching to process multiple user requests together in a single inference pass.
+B. Select a larger GPU instance type for the SageMaker AI endpoint. Set the minimum number of instances to 0. Continue to perform per-request processing. Lazily load model weights on the first request.
+C. Switch to a multi-model endpoint. Use lazy loading without request batching.
+D. Set the minimum number of instances to greater than 0. Enable response streaming.
+E. Switch to Amazon SageMaker Asynchronous Inference for all requests. Store requests in an Amazon S3 bucket. Set the minimum number of instances to 0.
+
+Correct answer: AD
+
+Explanation:
+Keeping the SageMaker AI real-time endpoint's minimum instance count above zero prevents cold-start delays caused by scaling from zero, ensuring an inference-ready instance is always available to handle requests immediately. Enabling response streaming allows the endpoint to return generated tokens incrementally as they are produced instead of waiting for the entire response to complete, which directly reduces the time-to-first-token that is causing users to abandon chats. Preloading the model at container startup removes the delay of loading model weights on the first request, which is a major contributor to inconsistent, high initial latency; combined with batching multiple concurrent requests efficiently, this keeps inference passes fast and consistent. Together, warm always-on capacity with streaming responses and pre-warmed model containers address both the cold-start and time-to-first-byte issues driving the poor p95 latency, while asynchronous inference, multi-model endpoints with lazy loading, and scale-to-zero configurations all introduce additional delay unsuitable for sub-second interactive chat requirements.

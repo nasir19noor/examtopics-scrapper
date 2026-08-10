@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 52
+
+A medical company uses Amazon Bedrock to run a clinical-documentation summarization system. The system generates inconsistent summaries when it processes complex clinical documents, although it performed well with simple clinical documents.  
+  
+The company requires a solution that diagnoses the inconsistencies, compares prompt performance against established metrics, and preserves historical records of prompt versions.  
+  
+Which solution meets these requirements?
+
+A. Create multiple prompt variants by using Prompt management in Amazon Bedrock. Manually test the prompts with simple clinical documents. Deploy the highest performing version by using the Amazon Bedrock console.
+B. Implement version control for prompts in a code repository with a test suite that contains complex clinical documents and quantifiable evaluation metrics. Use an automated testing framework to compare prompt versions and document performance patterns.
+C. Deploy each new prompt version to separate Amazon Bedrock API endpoints. Split production traffic between the endpoints. Configure Amazon CloudWatch to capture response metrics and user feedback for automatic version selection.
+D. Create a custom prompt evaluation flow in Amazon Bedrock Flows that applies the same clinical document inputs to different prompt variants. Use Amazon Comprehend Medical to analyze and score the factual accuracy of each version.
+
+Correct answer: B
+
+Explanation:
+Version-controlling prompts alongside a test suite of representative complex clinical documents enables reproducible investigation of the failures. Automated tests can apply defined quantitative metrics to each prompt version, compare results consistently, and retain a historical record of both prompt changes and observed performance. Amazon Bedrock documentation likewise supports prompt versioning and emphasizes using evaluation data and metrics to assess prompt performance.
+
+**Learn more:** [Construct and store reusable prompts with Prompt management in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management.html) · [Use metrics to understand model performance](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-metrics.html)

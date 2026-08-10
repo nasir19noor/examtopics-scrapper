@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 23
+
+A company is developing an AI advisory application with Amazon Bedrock that will provide recommendations to customers. The company requires the application to explain its reasoning and cite specific data sources. It must retrieve information from company data sources and present step-by-step reasoning for its recommendations. It must also connect data claims to source documents and keep response latency below 3 seconds.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Use Amazon Bedrock Knowledge Bases with source attribution enabled. Use the Anthropic Claude Messages API with RAG to set high-relevance thresholds for source documents. Store reasoning and citations in Amazon S3 for auditing purposes.
+B. Use Amazon Bedrock with Anthropic Claude models and extended thinking. Configure a 4,000-token thinking budget. Store reasoning traces and citations in Amazon DynamoDB for auditing purposes.
+C. Configure Amazon SageMaker AI with a custom Anthropic Claude model. Use the model's reasoning parameter and AWS Lambda to process responses. Add source citations from a separate Amazon RDS database.
+D. Use Amazon Bedrock with Anthropic Claude models and chain-of-thought reasoning. Configure custom retrieval tracking with the Amazon Bedrock Knowledge Bases API. Use Amazon CloudWatch to monitor response latency metrics.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock Knowledge Bases provides managed retrieval-augmented generation over company data and can return source attribution that links generated claims to the retrieved source documents. Relevance-based retrieval limits the context supplied to the model, supporting lower latency without building and operating custom retrieval, tracking, or model-hosting infrastructure. This managed approach has less operational overhead than custom SageMaker, Lambda, database, or retrieval-tracking implementations.
+
+**Learn more:** [Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) · [RetrieveAndGenerate (citations)](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_agent-runtime_RetrieveAndGenerate.html) · [Claude Messages API](https://platform.claude.com/docs/en/api/messages)

@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 74
+
+A software company uses Amazon Q Business to build an AI assistant that lets employees access company information and personal information through natural-language prompts. The company stores this information in an Amazon S3 bucket.  
+  
+Each department has a dedicated prefix in the S3 bucket. Every object name includes the S3 prefix for the department to which it belongs. Each department can belong to only one group in AWS IAM Identity Center. Each employee belongs to one department.  
+  
+The company configures Amazon Q Business to access data in an S3 bucket as a data source. The company must ensure that the AI assistant honors access controls according to the user's IAM Identity Center group membership.  
+  
+Which solution meets this requirement with the **LEAST** operational overhead?
+
+A. Create a JSON file named acl.json in each department folder. In each file, create access control entries that specify the IAM Identity Center group that should have access to that department's data. Indicate the location of the JSON file in the Access Control section of the data source settings.
+B. Create a single JSON file named acl.json at the top level of the S3 bucket. Add access control entries that map each department's S3 prefix to its corresponding IAM Identity Center group. Indicate the location of the JSON file in the Access Control section of the data source settings.
+C. For each IAM Identity Center group, create a separate permissions set that denies access to all prefixes in the S3 bucket. Add a StringNotEquals condition key to the permissions set for each group that specifies the department each group is associated with. Attach the permissions sets to the Identity Center groups.
+D. Create a metadata file named metadata.json at the top level of the S3 bucket. Add an AccessControlList object to the file that specifies the S3 path of each department's prefix. Specify the IAM Identity Center group that should have access to each department's prefix. Reference the file location in the data source metadata settings.
+
+Correct answer: B
+
+Explanation:
+Amazon Q Business S3 ACL crawling supports a single ACL configuration JSON file that contains multiple `keyPrefix` entries. Each prefix can have `GROUP` ACL entries that allow the corresponding IAM Identity Center group to access all documents under that department's prefix. One centrally managed ACL file therefore provides the required prefix-to-group authorization with minimal operational overhead.
+
+**Learn more:** [How Amazon Q Business connector crawls Amazon S3 ACLs](https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/s3-user-management.html) · [Connecting Amazon Q Business to Amazon S3 using the console](https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/s3-console.html)

@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 87
+
+A financial-services company is building a customer-service AI assistant application that uses a foundation model (FM) in Amazon Bedrock. The application must provide transparent responses by documenting its reasoning and citing the sources used for Retrieval Augmented Generation (RAG). It must capture comprehensive audit trails for every user response. The application must support up to 10,000 concurrent users and respond to each customer inquiry within 2 seconds.  
+  
+Which solution meets these requirements with the **least operational overhead**?
+
+A. Enable tracing for Amazon Bedrock agents. Configure structured prompts that direct the FM to provide evidence presentations. Integrate Amazon Bedrock knowledge bases with data sources to enable RAG. Configure the application to reference and cite authoritative content. Deploy the application in a Multi-AZ architecture. Use Amazon API Gateway and AWS Lambda functions to scale the application. Use Amazon CloudFront to provide low-latency delivery.
+B. Enable tracing for Amazon Bedrock agents. Integrate a custom RAG pipeline with Amazon OpenSearch Service to retrieve and cite sources. Configure structured prompts to present retrieved evidence. Deploy the application behind an Amazon API Gateway REST API. Use AWS Lambda functions and Amazon CloudFront to scale the application and to provide low latency. Store logs in Amazon S3 and use AWS CloudTrail to capture audit trails.
+C. Use Amazon CloudWatch to monitor latency and error rates. Embed model prompts directly in the application backend to cite sources. Store application interactions with users in Amazon RDS for audits.
+D. Store generated responses and supporting evidence in an Amazon S3 bucket. Enable versioning on the bucket for audits. Use AWS Glue to catalog retrieved documents. Process the retrieved documents in Amazon Athena to generate periodic compliance reports.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock Knowledge Bases provide a managed RAG capability that can return citations to the original retrieved source data. Tracing for Amazon Bedrock agents exposes the agent’s orchestration and reasoning steps, providing the required transparency and auditability. A serverless Amazon API Gateway and AWS Lambda architecture scales without managing servers, while CloudFront supports low-latency delivery. This managed design avoids operating a custom OpenSearch-based RAG and separate audit-log pipeline.
+
+**Learn more:** [Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html) · [Query a knowledge base and generate responses based off the retrieved data](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-test-retrieve-generate.html)

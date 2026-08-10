@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 35
+
+A company is building a generative AI (GenAI)-powered customer support application that uses Amazon Bedrock foundation models (FMs). The application must retain conversational context across multiple interactions with the same user. It must run clarification workflows to address ambiguous user queries. The company must retain encrypted records of every user conversation for personalization. The application must support thousands of concurrent users while responding quickly to each user.  
+  
+Which solution meets these requirements?
+
+A. Use an AWS Step Functions Express workflow to orchestrate conversation flow. Invoke AWS Lambda functions to run clarification logic. Store conversation history in Amazon RDS and use session IDs as the primary key.
+B. Use an AWS Step Functions Standard workflow to orchestrate clarification workflows. Include Wait for a Callback patterns to manage the workflows. Store conversation history in Amazon DynamoDPurchase on-demand capacity and configure server-side encryption.
+C. Deploy the application by using an Amazon API Gateway REST API to route user requests to an AWS Lambda function to update and retrieve conversation context. Store conversation history in Amazon S3 and configure server-side encryption. Save each interaction as a separate JSON file.
+D. Use AWS Lambda functions to call Amazon Bedrock inference APIs. Use Amazon SQS queues to orchestrate clarification steps. Store conversation history in an Amazon ElastiCache (Redis OSS) cluster. Configure encryption at rest.
+
+Correct answer: B
+
+Explanation:
+AWS Step Functions Standard workflows support the Wait for a Callback pattern, allowing a clarification process to pause until it receives a response. Amazon DynamoDB provides durable, low-latency conversation storage with on-demand capacity for variable high concurrency and server-side encryption at rest. [AWS Step Functions workflow types](https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html) and [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html) document these capabilities.
+
+**Learn more:** [Choosing workflow type in Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html) · [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html)

@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 116
+
+A company operates a generative AI application that uses multiple foundation models (FMs) from Amazon Bedrock to generate text. The application serves users across three AWS Regions and runs on AWS Lambda functions.  
+  
+The company needs to implement dynamic model selection based on response quality and latency metrics. The company must be able to switch between models without modifying or redeploying the application code. The company wants to gradually roll out new models, starting with 20% of traffic. The company also needs a solution that will automatically roll back if error rates exceed 1%.  
+  
+Which solution will meet these requirements?
+
+A. Use AWS AppConfig to create feature flags for model selection criteria. Set up validation rules for error rates. Implement the AWS AppConfig Agent Lambda extension to retrieve model configurations when the functions run. Define linear deployment strategies to gradually release new models, starting with 20% of traffic.
+B. Store model selection configurations in Amazon DynamoDUse global tables to enable multi-Region replication. Configure Amazon EventBridge rules to monitor Amazon CloudWatch metrics for errors and invoke AWS Lambda functions that update the DynamoDB table with model preferences. Add custom code to the Lambda functions to query DynamoDB before each model invocation.
+C. Create Lambda function versions for each model configuration. Use Lambda aliases and set up routing configurations to gradually shift traffic between versions, starting with 20% of traffic. Implement AWS CodeDeploy deployments that monitor Amazon CloudWatch metrics for the Lambda function versions to automatically roll back deployments when error rales exceed thresholds.
+D. Create Amazon CloudWatch dashboards to monitor response quality and latency metrics. Implement custom logic in the Lambda functions to select models based on metric thresholds. Use environment variables that are stored in AWS Systems Manager Parameter Store to define model selection parameters that can be updated across Regions.
+
+Correct answer: A
+
+Explanation:
+AWS AppConfig lets you manage model-selection settings as feature flags that Lambda functions retrieve at runtime through the AWS AppConfig Agent Lambda extension, which polls for updated configuration data over a local HTTP endpoint, so no code changes or redeployments are needed to change which Bedrock model is used. AppConfig deployment strategies support a Linear growth type, where you define a growth factor (percentage of targets that receive the new configuration at each step, e.g., 20%) and a deployment duration, giving the required staged rollout starting at 20% of traffic. AppConfig also supports validators and CloudWatch alarm-based automatic rollback: if a configured CloudWatch alarm (such as one tracking error rate crossing a 1% threshold) enters the ALARM state during the deployment or the subsequent bake time, AppConfig automatically reverts the configuration to the last-known-good version, preventing continued exposure to a faulty model configuration. This combination of feature flags, Lambda extension retrieval, linear deployment strategy, and alarm-triggered rollback is documented in the AWS AppConfig user guide and directly satisfies every stated requirement, which the other options (custom DynamoDB/EventBridge logic, Lambda version/alias traffic shifting via CodeDeploy, or manual CloudWatch/Parameter Store logic) do not fully provide without extra custom engineering or without violating the no-redeploy requirement.
+
+**Learn more:** [Working with deployment strategies - AWS AppConfig](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-creating-deployment-strategy.html) · [Monitoring deployments for automatic rollback - AWS AppConfig](https://docs.aws.amazon.com/appconfig/latest/userguide/monitoring-deployments.html)

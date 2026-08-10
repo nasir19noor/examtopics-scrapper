@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 85
+
+A healthcare organization uses Amazon Bedrock to create a Retrieval Augmented Generation (RAG) application that assists practitioners with clinical decision-making. The application must provide high accuracy when retrieving patient information, detect hallucinations in generated content, and lower human-review costs.  
+  
+Which solution meets these requirements?
+
+A. Use Amazon Comprehend to analyze and classify RAG responses and to extract medical entities and relationships. Use AWS Step Functions to orchestrate automated evaluations. Configure Amazon CloudWatch metrics to track entity recognition confidence scores. Configure CloudWatch to send an alert when accuracy falls below specified thresholds.
+B. Implement automated large language model (LLM)-based evaluations that use a specialized model that is fine-tuned for medical content to assess all responses. Deploy AWS Lambda functions to parallelize evaluations. Publish results to Amazon CloudWatch metrics that track relevance and factual accuracy.
+C. Configure Amazon CloudWatch Synthetics to generate test queries that have known answers on a regular schedule, and track model success rates. Set up dashboards that compare synthetic test results against expected outcomes.
+D. Deploy a hybrid evaluation system that uses an automated LLM-as-a-judge evaluation to initially screen responses and targeted human reviews for edge cases. Use Amazon SageMaker Feature Store to maintain evaluation datasets. Use a built-in Amazon Bedrock evaluation to track retrieval precision and hallucination rates.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock RAG evaluations use an evaluator LLM to measure retrieval and response quality. Built-in retrieval metrics evaluate the relevance and coverage of retrieved context, and retrieve-and-generate metrics include faithfulness for detecting hallucinations relative to retrieved text, plus citation precision. Using LLM-as-a-judge screening with human review limited to edge cases preserves expert oversight while reducing the volume and cost of manual review.
+
+**Learn more:** [Use metrics to understand RAG system performance](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-eval-retrieve.html) · [Evaluate the performance of Amazon Bedrock resources](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)

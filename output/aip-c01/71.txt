@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 71
+
+A company operates a generative AI (GenAI)-powered summarization application in an application AWS account that uses Amazon Bedrock. The application architecture contains an Amazon API Gateway REST API that routes requests to AWS Lambda functions attached to private VPC subnets. The application summarizes sensitive customer records that the company stores in a governed data lake in a centralized data storage account. The company has enabled Amazon S3, Amazon Athena, and AWS Glue in the data storage account.  
+  
+The company must ensure that the application's calls to Amazon Bedrock use only private connectivity between the company’s application VPC and Amazon Bedrock. The company’s data lake must offer fine-grained, column-level access across the company’s AWS accounts.  
+  
+Which solution meets these requirements?
+
+A. In the application account, create interface VPC endpoints for Amazon Bedrock runtimes. Run Lambda functions in private subnets. Use IAM conditions on inference and data-plane policies to allow calls only to approved endpoints and roles. In the data storage account, use AWS Lake Formation LF-tag-based access control to create table and column-level cross-account grants.
+B. Run Lambda functions in private subnets. Configure a NAT gateway to provide access to Amazon Bedrock and the data lake. Use S3 bucket policies and ACLs to manage permissions. Export AWS CloudTrail logs to Amazon S3 to perform weekly reviews.
+C. Create a gateway endpoint only for Amazon S3 in the application account. Invoke Amazon Bedrock through public endpoints. Use database-level grants in AWS Lake Formation to manage data access. Stream AWS CloudTrail logs to Amazon CloudWatch Logs. Do not set up metric filters or alarms.
+D. Use VPC endpoints to provide access to Amazon Bedrock and Amazon S3 in the application account. Use only IAM path-based policies to manage data lake access. Send AWS CloudTrail logs to Amazon CloudWatch Logs. Periodically create dashboards and allow public fallback for cross-Region reads to reduce setup time.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock interface VPC endpoints use AWS PrivateLink to provide private connectivity from a VPC without an internet gateway or NAT device. AWS Lake Formation LF-tag-based access control can grant cross-account permissions for Data Catalog resources, including columns, providing fine-grained data access control.
+
+**Learn more:** [Use interface VPC endpoints (AWS PrivateLink) to create a private connection between your VPC and Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/vpc-interface-endpoints.html) · [Cross-account data sharing in Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-permissions.html)

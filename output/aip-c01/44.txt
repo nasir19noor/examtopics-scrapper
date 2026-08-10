@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 44
+
+A company operates a Retrieval Augmented Generation (RAG) application that uses Amazon Bedrock Knowledge Bases for regulatory compliance queries. The application uses the RetrieveAndGenerateStream API. It retrieves relevant documents from a knowledge base containing more than 50,000 regulatory documents, legal precedents, and policy updates.  
+  
+The RAG application is generating suboptimal responses because initial retrieval frequently returns documents that are semantically similar but contextually irrelevant. These poor responses are leading to model hallucinations and incorrect regulatory guidance. The company must improve RAG application performance so that it returns more relevant documents.  
+  
+Which solution meets this requirement with the **LEAST** operational overhead?
+
+A. Deploy an Amazon SageMaker endpoint to run a fine-tuned ranking model. Use an Amazon API Gateway REST API to route requests. Configure the application to make requests through the REST API to rerank the results.
+B. Use Amazon Comprehend to classify documents and apply relevance scores. Integrate the RAG application’s reranking process with Amazon Textract to run document analysis. Use Amazon Neptune to perform graph-based relevance calculations.
+C. Implement a retrieval pipeline that uses the Amazon Bedrock Knowledge Bases Retrieve API to perform initial document retrieval. Call the Amazon Bedrock Rerank API to rerank the results. Invoke the InvokeModelWithResponseStream operation to generate responses.
+D. Use the latest Amazon reranker model through the reranking configuration within Amazon Bedrock Knowledge Bases. Use the model to improve document relevance scoring and to reorder results based on contextual assessments.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock Knowledge Bases can apply a managed reranker through the retrieval reranking configuration when using RetrieveAndGenerate or RetrieveAndGenerateStream. The reranker evaluates the relevance of retrieved text chunks to the query and reorders them, replacing the default Knowledge Bases ranking. This improves contextual relevance while avoiding the operational burden of deploying and integrating separate ranking, API, document-analysis, or graph-processing services.
+
+**Learn more:** [Improve the relevance of query responses with a reranker model in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/rerank.html) · [Query a knowledge base and generate responses based off the retrieved data](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-test-retrieve-generate.html)

@@ -1,0 +1,31 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 57
+
+A company configures a landing zone in AWS Control Tower. The company handles sensitive data that must stay within the European Union. The company must use only the `eu-central-1` Region. The company uses SCPs to enforce data-residency policies. GenAI developers at the company are assigned IAM roles with full permissions for Amazon Bedrock.  
+  
+The company must ensure that GenAI developers can use the Amazon Nova Pro model through Amazon Bedrock only by using cross-Region inference (CRI) and only in `eu-central-1`. The company enables model access for the GenAI developer IAM roles in Amazon Bedrock. However, when a GenAI developer tries to invoke the model through the Amazon Bedrock Chat/Text playground, the GenAI developer receives the following error.  
+  
+User: `arn:aws:sts::123456789012:assumed-role/AssumedDevRole/DevUserName`  
+  
+Action: `bedrock:InvokeModelWithResponseStream`  
+  
+On resource(s): `arn:aws:bedrock:eu-west-3::foundation-model/amazon.nova-pro-v1:0`  
+  
+Context: a service control policy explicitly denies the action  
+  
+The company needs a solution that resolves the error. The solution must retain the company’s existing governance controls and provide precise access control. The solution must comply with the company’s existing data-residency policies.  
+  
+Which combination of solutions meets these requirements? (Choose two.)
+
+A. Add an AdministratorAccess policy to the GenAI developer IAM role.
+B. Extend the existing SCPs to enable CRI for the eu.amazon.nova-pro-v1:0 inference profile.
+C. Enable Amazon Bedrock model access for Amazon Nova Pro in the eu-west-3 Region.
+D. Validate that the GenAI developer IAM roles have permissions to invoke Amazon Nova Pro through the eu.amazon.nova-pro.v1:0 inference profile on all European Union AWS Regions that can serve the model.
+E. Extend the existing SCP to enable CRI for the eu.* inference profile.
+
+Correct answer: BD
+
+Explanation:
+The EU geographic Amazon Nova Pro inference profile, `eu.amazon.nova-pro-v1:0`, can be called from `eu-central-1` and routes requests only among its listed EU destination Regions, including `eu-west-3`. An SCP that denies one of those destination Regions causes CRI to fail. The SCP must therefore allow CRI for that specific inference profile, and the developer roles must have invoke permission for the profile and foundation model in every EU destination Region that can serve it. Scoping access to the named profile preserves governance and is more precise than permitting every `eu.*` profile. [Amazon Nova Pro model card](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-amazon-nova-pro.html) and [Amazon Bedrock geographic cross-Region inference requirements](https://docs.aws.amazon.com/bedrock/latest/userguide/geographic-cross-region-inference.html).
+
+**Learn more:** [Amazon Nova Pro model card](https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-amazon-nova-pro.html) · [Amazon Bedrock geographic cross-Region inference requirements](https://docs.aws.amazon.com/bedrock/latest/userguide/geographic-cross-region-inference.html)

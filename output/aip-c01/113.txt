@@ -1,0 +1,23 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 113
+
+A company is building a generative AI (GenAI) application that uses Amazon Bedrock foundation models (FMs). The solution must meet the following requirements:  
+  
+- Authenticate users through Microsoft Entra ID.  
+- Ensure that all foundation model (FM) API calls travel only over private network paths.  
+- Restrict application access so that each department can use only specific model families.  
+- Provide a comprehensive audit trail of all model interactions.  
+  
+Which solution will meet these requirements?
+
+A. Configure SAML federation between Microsoft Entra ID and IAM. Create department-specific IAM roles that allow only the required ModelId values. Create AWS PrivateLink interface VPC endpoints for Amazon Bedrock runtime services. Enable AWS CloudTrail to capture Amazon Bedrock API calls. Configure Amazon Bedrock model invocation logging to record detailed model interactions.
+B. Create an identity provider (IdP) connection in IAM to authenticate by using Microsoft Entra ID. Assign department permission sets to control access to specific model families. Deploy AWS Lambda functions in private subnets with a NAT gateway for egress to Amazon Bedrock public endpoints. Enable CloudWatch Logs to capture model interactions for auditing purposes.
+C. Create a SAML identity provider (IdP) in IAM to authenticate by using Microsoft Entra ID. Use IAM permissions boundaries to limit department roles’ access to specific model families. Configure public Amazon Bedrock API endpoints with VPC routing to maintain private network connectivity. Set up AWS CloudTrail with Amazon S3 Lifecycle rules to manage audit logs of model interactions.
+D. Configure OpenID Connect (OIDC) federation between Microsoft Entra ID and IAM. Use attribute-based access control to map department attributes to specific model access permissions. Apply SCP policies to restrict access to Amazon Bedrock FM families based on department. Use Microsoft Entra ID’s built-in logging capabilities to maintain an audit trail of model interactions.
+
+Correct answer: A
+
+Explanation:
+Federating Microsoft Entra ID with IAM through SAML lets users assume IAM roles based on their identity, and department-specific IAM roles can be scoped with policy conditions that permit only certain ModelId values, enforcing model-family restrictions per department. Creating AWS PrivateLink interface VPC endpoints for the Amazon Bedrock runtime service ensures that InvokeModel and related API calls travel entirely over the AWS private network rather than the public internet. For auditing, AWS CloudTrail records management and data events for Bedrock API calls (caller identity, modelId, timestamps), while Amazon Bedrock model invocation logging separately captures the full request and response payloads (prompts and completions) to Amazon S3/CloudWatch Logs — together these provide the comprehensive audit trail of model interactions that AWS documentation recommends for governance of Bedrock usage.
+
+**Learn more:** [Implementing least privilege access for Amazon Bedrock](https://aws.amazon.com/blogs/security/implementing-least-privilege-access-for-amazon-bedrock/) · [Configure model invocation logging in Amazon Bedrock by using AWS CloudFormation - AWS Prescriptive Guidance](https://docs.aws.amazon.com/prescriptive-guidance/latest/patterns/configure-bedrock-invocation-logging-cloudformation.html)

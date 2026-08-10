@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 68
+
+A financial services company must preprocess unstructured data, including customer transcripts, financial reports, and documentation. The company stores this unstructured data in Amazon S3 to support an Amazon Bedrock application.  
+  
+The company must validate data quality, produce auditable metadata, monitor data metrics, and customize text chunking to optimize foundation model (FM) performance.  
+  
+Which solution meets these requirements with the **LEAST** development effort?
+
+A. Use Amazon SageMaker Data Wrangler to create a data flow. Configure Amazon CloudWatch metrics and alarms to monitor data quality. Use a custom AWS Lambda function to pre-process the data. Load processed data into Amazon Bedrock.
+B. Set up an AWS Glue crawler to catalog data sources. Create AWS Glue ETL jobs to run custom transformation scripts. Use AWS Glue Data Quality to validate and monitor data quality. Load processed data into Amazon Bedrock.
+C. Use Amazon Comprehend to extract entities. Create an AWS Lambda function to chunk text. Run Amazon Athena to query and validate data quality. Load processed data into Amazon Bedrock.
+D. Create an AWS Step Functions workflow to orchestrate data pre-processing tasks. Run custom code on Amazon EC2 instances to process the data. Use Amazon SageMaker Model Monitor to monitor data quality. Load processed data into Amazon Bedrock.
+
+Correct answer: B
+
+Explanation:
+AWS Glue provides a managed, integrated approach: crawlers populate the AWS Glue Data Catalog with source metadata, ETL jobs can perform custom transformations such as text chunking, and AWS Glue Data Quality validates and monitors data quality. This avoids building separate custom processing, orchestration, and monitoring components while producing cataloged metadata and quality metrics.
+
+**Learn more:** [AWS Glue Data Quality](https://docs.aws.amazon.com/glue/latest/dg/glue-data-quality.html) · [Using crawlers to populate the Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/add-crawler.html)

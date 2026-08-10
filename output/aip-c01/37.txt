@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 37
+
+A media company must use Amazon Bedrock to establish a robust governance process for AI-generated content. The company must manage hundreds of prompt templates. Multiple teams use the templates in multiple AWS Regions to generate content. The solution must provide version control with approval workflows that include notifications for pending reviews. It must also provide detailed audit trails that record prompt activities and consistent prompt parameterization to enforce quality standards.  
+  
+Which solution will satisfy these requirements?
+
+A. Configure Amazon Bedrock Studio prompt templates. Use Amazon CloudWatch to create dashboards that display prompt usage metrics. Store the approval status of content in Amazon DynamoDB. Use AWS Lambda functions to enforce approvals.
+B. Use Amazon Bedrock Prompt Management to implement version control. Configure AWS CloudTrail for audit logging. Use IAM policies to control approval permissions. Create parameterized prompt templates by specifying variables.
+C. Use AWS Step Functions to create an approval workflow. Store prompts as documents in Amazon S3. Use tags to implement version control. Use Amazon EventBridge to send notifications.
+D. Deploy Amazon SageMaker Canvas with prompt templates that are stored in Amazon S3. Use AWS CloudFormation to implement version control. Use AWS Config to enforce approval policies.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Prompt Management supports reusable prompt templates, versioned prompt snapshots, and prompt variables, which standardize prompt inputs and configurations. AWS CloudTrail records AWS activity with details such as the identity, action, time, and request parameters, creating an auditable history of prompt-management operations. IAM policies can separate and restrict permissions to create, modify, and version prompts, supporting controlled approval processes.
+
+**Learn more:** [Construct and store reusable prompts with Prompt management in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management.html) · [Deploy a prompt to your application using versions in Prompt management](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-management-deploy.html)

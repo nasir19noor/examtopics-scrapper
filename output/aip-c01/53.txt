@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 53
+
+A company has provisioned Amazon Q Developer Pro licenses for every developer. The company maintains a list of approved resources that developers must use when developing applications. The approved resources include internal libraries, proprietary algorithmic techniques, and sample code with approved styling.  
+  
+A new developer team is using Amazon Q Developer to build a new Java-based application. The company must ensure that the new team uses the company’s approved resources. The company does not want to make any project-level modifications.  
+  
+Which solution meets these requirements?
+
+A. Create a Git repository that contains all of the approved internal libraries, algorithms, and code samples. Include this Git repository in the application project locally as part of the workspace. Ensure that the developers use the @workspace context to retrieve suggestions from the Git repository.
+B. In the project root folder, create a folder named .amazonq/rules. Add the approved internal libraries, algorithms, and code samples to the folder.
+C. Create a folder in the application project named rules. Store the guidelines and code in the folder for Amazon Q Developer to reference product code suggestions.
+D. Create an Amazon Q Developer customization that includes the approved data sources. Ensure that the developers use the customization to develop the application.
+
+Correct answer: D
+
+Explanation:
+Amazon Q Developer Pro customizations provide suggestions based on an organization’s own codebase and can be made available for developers to select and use. A customization containing the approved resources enforces their use in Amazon Q Developer suggestions without placing files or rules in the application project. Project rules in `.amazonq/rules` would require a project-level change.
+
+**Learn more:** [Advanced capabilities of Amazon Q Developer](https://docs.aws.amazon.com/prescriptive-guidance/latest/best-practices-code-generation/advanced-capabilities.html) · [Creating project rules for Amazon Q Developer in third-party platforms](https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/third-party-context-project-rules.html)

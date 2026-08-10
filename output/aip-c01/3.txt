@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 3
+
+A company is developing a generative AI (GenAI) application that generates content from a range of internal and external data sources. The company needs to ensure that all generated output is fully traceable. The application must support registering data sources and allow metadata tagging to attribute content to its original source. It must also retain audit logs of data access and usage across the entire pipeline.  
+  
+Which solution meets these requirements?
+
+A. Use AWS Lake Formation to catalog data sources and control access. Apply metadata tags directly in Amazon S3. Use AWS CloudTrail to monitor API activity.
+B. Use AWS Glue Data Catalog to register and tag data sources. Use Amazon CloudWatch Logs to monitor access patterns and application behavior.
+C. Store data in Amazon S3 and use object tagging for attribution. Use AWS Glue Data Catalog to manage schema information. Use AWS CloudTrail to log access to S3 buckets.
+D. Use AWS Glue Data Catalog to register all data sources. Apply metadata tags to attribute data sources. Use AWS CloudTrail to log access and activity across services.
+
+Correct answer: D
+
+Explanation:
+AWS Glue Data Catalog centralizes data-source registration and metadata management, including tags that can preserve source attribution. AWS CloudTrail records API activity across AWS services, providing an audit trail for data access and pipeline activity.
+
+**Learn more:** [AWS Glue Data Catalog](https://docs.aws.amazon.com/glue/latest/dg/start-data-catalog.html) · [What Is AWS CloudTrail?](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html)

@@ -1,0 +1,21 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 9
+
+A company uses Amazon Bedrock to create technical content for customers. The company has recently seen a surge in hallucinated outputs when its model produces summaries of lengthy technical documents. The outputs contain incorrect or invented details. The current solution uses a large foundation model (FM) with a basic one-shot prompt that supplies the complete document in one input.  
+  
+The company needs a solution that reduces hallucinations and satisfies factual-accuracy objectives. The solution must process more than 1,000 documents per hour and provide summaries within 3 seconds for each document.  
+  
+Which combination of solutions meets these requirements? (Choose two.)
+
+A. Implement zero-shot chain-of-thought (CoT) instructions that require step-by-step reasoning with explicit fact verification before the model generates each summary.
+B. Use Retrieval Augmented Generation (RAG) with an Amazon Bedrock knowledge base. Apply semantic chunking and tuned embeddings to ground summaries in source content.
+C. Configure Amazon Bedrock guardrails to block any generated output that matches patterns that are associated with hallucinated content.
+D. Increase the temperature parameter in Amazon Bedrock.
+E. Prompt the Amazon Bedrock model to summarize each full document in one pass.
+
+Correct answer: AB
+
+Explanation:
+Retrieval Augmented Generation grounds summaries in semantically retrieved source chunks, reducing unsupported details while avoiding the cost and context limitations of passing an entire long document in one prompt. Amazon Bedrock Knowledge Bases automate document chunking, embeddings, retrieval, and response generation with source citations. Explicit chain-of-thought instructions that require fact verification add a prompt-level check for whether a proposed summary is supported by the provided evidence. Pattern-based output blocking does not establish factual grounding, higher temperature increases generation variability, and one-pass full-document prompting retains the original hallucination-prone design.
+
+**Learn more:** [How Amazon Bedrock Knowledge Bases work](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-how-it-works.html) · [Prompt templates and examples for Amazon Bedrock text models](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-templates-and-examples.html)

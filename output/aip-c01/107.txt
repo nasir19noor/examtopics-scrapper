@@ -1,0 +1,26 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 107
+
+A financial services company is building a natural language processing (NLP) application that uses an AWS Lambda function to process customer trade inquiries using Amazon Bedrock foundation models (FMs). The Lambda function needs to generate comprehensive trade analysis responses that typically:  
+  
+- Exceed 4 MB in size  
+- Require 15-20 seconds to complete  
+  
+The application must also:  
+  
+- Respond to customer inquiries in under 10 seconds  
+- Comply with financial regulatory requirements to retain records for 10 years  
+  
+Which solution will meet these requirements?
+
+A. Implement response streaming to display partial responses as the application generates them. Set a 15-second timeout for Lambda function execution time. Enable AWS X-Ray tracing to monitor performance.
+B. Use Amazon SQS queues to implement asynchronous invocations. Set a 30-second timeout for Lambda function execution time. Use Amazon CloudWatch to monitor response times.
+C. Use Amazon API Gateway to poll the application. Integrate the application with Amazon ElastiCache to cache responses. Set a 30-second timeout for Lambda function execution time. Collect detailed Amazon CloudWatch logs for application performance.
+D. Implement response streaming to display partial responses as the application generates them. Set a 30-second timeout for Lambda function execution time. Store complete response records in Amazon S3.
+
+Correct answer: D
+
+Explanation:
+Lambda response streaming allows the function to send partial output to the client as it is generated, so the customer starts receiving output well within the 10-second requirement even though full generation takes 15-20 seconds. A 30-second Lambda execution timeout ensures the function has enough time to finish generating the full 15-20 second response without being prematurely terminated (a 15-second timeout risks cutting off longer responses). Storing the complete response records in Amazon S3 provides durable, long-term storage suitable for meeting the 10-year regulatory retention requirement, which CloudWatch logs, X-Ray traces, or ElastiCache caching are not designed to satisfy.
+
+**Learn more:** [Using AWS Lambda response streaming to build responsive applications](https://docs.aws.amazon.com/lambda/latest/dg/configuration-response-streaming.html) · [Amazon Bedrock InvokeModelWithResponseStream](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModelWithResponseStream.html)

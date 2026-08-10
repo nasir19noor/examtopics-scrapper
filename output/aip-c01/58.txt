@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 58
+
+A global company is developing an AI assistant that uses RAG. The company requires the AI assistant to deliver near-real-time, low-latency performance. The AI assistant must serve multiple geographic areas. The company’s customers will use proprietary data with the AI assistant, and that proprietary data must not leave the company’s immediate geographic area.  
+  
+Which solution will satisfy these requirements?
+
+A. Deploy an Amazon Bedrock model with a cross-Region model inference profile. Create Amazon S3 buckets in each AWS Region the company operates in. Store a knowledge base in each respective S3 bucket. In each Region, configure Amazon Kendra to interact with the respective knowledge base. In each Region, configure an AWS Lambda function that uses Kendra and Amazon Bedrock to process AI assistant prompts.
+B. Deploy an Amazon Bedrock model in each AWS Region the company operates in. Configure an Amazon Bedrock cross-Region model inference profile. Configure a vector database that uses Amazon Bedrock Knowledge Bases. Store the knowledge bases in Amazon S3 in each Region the company operates in.
+C. Use AWS Outposts to deploy an outpost in each AWS Region the company operates in. Create Amazon S3 buckets to store knowledge bases in each corresponding Region. Deploy Amazon RDS configured as a vector database to each outpost. Deploy an Amazon Bedrock model with a cross-Region inference profile in a central Region.
+D. Configure a knowledge base stored in the Amazon S3 Express One Zone storage class in each AWS Local Zone the company operates in. Use Amazon RDS to deploy a vector database in each Local Zone the company operates in. Deploy a large language model (LLM) to Amazon EC2 instances in each Local Zone. Configure the AI assistant to route prompts to the model in the respective Local Zone.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock cross-Region inference profiles can automatically route prompts and responses to destination Regions, so they cannot ensure that proprietary data remains in its immediate local area. Deploying the knowledge base, vector database, and EC2-hosted LLM in each applicable AWS Local Zone keeps processing local for low latency and data-locality requirements. Amazon RDS supports placing DB instances in Local Zone subnets, and S3 Express One Zone provides low-latency storage local to compute.
+
+**Learn more:** [Increase throughput with cross-Region inference - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) · [Regions, Availability Zones, and Local Zones - Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html)

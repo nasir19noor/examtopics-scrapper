@@ -1,0 +1,19 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 73
+
+A company runs multiple Amazon Bedrock-based generative AI (GenAI) applications across several business units for customer service, content generation, and document analysis. Some applications have unpredictable token-consumption patterns. The company needs a comprehensive observability solution that delivers real-time visibility into token-usage patterns across multiple models. The observability solution must support custom dashboards for multiple stakeholder groups and offer alerting for token consumption across all foundational models used by the company’s applications.  
+  
+Which combination of solutions will meet these requirements with the **LEAST** operational overhead? *(Choose two.)*
+
+A. Use Amazon CloudWatch metrics as data sources to create custom Amazon QuickSight dashboards that show token usage trends and usage patterns across FMs.
+B. Use Amazon CloudWatch Logs Insights to analyze Amazon Bedrock invocation logs for token consumption patterns and usage attribution by application. Create custom queries to identify high-usage scenarios. Add log widgets to dashboards to enable continuous monitoring.
+C. Create custom Amazon CloudWatch dashboards that combine native Amazon Bedrock token and invocation CloudWatch metrics. Set up CloudWatch alarms to monitor token usage thresholds.
+D. Create dashboards that show token usage trends and patterns across the company's FMs by using an Amazon Bedrock zero-ETL integration with Amazon Managed Grafana.
+E. Implement Amazon EventBridge rules to capture Amazon Bedrock model invocation events. Route token usage data to an Amazon Data Firehose delivery stream that targets Amazon OpenSearch Serverless. Use OpenSearch dashboards to analyze usage patterns.
+
+Correct answer: BC
+
+Explanation:
+Amazon Bedrock emits `InputTokenCount` and `OutputTokenCount` CloudWatch metrics for each `ModelId`, so CloudWatch dashboards can centrally visualize token consumption across foundation models and CloudWatch alarms can alert when token thresholds are crossed. Amazon Bedrock invocation logs include input and output token counts, model ID, caller identity, and optional request metadata; CloudWatch Logs Insights can aggregate those records by application and place the resulting queries in dashboards. Together, these native CloudWatch capabilities meet monitoring, stakeholder-dashboard, and alerting needs without operating a separate streaming, storage, or search pipeline.
+
+**Learn more:** [Monitor bedrock-runtime inference using CloudWatch metrics - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-runtime-metrics.html) · [Monitor model invocation using CloudWatch Logs and Amazon S3 - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html)

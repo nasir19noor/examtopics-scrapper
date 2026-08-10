@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 54
+
+A retail company is building a customer-service application that must handle 10,000 daily queries about products, orders, and warranties. The application must be able to answer queries about 50,000 product documents that are updated daily. The application must integrate with an order-management API to check order status and help process returns. The application must preserve context across multi-turn customer interactions. The company must collect complete audit trails for application responses.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Deploy a fine-tuned Amazon Bedrock Anthropic Claude model for each product category. Create AWS Lambda functions to connect each model to the order management API. Store conversation history in Amazon DynamoDB.
+B. Create a custom model that uses continued pre-training on Amazon Bedrock to handle all product documentation. Set up an Amazon API Gateway REST API that uses AWS Lambda functions to connect the model to the order management API.
+C. Use Amazon SageMaker AI with containers to deploy models. Use Amazon Kendra to search product documents. Use AWS Step Functions to orchestrate calls to the order management API.
+D. Use an Amazon Bedrock agent with action groups to integrate with the order management API. Associate an Amazon Bedrock knowledge base with the agent to search product documentation by using Retrieval Augmentation Generation (RAG). Enable trace events to capture audit trails.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock Agents can use action groups to invoke defined API actions, while an associated Amazon Bedrock knowledge base uses RAG to retrieve relevant, current information from product documents instead of requiring model retraining. Reusing an agent session maintains conversational context across turns, and enabling trace captures the agent’s processing steps, actions, and response trace. These managed features minimize the infrastructure and operational work required.
+
+**Learn more:** [Use action groups to define actions for your agent to perform](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-action-create.html) · [Augment response generation for your agent with knowledge base](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-kb-add.html)

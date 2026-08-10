@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 72
+
+A financial services company is building a generative AI (GenAI) application for both premium and standard customers. The application uses AWS Lambda functions behind an Amazon API Gateway REST API to process requests. The company must dynamically switch between AI models according to each user's customer tier. The company also wants to conduct A/B testing for new features without redeploying code. The company must validate model parameters, such as temperature and maximum token limits, before applying changes.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Create an AWS Systems Manager Parameter Store parameters for each configuration. Use Lambda functions to poll for parameter updates. Use Amazon EventBridge events to trigger redeployments when configurations change.
+B. Store model configurations in Amazon DynamoDB tables. Optimize access patterns to retrieve configurations according to customer tier. Configure Lambda functions to query DynamoDB at the beginning of each request to determine which model to use.
+C. Use AWS AppConfig to manage model configurations. Use feature flags to perform A/B testing. Define JSON schema validation rules for model parameters. Configure Lambda functions to retrieve configurations by using the AWS AppConfig Agent.
+D. Create an Amazon ElastiCache (Redis OSS) cluster to store model configurations. Set short TTL values. Run custom validation logic in Lambda functions. Use Amazon CloudWatch metrics to monitor configuration usage.
+
+Correct answer: C
+
+Explanation:
+AWS AppConfig supports feature flags, including multi-variant flags that evaluate caller context against rules to return different configuration values for customer tiers or A/B test cohorts. AWS AppConfig validators support JSON Schema and Lambda validation, preventing deployment of invalid configuration data. The AWS AppConfig Agent Lambda extension retrieves and locally caches configuration, reducing application-side configuration retrieval and management work.
+
+**Learn more:** [AWS AppConfig validators](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-creating-configuration-and-profile-validators.html) · [AWS AppConfig multi-variant feature flags](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-creating-configuration-and-profile-feature-flags.html)

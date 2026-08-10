@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 18
+
+A medical company is developing a generative AI (GenAI) application that uses RAG to deliver evidence-based medical information. The application uses Amazon OpenSearch Service to retrieve vector embeddings. Users report that searches often miss results containing exact medical terms and acronyms, while returning too many semantically similar but irrelevant documents. The company must improve retrieval quality while keeping end-user latency low, even as the document collection scales to millions of documents.  
+  
+Which solution meets these requirements with the **LEAST** operational overhead?
+
+A. Configure hybrid search by combining vector similarity with keyword matching to improve semantic understanding and exact term and acronym matching.
+B. Increase the dimensions of the vector embeddings from 384 to 1536. Use a post-processing AWS Lambda function to filter out irrelevant results after retrieval.
+C. Replace OpenSearch Service with Amazon Kendra. Use query expansion to handle medical acronyms and terminology variants during pre-processing.
+D. Implement a two-stage retrieval architecture in which initial vector search results are re-ranked by an ML model that is hosted on Amazon SageMaker AI.
+
+Correct answer: A
+
+Explanation:
+Hybrid search combines keyword matching, which retrieves exact medical terminology and acronyms, with vector similarity search, which preserves semantic relevance. Amazon OpenSearch Service supports hybrid search for combining keyword and semantic search capabilities, so it improves relevance without introducing separate post-processing or ML reranking infrastructure and its associated latency and operational overhead.
+
+**Learn more:** [Configure Neural Search and Hybrid Search on OpenSearch Serverless](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-configure-neural-search.html) · [Vector search in Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vector-search.html)

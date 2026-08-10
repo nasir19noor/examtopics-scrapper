@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 40
+
+An insurance company uses its existing Amazon SageMaker AI infrastructure to support a web-based application that lets customers predict their insurance premiums. The company keeps the customer data used to train the SageMaker AI model in an Amazon S3 bucket. The dataset is growing rapidly.  
+  
+The company needs a solution to continuously retrain the model. When an employee uploads a new customer-data file to the S3 bucket, the solution must automatically retrain and redeploy the model to the application.  
+  
+Which solution meets these requirements?
+
+A. Use AWS Glue to run an ETL job on each uploaded file. Configure the ETL job to use the AWS SDK to invoke the Sage Maker AI model endpoint. Use real-time inference with the endpoint to re-deploy the model after it is re-trained on the updated customer dataset.
+B. Create an AWS Lambda function and webhook handlers to generate an event when an employee uploads a new file. Configure SageMaker Pipelines to re-deploy the model after it is re-trained on the updated customer dataset. Use Amazon EventBridge to create an event bus. Set the Lambda function event as the source and SageMaker Pipelines as the target.
+C. Create an AWS Step Functions Express workflow with AWS SDK integrations to retrieve the customer data from the S3 bucket when an employee uploads a new file to the S3 bucket. Use a SageMaker Data Wrangler flow to export the data from the S3 bucket to SageMaker Autopilot. Use SageMaker Autopilot to re-deploy the model after it has been re-trained on the updated customer dataset.
+D. Create an AWS Step Functions Standard workflow. Configure the first state to call an AWS Lambda function to respond when an employee uploads a new file to the S3 bucket. Use a pipeline in SageMaker Pipelines to re-deploy the model after it has been re-trained on the updated customer dataset. Use the next state in the workflow to run the pipeline when the first state receives a response.
+
+Correct answer: D
+
+Explanation:
+An Amazon S3 upload can trigger a Lambda function, and a Step Functions Standard workflow can coordinate the subsequent model-building process. A SageMaker Pipeline can include the training and model-deployment steps, so starting the pipeline after the upload retrains the model using the updated dataset and redeploys it to the application. SageMaker Pipelines supports deployment steps, and AWS documents EventBridge/S3-driven automation of pipeline executions. [Define a pipeline — Amazon SageMaker AI](https://docs.aws.amazon.com/sagemaker/latest/dg/define-pipeline.html)
+
+**Learn more:** [Schedule Pipeline Runs — Amazon SageMaker AI](https://docs.aws.amazon.com/sagemaker/latest/dg/pipeline-eventbridge.html) · [Define a pipeline — Amazon SageMaker AI](https://docs.aws.amazon.com/sagemaker/latest/dg/define-pipeline.html)

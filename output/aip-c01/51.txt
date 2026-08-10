@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 51
+
+A company is building a customer-support application that uses Amazon Bedrock foundation models (FMs) to deliver real-time AI assistance to the company's employees. The application must show AI-generated responses character by character as they are produced. It must support thousands of concurrent users with minimal latency. Responses generally take 15 to 45 seconds to complete.  
+  
+Which solution meets these requirements?
+
+A. Configure an Amazon API Gateway WebSocket API with an AWS Lambda integration. Configure the WebSocket API to invoke the Amazon Bedrock InvokeModelWithResponseStream API and stream partial responses through WebSocket connections.
+B. Configure an Amazon API Gateway REST API with an AWS Lambda integration. Configure the REST API to invoke the Amazon Bedrock standard InvokeModel API and implement frontend client-side polling every 100 ms for complete response chunks.
+C. Implement direct frontend client connections to Amazon Bedrock by using IAM user credentials and the InvokeModelWithResponseStream API without any intermediate gateway or proxy layer.
+D. Configure an Amazon API Gateway HTTP API with an AWS Lambda integration. Configure the HTTP API to cache complete responses in an Amazon DynamoDB table and serve the responses through multiple paginated GET requests to frontend clients.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock's `InvokeModelWithResponseStream` returns inference output as a real-time stream, enabling partial text to be delivered as it is generated. A WebSocket-based API Gateway endpoint maintains persistent client connections so a Lambda integration can relay streamed chunks immediately, avoiding polling and complete-response buffering while supporting low-latency concurrent delivery. [InvokeModelWithResponseStream — Amazon Bedrock API Reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModelWithResponseStream.html)
+
+**Learn more:** [InvokeModelWithResponseStream — Amazon Bedrock API Reference](https://docs.aws.amazon.com/bedrock/latest/APIReference/API_runtime_InvokeModelWithResponseStream.html) · [Set up a WebSocket API integration request in API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-websocket-api-integration-requests.html)

@@ -1,0 +1,28 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 117
+
+A financial services company is building an AI-powered search assistant to help investment advisors quickly retrieve investment data. The application runs as an AWS Lambda function and uses Amazon Bedrock, specifically an Amazon Bedrock knowledge base backed by Amazon OpenSearch Serverless as its data source.  
+  
+The application agent must manage collections at scale by automatically assigning access permissions to collections and indexes that match a specific pattern.  
+  
+While testing the knowledge base with Amazon Bedrock tools, the knowledge base sync process completes successfully. However, testing reveals:  
+  
+- A 400 Bad Authorization error from the BedrockAgentRuntime API  
+- A 403 Forbidden error when attempting to access OpenSearch Serverless  
+  
+The company needs to resolve these permissions issues.  
+  
+Which combination of solutions will meet this requirement? (Choose two.)
+
+A. Update the Lambda function execution role to include the bedrock:InvokeAgent permission. Add the aoss:APIAccessAll permission to the Lambda execution role.
+B. Create an OpenSearch Serverless data access policy that includes pattern-based resource rules.
+C. Configure a VPC endpoint policy for OpenSearch Serverless. Add the endpoint to the Lambda function’s VPC configuration.
+D. Configure AWS Secrets Manager to store OpenSearch Serverless credentials. Grant the Lambda function access to retrieve the credentials.
+E. Enable IAM authentication for the OpenSearch Serverless domain. Add the es:ESHttp* permission to the Lambda function execution role.
+
+Correct answer: AB
+
+Explanation:
+The Lambda function's IAM execution role must include bedrock:InvokeAgent so it is authorized to call the BedrockAgentRuntime API (resolving the 400 Bad Authorization error), and it must also include aoss:APIAccessAll, since AWS OpenSearch Serverless requires this specific IAM permission on top of any data access policy grants — without it, callers receive 403 Forbidden errors when accessing collections. Separately, OpenSearch Serverless data access policies natively support pattern-based (prefix + wildcard) resource rules for both collection and index resource types, which is exactly how AWS enables managing access at scale by automatically applying permissions to any new or existing collections/indexes whose names match a defined pattern. VPC endpoint policies address network path access rather than these authorization/authentication errors, Secrets Manager is not used for OpenSearch Serverless credentials since it relies on IAM-based auth, and es:ESHttp* permissions apply to standard (non-serverless) OpenSearch domains rather than OpenSearch Serverless collections.
+
+**Learn more:** [Data access control for Amazon OpenSearch Serverless](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-data-access.html) · [Create a service role for Amazon Bedrock Agents](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-permissions.html)

@@ -1,0 +1,30 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 99
+
+A company wants to build a system that automatically generates study materials from multiple content sources.  
+  
+The content sources include:  
+
+- Document files: PDF files, PowerPoint presentations, and Word documents  
+- Multimedia files: recorded videos  
+  
+The system must meet the following requirements:  
+
+- Process more than 10,000 content sources daily, with peak loads of 500 concurrent uploads  
+- Extract key concepts from both document files and multimedia files  
+- Create and store contextually accurate summaries  
+- Support real-time collaboration on the generated study materials, including version control  
+  
+Which solution will meet these requirements?
+
+A. Use Amazon Bedrock Data Automation (BDA) with AWS Lambda functions to orchestrate document file processing. Use Amazon Bedrock Knowledge Bases to process all multimedia. Store the content in Amazon DocumentDB with replication. Collaborate by using Amazon SNS topic subscriptions. Track changes by using Amazon Bedrock Agents.
+B. Use Amazon Bedrock Data Automation (BDA) with foundation models (FMs) to process document files. Integrate BDA with Amazon Textract for PDF extraction and with Amazon Transcribe for multimedia files. Store the processed content in Amazon S3 with versioning enabled. Store the metadata in Amazon DynamoDCollaborate in real time by using AWS AppSync GraphQL subscriptions with DynamoDB.
+C. Use Amazon Bedrock Data Automation (BDA) with Amazon SageMaker AI endpoints to host content extraction and summarization models. Use Amazon Bedrock Guardrails to extract content from all file types. Store document files in Amazon Neptune for time series analysis. Collaborate by using Amazon Bedrock Chat for real-time messaging.
+D. Use Amazon Bedrock Data Automation (BDA) with AWS Lambda functions to process batches of content files. Fine-tune foundation models (FMs) in Amazon Bedrock to classify documents across all content types. Store the processed data in Amazon ElastiCache (Redis OSS) by using Cluster Mode with sharding. Use Amazon Bedrock Prompt Management for version control.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Data Automation (BDA) extracts structured insights from unstructured multimodal content, and pairing it with Amazon Textract for PDF extraction and Amazon Transcribe for converting multimedia into text enables accurate key-concept extraction and summarization across both document and video sources at high throughput. Storing the generated study materials in Amazon S3 with versioning enabled satisfies the version-control requirement, DynamoDB provides scalable metadata storage suited to the required concurrency and volume, and AWS AppSync GraphQL subscriptions backed by DynamoDB deliver the real-time collaborative update capability needed for multiple users editing study materials simultaneously.
+
+**Learn more:** [Amazon Bedrock Data Automation](https://docs.aws.amazon.com/bedrock/latest/userguide/bda.html) · [Real-Time data with GraphQL Subscriptions - AWS AppSync](https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html)

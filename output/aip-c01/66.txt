@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 66
+
+A company uses Amazon Bedrock to build a customer-support AI assistant. The AI assistant must answer customer questions about their accounts. It must not disclose personal information in its responses. The company must comply with data-residency policies by ensuring all processing takes place in the same AWS Region in which each customer is located.  
+  
+Before making the AI assistant available to customers, the company wants to assess how effectively it prevents personal-information exposure.  
+  
+Which solution meets these requirements?
+
+A. Configure a cross-Region Amazon Bedrock guardrail to apply sensitive information filters. Set the guardrail to detect mode during development and testing. Switch to block mode for production deployment.
+B. Configure an Amazon Bedrock guardrail to apply sensitive information filters. Set the guardrail to mask mode during development and testing. Switch to block mode for production deployment. Deploy a copy of the guardrail to each Region where the company operates.
+C. Configure an Amazon Bedrock guardrail to apply content and topic filters. Set the guardrail to detect mode during development, testing, and production. Disable invocation logging for the Amazon Bedrock model.
+D. Configure a cross-Region Amazon Bedrock guardrail to apply a set of content and word filters. Set the guardrail to detect mode during development and testing. Switch to mask mode for production deployment.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock Guardrails sensitive-information filters are intended to block or mask personally identifiable information in model inputs and responses. Masking during development and testing supports safe assessment of the filtering behavior, while blocking in production prevents detected personal information from being returned. Guardrail evaluation must remain in the customer's Region because cross-Region guardrail inference can route input prompts and output results outside the primary Region; deploying an equivalent guardrail in each operating Region preserves the single-Region processing requirement.
+
+**Learn more:** [Remove PII from conversations by using sensitive information filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html) · [Distribute guardrail inference across AWS Regions](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-cross-region.html)

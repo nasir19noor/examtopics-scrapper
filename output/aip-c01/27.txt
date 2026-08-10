@@ -1,0 +1,21 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 27
+
+A company is designing a solution that uses foundation models (FMs) to support multiple AI workloads. Some FMs must be invoked on demand in real time. Other FMs need consistent, high-throughput access for batch processing.  
+  
+The solution must support hybrid deployment patterns and run workloads across cloud and on-premises infrastructure to meet data residency and compliance requirements.  
+  
+Which combination of steps meets these requirements? (Choose two.)
+
+A. Use AWS Lambda to orchestrate low-latency FM inference by invoking FMs hosted on Amazon SageMaker AI asynchronous endpoints.
+B. Configure provisioned throughput in Amazon Bedrock to ensure consistent performance for high-volume workloads.
+C. Deploy FMs to Amazon SageMaker AI endpoints with support for edge deployment by using Amazon SageMaker Neo. Orchestrate the FMs by using AWS Lambda to support hybrid deployment.
+D. Use Amazon Bedrock with auto-scaling to handle unpredictable traffic surges.
+E. Use Amazon SageMaker JumpStart to host and invoke the FMs.
+
+Correct answer: BC
+
+Explanation:
+Amazon Bedrock Provisioned Throughput supplies dedicated model capacity for consistent, high-volume workloads. Amazon SageMaker AI endpoints support real-time inference, while SageMaker Neo can optimize and deploy supported models for both cloud instances and edge devices, enabling a hybrid cloud/on-premises pattern.
+
+**Learn more:** [Capacity and Performance - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/capacity-limits-cost-optimization.html) · [Model performance optimization with SageMaker Neo - Amazon SageMaker AI](https://docs.aws.amazon.com/sagemaker/latest/dg/neo.html)

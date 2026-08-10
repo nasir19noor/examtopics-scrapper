@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 30
+
+A company is developing a serverless application that uses AWS Lambda functions to help students worldwide summarize notes. The application uses Anthropic Claude through Amazon Bedrock. The company has noticed that most traffic occurs during evening hours in each time zone. Users report throttling errors at peak usage times in their respective time zones.  
+  
+The company must resolve the throttling issues while ensuring the application operates continuously. The solution must preserve application performance quality and must not incur a fixed hourly cost during periods of low traffic.  
+  
+Which solution meets these requirements?
+
+A. Create custom Amazon CloudWatch metrics to monitor model errors. Set provisioned throughput to a value that is safely higher than the peak traffic observed.
+B. Create custom Amazon CloudWatch metrics to monitor model errors. Set up a failover mechanism to redirect invocations to a backup AWS Region when the errors exceed a specified threshold.
+C. Enable invocation logging in Amazon Bedrock. Monitor key metrics such as Invocations, InputTokenCount, OutputTokenCount, and Invocation Throttles. Distribute traffic across cross-Region inference endpoints.
+D. Enable invocation logging in Amazon Bedrock. Monitor InvocationLatency, InvocationClientErrors, and InvocationServerErrors metrics. Distribute traffic across multiple versions of the same model.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock cross-Region inference distributes on-demand requests across capacity in multiple AWS Regions, helping absorb unplanned traffic bursts and improve availability without purchasing continuously billed provisioned throughput. Amazon Bedrock runtime metrics include `Invocations`, `InputTokenCount`, `OutputTokenCount`, and `InvocationThrottles`, which provide the needed visibility into usage and throttling.
+
+**Learn more:** [Increase throughput with cross-Region inference - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) · [Monitor bedrock-runtime inference using CloudWatch metrics - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-runtime-metrics.html)

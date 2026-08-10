@@ -1,0 +1,25 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 10
+
+A company upgraded its Amazon Bedrock-powered foundation model (FM) that supports a multilingual customer service assistant. Following the upgrade, the assistant showed inconsistent behavior between languages. It started producing different responses in some languages for identical questions.  
+  
+The company needs a solution to identify and remediate similar issues in future updates. The evaluation must:  
+  
+- Complete within 45 minutes for every supported language.  
+- Process at least 15,000 test conversations concurrently.  
+- Be fully automated and integrated into the CI/CD pipeline.  
+- Prevent deployment when quality thresholds are not met.  
+  
+Which solution meets these requirements?
+
+A. Create a distributed traffic simulation framework that sends translation-heavy workloads to the assistant in multiple languages simultaneously. Use Amazon CloudWatch metrics to monitor latency, concurrency, and throughput. Run simulations before production releases to identify infrastructure bottlenecks.
+B. Deploy the assistant in multiple AWS Regions with Amazon Route 53 latency-based routing and AWS Global Accelerator to improve global performance. Store multilingual conversation logs in Amazon S3. Perform weekly post-deployment audits to review consistency.
+C. Create a pre-processing pipeline that normalizes all incoming messages into a consistent format before sending the messages to the assistant. Apply rule-based checks to flag potential hallucinations in the outputs. Focus the evaluation on the normalized text to simplify testing across languages.
+D. Set up standardized multilingual test conversations with identical meaning. Run the test conversations in parallel by using Amazon Bedrock model evaluation jobs. Apply similarity and hallucination thresholds. Integrate the process into the CI/CD pipeline to block releases that fail.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock automatic model evaluation jobs can run programmatically against a custom prompt dataset and produce computed quality metrics. Standardized conversations with the same meaning in each supported language make inconsistent multilingual responses measurable; similarity and hallucination thresholds provide objective release criteria. Invoking the evaluation from CI/CD and failing the pipeline when those criteria are not met creates the required automated deployment gate. [AWS: Evaluate the performance of Amazon Bedrock resources](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html)
+
+**Learn more:** [AWS: Evaluate the performance of Amazon Bedrock resources](https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html) · [AWS: Starting an automatic model evaluation job in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-jobs-management-create.html)

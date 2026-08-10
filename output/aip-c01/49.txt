@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 49
+
+A bank is developing a generative AI (GenAI) application that uses Amazon Bedrock to evaluate loan applications from scanned financial documents. The application must extract structured data from the documents. It must redact personally identifiable information (PII) before inference. It must use foundation models (FMs) to generate approvals. It must route document-extraction results with low confidence to human reviewers located in the same AWS Region as the loan applicant.  
+  
+The company must ensure the application meets strict Regional data-residency and auditability requirements. The application must scale to process 25,000 applications per day and provide 99.9% availability.  
+  
+Which combination of solutions meets these requirements? (Choose three.)
+
+A. Deploy Amazon Textract and Amazon Augmented AI (Amazon A2I) within the same Region to extract relevant data from the scanned documents. Route low-confidence pages to human reviewers.
+B. Use AWS Lambda functions to detect and redact PII from submitted documents before inference. Apply Amazon Bedrock guardrails to prevent inappropriate or unauthorized content in model outputs. Configure Region-specific IAM roles to enforce data residency requirements and to control access to the extracted data.
+C. Use Amazon Kendra and Amazon OpenSearch Service to extract field level values semantically from the uploaded documents before inference.
+D. Store uploaded documents in Amazon S3 and apply object metadata. Configure IAM policies to store original documents within the same Region as each applicant. Enable object tagging for future audits.
+E. Use AWS Glue Data Quality to validate the structured document data. Use AWS Step Functions to orchestrate a review workflow that includes a prompt engineering step that transforms validated data into optimized prompts before invoking Amazon Bedrock to assess loan applications.
+F. Use Amazon SageMaker Clarify to generate fairness and bias reports based on model scoring decisions that Amazon Bedrock makes.
+
+Correct answer: ABE
+
+Explanation:
+Amazon Textract extracts document data, and Amazon A2I integrates with Textract to create human-review loops when configured confidence conditions are met. AWS Lambda can perform application-specific PII redaction before the data is sent for inference, while Amazon Bedrock Guardrails can detect and mask sensitive information and apply output safety controls. AWS Glue Data Quality validates the extracted structured data, and AWS Step Functions can orchestrate the workflow, including invoking Amazon Bedrock after prompt transformation. These managed, serverless services provide scalable workflow processing and retain regional deployment boundaries when configured in each required Region.
+
+**Learn more:** [Core Components of Amazon A2I](https://docs.aws.amazon.com/sagemaker/latest/dg/a2i-getting-started-core-components.html) · [Remove PII from conversations by using sensitive information filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html)

@@ -1,0 +1,19 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 31
+
+A financial services company plans to use Amazon Bedrock foundation models (FMs) to analyze call center recordings. After calls end, the call center stores the recordings as MP3 files in an Amazon S3 bucket. The company must generate summaries and sentiment analysis for the recordings in a structured format as soon as new files are created. The recordings are 20 MB on average.  
+  
+Which combination of solutions will satisfy these requirements? (Choose two.)
+
+A. Use AWS Step Functions to orchestrate a workflow to process the recordings. Configure steps to invoke Amazon Transcribe to convert audio to text, validate job completion, and to invoke an AWS Lambda function to process the text by using Amazon Bedrock FMs to generate structured analysis output.
+B. Use AWS Step Functions to orchestrate a workflow to process the recordings. Configure steps to invoke Amazon Transcribe to convert audio to text, validate job completion, and to directly invoke Amazon Bedrock FMs to generate summaries and sentiment analysis in JSON format.
+C. Use AWS Step Functions to orchestrate a workflow to process the recordings. Configure steps to invoke Amazon Transcribe to convert audio to text, validate job completion, and to invoke an AWS Lambda function to create a prompt to invoke Amazon Bedrock FMs to generate structured analysis output.
+D. Configure the source S3 bucket to send events to Amazon EventBridge. Create an EventBridge rule to invoke the Step Functions workflow when an object is created in the bucket.
+E. Configure the source S3 bucket to send notifications to the Step Functions workflow when an object is created in the bucket.
+
+Correct answer: BD
+
+Explanation:
+AWS Step Functions can orchestrate Amazon Transcribe and directly invoke an Amazon Bedrock model through its optimized Bedrock integration. The integration accepts a model-specific JSON request body, enabling a prompt that requests structured summary and sentiment output without an intermediate Lambda function. Amazon S3 can send Object Created events to Amazon EventBridge, and an EventBridge rule can use a Step Functions state machine as its target to start the workflow for each newly created recording.
+
+**Learn more:** [Invoke and customize Amazon Bedrock models with Step Functions](https://docs.aws.amazon.com/step-functions/latest/dg/connect-bedrock.html) · [Starting a Step Functions workflow in response to events](https://docs.aws.amazon.com/step-functions/latest/dg/tutorial-cloudwatch-events-s3.html)

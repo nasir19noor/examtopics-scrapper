@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 22
+
+A financial services company must build a document-analysis system using Amazon Bedrock to process quarterly reports. The system must analyze financial data, perform sentiment analysis, and validate compliance across batches of reports. Each batch contains 5 reports. Each report requires multiple foundation model (FM) calls. The solution must complete the analysis within 10 seconds for every batch. The current sequential processing takes 45 seconds for each batch.  
+  
+Which solution will satisfy these requirements?
+
+A. Use AWS Lambda functions with provisioned concurrency to process each analysis type sequentially. Configure the Lambda function timeouts to 10 seconds. Configure automatic retries with exponential backoff.
+B. Use AWS Step Functions with a Parallel state to invoke separate AWS Lambda functions for each analysis type simultaneously. Configure Amazon Bedrock client timeouts. Use Amazon CloudWatch metrics to track execution time and model inference latency.
+C. Create an Amazon SQS queue to buffer analysis requests. Deploy multiple AWS Lambda functions with reserved concurrency. Configure each Lambda function to process different aspects of each report sequentially and then combine the results.
+D. Deploy an Amazon ECS cluster that runs containers that process each report sequentially. Use a load balancer to distribute batch workloads. Configure an auto-scaling policy based on CPU utilization to handle demand fluctuations.
+
+Correct answer: B
+
+Explanation:
+AWS Step Functions can use a Parallel state to run independent branches concurrently. Invoking separate Lambda functions simultaneously for financial analysis, sentiment analysis, and compliance validation removes the sequential processing bottleneck, making the 10-second batch target achievable when the parallel branches complete within that limit. Bedrock client timeouts and CloudWatch latency metrics support controlling and monitoring the concurrent inference workflow.
+
+**Learn more:** [AWS Step Functions Parallel state](https://docs.aws.amazon.com/step-functions/latest/dg/state-parallel.html) · [Monitor bedrock-runtime with CloudWatch metrics](https://docs.aws.amazon.com/bedrock/latest/userguide/monitoring-runtime-metrics.html)

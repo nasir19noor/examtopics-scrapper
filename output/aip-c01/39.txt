@@ -1,0 +1,22 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 39
+
+Example Corp operates a personalized video-generation service used by millions of enterprise customers. Customers create marketing videos by submitting prompts to the company’s proprietary generative AI (GenAI) model. To improve output relevance and personalization, Example Corp wants to enrich prompts with customer-specific context, including product preferences, customer attributes, and business history.  
+  
+The customers have strict data-governance requirements. They must retain full ownership and control of their data. They do not need real-time access; however, semantic accuracy must be high and retrieval latency must stay low to support customer-experience use cases.  
+  
+Example Corp wants to minimize architectural complexity in its integration pattern. It does not want to deploy and manage services in each customer’s environment unless necessary.  
+  
+Which solution meets these requirements?
+
+A. Ensure that each customer sets up an Amazon Q Business index that includes the customer's internal data. Ensure that each customer designates Example Corp as a data accessor to allow Example Corp to retrieve relevant content by using a secure API to enrich prompts at runtime.
+B. Use federated search with Model Context Protocol (MCP) by deploying real-time MCP servers for each customer. Retrieve data in real time during prompt generation.
+C. Ensure that each customer configures an Amazon Bedrock knowledge base. Allow cross-account querying so Example Corp can retrieve structured data for prompt augmentation.
+D. Configure Amazon Kendra to crawl customer data sources. Share the resulting indexes across accounts so Example Corp can query each customer's Amazon Kendra index to retrieve augmentation data.
+
+Correct answer: A
+
+Explanation:
+Amazon Q Business lets a customer retain and manage its own enterprise-data index while granting a verified independent software vendor controlled cross-account data-accessor permissions. The provider can use the `SearchRelevantContent` API to retrieve relevant content for prompt augmentation without directly connecting to or indexing every customer data source. Amazon Q supports semantic and hybrid retrieval and applies the customer’s configured access controls.
+
+**Learn more:** [Amazon Q index for independent software vendors (ISVs)](https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/isv.html) · [Getting access to your customer's Amazon Q index](https://docs.aws.amazon.com/amazonq/latest/qbusiness-ug/isv-getting-access.html)

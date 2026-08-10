@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 79
+
+A company is developing a generative AI (GenAI) application that processes financial reports and provides summaries to analysts. The application must operate in two compute environments. In one environment, an AWS Lambda function must use the Python SDK to analyze reports on demand. In the other environment, Amazon EKS containers must use the JavaScript SDK to batch-process multiple reports on a schedule. The application must maintain conversational context during multi-turn interactions, use the same foundation model (FM) in both environments, and provide consistent authentication.  
+  
+Which solution meets these requirements?
+
+A. Use the Amazon Bedrock InvokeModel API with a separate authentication method for each environment. Store conversation states in Amazon DynamoDB. Use custom I/O formatting logic for each programming language.
+B. Use the Amazon Bedrock Converse API directly in both environments with a common authentication mechanism that uses IAM roles. Store conversation states in Amazon ElastiCache. Creating programming language-specific wrappers for model parameters.
+C. Create a centralized Amazon API Gateway REST API endpoint that handles all model interactions by using the InvokeModel API. Store interaction history in application process memory in each Lambda function or EKS container. Use environment variables to configure model parameters.
+D. Use the Amazon Bedrock Converse API and IAM roles for authentication. Pass previous messages in the request messages array to maintain conversational context. Use programming language-specific SDKs to establish consistent API interfaces.
+
+Correct answer: D
+
+Explanation:
+Amazon Bedrock Converse supplies a consistent inference interface across supported foundation models and is available through language-specific AWS SDKs. IAM roles provide a common authentication mechanism for Lambda and EKS workloads. Converse preserves multi-turn context when prior user and assistant messages are included in each later request's `messages` array; using the same model ID in both environments ensures the same FM is used.
+
+**Learn more:** [Inference using Converse API - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html) · [Amazon Bedrock Runtime examples using SDK for JavaScript (v3)](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_bedrock-runtime_code_examples.html)

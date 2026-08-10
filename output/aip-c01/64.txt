@@ -1,0 +1,19 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 64
+
+A company uses AWS Lambda and REST APIs to build a reasoning agent that automates support workflows. The system must retain memory across interactions, share relevant agent state, and support both event-driven and synchronous invocation. It must also enforce access control and session-based permissions.  
+  
+Which combination of steps delivers the **MOST** scalable solution? (Choose two.)
+
+A. Use Amazon Bedrock AgentCore to manage memory and session-aware reasoning. Deploy the agent with built-in identity support, event handling, and observability.
+B. Register the Lambda functions and the REST APIs as actions by using Amazon API Gateway and Amazon EventBridge. Enable Amazon Bedrock AgentCore to invoke the Lambda functions and the REST APIs without custom orchestration code.
+C. Use Amazon Bedrock Agents for reasoning and conversation management. Use AWS Step Functions and Amazon SQS queues for orchestration. Store the agent state in Amazon DynamoDB to maintain memory between steps.
+D. Deploy the reasoning logic as a container on Amazon ECS behind Amazon API Gateway. Use Amazon Aurora to store memory data and identity data.
+E. Build a custom RAG pipeline by using Amazon Kendra and Amazon Bedrock. Use AWS Lambda to orchestrate tool invocations. Store the agent state in Amazon S3.
+
+Correct answer: AB
+
+Explanation:
+Amazon Bedrock AgentCore provides managed, persistent agent memory that can be shared across agents, while AgentCore Runtime provides isolated sessions, scalable runtime execution, built-in identity integration, and observability. AgentCore Gateway can expose Lambda functions and REST APIs as secure agent tools, handling protocol translation and credential-based access so the agent can invoke those backends without implementing custom orchestration. This combination supplies managed state, session-aware access control, and both synchronous and event-driven agent workflows.
+
+**Learn more:** [Amazon Bedrock AgentCore overview](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/) · [Core concepts for Amazon Bedrock AgentCore Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/gateway-core-concepts.html)

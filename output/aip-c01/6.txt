@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 6
+
+A retail company uses Amazon Bedrock to build a customer service AI assistant. Analysis indicates that 70% of customer inquiries are simple product questions that a smaller model can handle effectively. However, 30% of inquiries are complex return-policy questions requiring advanced reasoning. The company wants to implement a cost-effective model-selection framework that automatically routes customer inquiries to appropriate models according to inquiry complexity. The framework must preserve high customer satisfaction and minimize response latency.  
+  
+Which solution meets these requirements with the **LEAST** implementation effort?
+
+A. Create a multi-stage architecture that uses a small foundation model (FM) to classify the complexity of each inquiry. Route simple inquiries to a smaller, more cost-effective model. Route complex inquiries to a larger, more capable model. Use AWS Lambda functions to handle the routing logic.
+B. Use Amazon Bedrock intelligent prompt routing to automatically analyze inquiries. Route simple product inquiries to smaller models, and route complex return policy inquiries to more capable larger models.
+C. Implement a single-model solution that uses an Amazon Bedrock mid-sized foundation model (FM) with on-demand pricing. Include special instructions in model prompts to handle both simple and complex inquiries by using the same model.
+D. Create separate Amazon Bedrock endpoints for simple and complex inquiries. Implement a rule-based routing system based on keyword detection. Use on-demand pricing for the smaller model and provisioned throughput for the larger model.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock intelligent prompt routing provides a managed, serverless endpoint that analyzes each incoming prompt, predicts response quality across the selected models, and dynamically sends the request to the model offering the appropriate quality-cost tradeoff. This eliminates custom classification and routing infrastructure while allowing simpler inquiries to use a lower-cost model and complex inquiries to use a more capable model.
+
+**Learn more:** [Understanding intelligent prompt routing in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-routing.html)

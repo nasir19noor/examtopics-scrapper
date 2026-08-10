@@ -1,0 +1,24 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 108
+
+A financial services company handles over 10,000 customer inquiries each day using a multi-agent GenAI application built on Amazon Bedrock AgentCore. The agents in this application invoke several custom tools. During peak usage periods, users report that these custom tools experience failure rates as high as 40%, and the tools perform inconsistently across different teams within the company.  
+  
+A GenAI developer needs to implement an observability solution that delivers end-to-end visibility into agent interactions and tool behavior. The solution must:  
+  
+- Use built-in Amazon Bedrock capabilities  
+- Not require custom instrumentation  
+- Introduce minimal performance overhead  
+  
+Which solution meets these requirements?
+
+A. Enable AgentCore Observability and trace collection. Use AWS X-Ray to capture distributed traces for the custom tools. Build Amazon CloudWatch dashboards to visualize metrics for errors, throttling, and latency during peak usage periods.
+B. Use Amazon CloudWatch Container Insights to monitor the agents. Configure an AWS Lambda function to poll the Amazon Bedrock API for tool usage metrics. Configure the function to store results in CloudWatch to generate alerts.
+C. Build a custom ETL pipeline that uses AWS Lambda functions to process Amazon CloudWatch logs from Amazon Bedrock. Store the processed data in Amazon DynamoDB. Use Amazon Quick Sight to visualize cross-team performance patterns.
+D. Enable AgentCore Observability and send trace data to Amazon CloudWatch Logs. Use a custom AWS Lambda function to extract tool performance metrics from the logs. Use Amazon Managed Grafana to visualize trends.
+
+Correct answer: A
+
+Explanation:
+Amazon Bedrock AgentCore Observability is a native, built-in capability that automatically emits OpenTelemetry-compatible traces, spans, metrics, and logs without requiring developers to write custom instrumentation code. AgentCore's built-in integration with AWS X-Ray provides distributed tracing by propagating trace context across service boundaries once observability and CloudWatch Transaction Search are enabled — this is a native setup step, not custom code. Amazon CloudWatch then natively provides observability dashboards and metrics (invocation counts, errors, throttling, latency) that can be used to visualize tool performance during peak periods across teams. This combination satisfies the requirements for built-in functionality, no custom instrumentation, end-to-end visibility, and minimal overhead. In contrast, solutions requiring custom Lambda functions to poll APIs or parse logs, custom ETL pipelines, or third-party visualization tools like Grafana or QuickSight introduce custom instrumentation and additional operational overhead that violate the stated constraints.
+
+**Learn more:** [Amazon Bedrock AgentCore and AWS X-Ray](https://docs.aws.amazon.com/xray/latest/devguide/xray-services-agentcore.html) · [Observe your agent applications on Amazon Bedrock AgentCore Observability](https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/observability.html)

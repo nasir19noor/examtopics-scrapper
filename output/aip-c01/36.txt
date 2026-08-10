@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 36
+
+A financial services company is building a customer-service AI assistant using Amazon Bedrock. The AI assistant must not provide investment advice to users. It must block harmful content, mask personally identifiable information (PII), and retain audit trails for compliance reporting. The AI assistant must apply content filtering to both user inputs and model responses according to content sensitivity.  
+  
+The company needs an Amazon Bedrock guardrail configuration that effectively enforces these policies with minimal false positives. The solution must support multiple handling strategies for multiple sensitive-content types.  
+  
+Which solution meets these requirements?
+
+A. Configure a single guardrail and set content filters to high for all categories. Set up denied topics for investment advice and include sample phrases to block. Set up sensitive information filters that apply the block action for all PII entities. Apply the guardrail to all model inference calls.
+B. Configure multiple guardrails by using tiered policies. Create one guardrail and set content filters to high. Configure the guardrail to block PII for public interactions. Configure a second guardrail and set content filters to medium. Configure the second guardrail to mask PII for internal use. Configure multiple topic-specific guardrails to block investment advice and set up contextual grounding checks.
+C. Configure a guardrail and set content filters to medium for harmful content. Set up denied topics for investment advice and include clear definitions and sample phrases to block. Configure sensitive information filters to mask PII in responses and to block financial information in inputs. Enable both input and output evaluations that use custom blocked messages for audits.
+D. Create a separate guardrail for each use case. Create one guardrail that applies a harmful content filter. Create a guardrail to apply topic filters for investment advice. Create a guardrail to apply sensitive information filters to block PII. Use AWS Step Functions to chain the guardrails together sequentially. Use conditional logic based on content classification.
+
+Correct answer: C
+
+Explanation:
+Amazon Bedrock Guardrails can combine medium-strength harmful-content filters, denied topics with definitions and example phrases, and sensitive-information filters in one configuration. Sensitive-information policies can apply different actions to inputs and outputs: PII can be anonymized in responses, while financial information can be blocked in inputs. Guardrails evaluate both prompts and model responses, and medium filtering helps limit false positives relative to high-strength filtering.
+
+**Learn more:** [Amazon Bedrock Guardrails: sensitive information filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html) · [Amazon Bedrock Guardrails: content filters](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filters.html)

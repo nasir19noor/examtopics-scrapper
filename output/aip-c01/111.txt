@@ -1,0 +1,24 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 111
+
+A company operates a customer service application that leverages Amazon Bedrock to generate personalized responses to customer inquiries. The company wants to set up a quality assurance process to evaluate how effective its prompts are and how well its model configurations perform across updates. This process needs to:  
+  
+- Automatically compare outputs produced by multiple prompt templates  
+- Detect issues with response quality  
+- Provide quantitative metrics for evaluation  
+- Allow human reviewers to submit feedback on the generated responses  
+- Prevent any configuration that does not meet a predefined quality threshold from being deployed  
+  
+Which solution will meet these requirements?
+
+A. Create an AWS Lambda function that sends sample customer inquiries to multiple Amazon Bedrock model configurations and stores responses in Amazon S3. Use Amazon QuickSight to visualize response patterns. Manually review outputs daily. Use AWS CodePipeline to deploy the configurations that have quality scores above the specified quality threshold.
+B. Use Amazon Bedrock evaluation jobs to compare model outputs by using custom prompt datasets. Configure AWS CodePipeline to run the evaluation jobs when prompt templates change. Configure CodePipeline to deploy the configurations that have quality scores above the specified quality threshold.
+C. Set up Amazon CloudWatch alarms to monitor response latency and error rates from Amazon Bedrock. Use Amazon EventBridge rules to notify the company when latency and error rate metrics exceed thresholds. Configure an approval workflow in AWS Systems Manager to perform manual quality checks.
+D. Use AWS Lambda functions to create an automated testing framework that samples production traffic and routes duplicate requests to the updated model version. Use Amazon Comprehend sentiment analysis to compare results. Block deployment if sentiment scores decrease.
+
+Correct answer: B
+
+Explanation:
+Amazon Bedrock's model evaluation jobs natively support comparing outputs across multiple prompt templates and model configurations using custom prompt datasets, and they can be run either automatically (using an LLM as judge) or with human evaluators providing feedback, producing quantitative quality metrics. Integrating these evaluation jobs into AWS CodePipeline allows the pipeline to automatically trigger evaluations whenever prompt templates or configurations change, and to gate the deployment stage so that only configurations scoring above the specified quality threshold are promoted to production. This combination directly satisfies the requirements for automated comparison, quality issue detection, quantitative metrics, human reviewer feedback, and threshold-based deployment control, without requiring custom-built evaluation logic.
+
+**Learn more:** [Use custom prompt dataset for model evaluation in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-prompt-datasets-custom.html) · [Create a custom prompt dataset for a model evaluation job that uses human workers - Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-prompt-datasets-custom-human.html)

@@ -1,0 +1,25 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 112
+
+A retail company operates an application that provides product recommendations to customers on its website. The application uses Amazon Bedrock to generate these recommendations by dynamically building prompts and sending them to foundation models (FMs).  
+  
+A GenAI developer deploys an update to the application that instructs the FM to include a specific promotional message whenever it generates a response to prompts. During testing, the developer finds that:  
+  
+- The promotional message does not always appear in the responses.  
+- When the promotional message does appear, it does not always flow smoothly with the rest of the text.  
+  
+The GenAI developer needs to guarantee that the promotional message always appears in the FM's responses.  
+  
+Which solution meets this requirement?
+
+A. Use an Amazon Bedrock Guardrails filter on the prompt. Set the input filter strength to HIGH.
+B. Generate multiple response variants that include the promotional message in different ways. Use a reranker model to select the most coherent version based on relevance to the original prompt.
+C. Run the prompt through Amazon Bedrock. Process the response through Amazon Bedrock Agents to add the promotional message. Rerank the results by using the original prompt and the desired message as context.
+D. Reinforce the requirement to include the new promotional message within product recommendations by using an output indicator in prompts to the FM.
+
+Correct answer: C
+
+Explanation:
+Prompt-only instructions to a foundation model are not deterministic — the model may omit the requested content or integrate it awkwardly. To guarantee that the promotional message is always present and reads naturally, the response must be processed after generation: run the prompt through Amazon Bedrock to get the initial recommendation, then use Amazon Bedrock Agents to programmatically insert the promotional message into the response (ensuring 100% inclusion), and rerank the result using the original prompt and the desired promotional message as context so the final text is coherent. This combination removes reliance on the FM's voluntary compliance with an embedded instruction and instead enforces the requirement architecturally, while still optimizing for natural flow.
+
+**Learn more:** [How Amazon Bedrock Agents works](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-how.html) · [Use a reranker model in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/rerank-use.html)

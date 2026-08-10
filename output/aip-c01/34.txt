@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 34
+
+A company is building a generative AI (GenAI) application using Amazon Bedrock. The application will analyze patterns and relationships in the company’s data. It will process millions of new data points each day across AWS Regions in Europe, North America, and Asia before storing the data in Amazon S3.  
+  
+The application must comply with local data-protection and storage regulations. Data residency and processing must take place within the same continent. The application must also retain audit trails of its decision-making processes and provide data-classification capabilities.  
+  
+Which solution meets these requirements?
+
+A. Deploy the application in each Region with local IAM policies. Use Amazon Bedrock cross-Region inference to distribute the workload. Use Amazon CloudWatch to log AI decision-making processes and data processing activities. Manually track compliance certifications across Regions.
+B. Use SCPs with AWS Organizations to manage location-specific permissions. Use AWS CloudTrail immutable logs to audit the decision-making processes. Import a custom model into Amazon Bedrock and deploy the model to each Region.
+C. Use Amazon S3 Object Lock with Region-specific S3 bucket policies. Pre-process the data points within the Region based on geographic origin before sending the data points to Amazon Bedrock. Use Amazon Macie to classify the data. Use AWS CloudTrail immutable logs to audit the decision-making processes.
+D. Create separate AWS accounts for each Region with individual compliance frameworks. Use Amazon SageMaker AI with custom monitoring to track model performance and compliance with data residency requirements. Create manual reports for each regulatory jurisdiction.
+
+Correct answer: C
+
+Explanation:
+Processing data in the originating Region before sending it to Amazon Bedrock supports keeping processing within the required continent, while Region-specific S3 policies keep stored data under the applicable regional controls. Amazon S3 Object Lock provides WORM retention to protect stored records, Amazon Macie discovers and classifies sensitive data in Amazon S3, and CloudTrail provides auditable API activity with log-file integrity validation.
+
+**Learn more:** [Increase throughput with cross-Region inference — Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) · [Locking objects with Object Lock — Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-lock.html)

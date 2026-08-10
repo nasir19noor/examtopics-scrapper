@@ -1,0 +1,18 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 82
+
+A company is deploying a serverless inference API with AWS Lambda. The API will dynamically invoke multiple AI models hosted on Amazon Bedrock. The company must design a solution that can switch model providers in real time without changing or redeploying Lambda code. The design must provide safe configuration rollouts, validation, and rollback capabilities.  
+  
+Which solution meets these requirements?
+
+A. Store the active model provider in AWS Systems Manager Parameter Store. Configure a Lambda function to read the parameter at runtime to determine which model to invoke.
+B. Store the active model provider in AWS AppConfig. Configure a Lambda function to read the configuration at runtime to determine which model to invoke.
+C. Configure an Amazon API Gateway REST API to route requests to separate Lambda functions. Hardcode each Lambda function to a specific model provider. Switch the integration target manually.
+D. Store the active model provider in a JSON file hosted on Amazon S3. Use AWS AppConfig to reference the S3 file as a hosted configuration source. Configure a Lambda function to read the file through AppConfig at runtime to determine which model to invoke.
+
+Correct answer: B
+
+Explanation:
+AWS AppConfig delivers runtime configuration to Lambda while keeping provider selection outside the deployed function code. It validates configuration before deployment, supports controlled deployment strategies for safe rollouts, and can automatically roll back to the prior configuration when associated CloudWatch alarms indicate a problem.
+
+**Learn more:** [What is AWS AppConfig?](https://docs.aws.amazon.com/appconfig/latest/userguide/what-is-appconfig.html) · [Reverting a configuration](https://docs.aws.amazon.com/appconfig/latest/userguide/appconfig-deploying-reverting.html)

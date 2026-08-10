@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 55
+
+A financial services company is developing a customer support application that retrieves relevant financial-regulation documents from a database according to semantic similarity with user queries. The application must integrate with Amazon Bedrock to generate responses. It must be able to search documents in English, Spanish, and Portuguese, and filter documents by metadata such as publication date, regulatory agency, and document type.  
+  
+The database holds approximately 10 million document embeddings. To reduce operational overhead, the company needs a solution that minimizes management and maintenance work. The application must deliver low-latency responses for real-time customer interactions.  
+  
+Which solution meets these requirements?
+
+A. Use Amazon OpenSearch Serverless to provide vector search capabilities and metadata filtering. Connect to Amazon Bedrock Knowledge Bases to enable Retrieval Augmented Generation (RAG) capabilities that use an Anthropic Claude foundation model (FM).
+B. Deploy an Amazon Aurora PostgreSQL database with the pgvector extension. Define tables to store embeddings and metadata. Use SQL queries to perform similarity searches. Send retrieved documents to Amazon Bedrock to generate responses.
+C. Use Amazon S3 Vectors to configure a vector index and non-filterable metadata fields. Integrate S3 Vectors with Amazon Bedrock to enable Retrieval Augmented Generation (RAG) capabilities.
+D. Set up an Amazon Neptune Analytics graph database. Configure a vector index that has appropriate dimensionality to store document embeddings. Use Amazon Bedrock to perform graph-based retrieval and to generate responses.
+
+Correct answer: A
+
+Explanation:
+Amazon OpenSearch Serverless supports vector search and metadata filtering, and Amazon Bedrock Knowledge Bases provides a managed retrieval-augmented generation workflow that can use an OpenSearch Serverless vector store. OpenSearch Serverless automatically handles capacity scaling, cluster sizing and tuning, software updates, and index lifecycle management, making it suitable for a large, low-latency vector-search workload with minimal operational maintenance. A multilingual embedding model can be used for the English, Spanish, and Portuguese content.
+
+**Learn more:** [Amazon OpenSearch Serverless](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless.html) · [Retrieve data and generate AI responses with Amazon Bedrock Knowledge Bases](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html)

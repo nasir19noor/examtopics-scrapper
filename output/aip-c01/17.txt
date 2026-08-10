@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 17
+
+A company uses Amazon Bedrock to build an AI assistant that provides customer support. Analysis indicates that 40% of customer queries use different phrasing or wording to ask the same questions.  
+  
+The company needs a solution that reduces redundant model calls, ensures semantically equivalent questions receive consistent answers, and provides low latency.  
+  
+Which solution meets these requirements?
+
+A. Deploy an Amazon DynamoDB Accelerator (DAX) cluster as an in-memory cache. Specify the query text as the partition key and the model response text as the sort key. Query the cache by using a filter expression with the LIKE operator.
+B. Use Amazon Bedrock to generate embeddings from customer queries. Use Amazon MemoryDB for Valkey to store hash sets of vector embeddings and model responses. Use a RANGE query to find similar queries and their responses.
+C. Deploy Amazon OpenSearch Service that has k-nearest neighbor (k-NN) capabilities to store query-response text pairs. Use an approximate k-NN technique to find similar queries and their responses.
+D. Create a caching solution by using Amazon DynamoDB to create a global secondary index on the normalized query text. Apply stemming to incoming queries. Query the index of cached customer queries.
+
+Correct answer: C
+
+Explanation:
+Vector embeddings represent semantic meaning, allowing differently worded but equivalent customer queries to be matched by similarity. Amazon OpenSearch Service supports vector k-nearest-neighbor search, and approximate k-NN methods such as HNSW provide faster searches on large datasets. Storing cached query-response pairs in OpenSearch and retrieving the nearest semantic match avoids redundant model calls while returning a consistent cached response.
+
+**Learn more:** [Vector search in Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vector-search.html) · [k-Nearest Neighbor (k-NN) search in Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/knn.html)

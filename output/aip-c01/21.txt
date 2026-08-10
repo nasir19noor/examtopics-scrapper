@@ -1,0 +1,19 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 21
+
+An e-commerce company is building an internal platform for developing generative AI applications with Amazon Bedrock foundation models (FMs). Developers must choose models based on evaluations aligned with e-commerce use cases. The platform must show accuracy metrics for text generation and summarization in dashboards. The company has custom e-commerce datasets to use as standardized evaluation inputs.  
+  
+Which combination of steps meets these requirements with the **LEAST** operational overhead? (Choose two.)
+
+A. Import the datasets to an Amazon S3 bucket. Provide appropriate IAM permissions and cross-origin resource sharing (CORS) permissions to give the evaluation jobs access to the datasets.
+B. Import the datasets to an Amazon S3 bucket. Provide appropriate IAM permissions and a VPC endpoint configuration to give the evaluation jobs access to the datasets.
+C. Configure an AWS Lambda function to create model evaluation jobs on a schedule in the Amazon Bedrock console. Provide the URI of the S3 bucket that contains the datasets as an input. Configure the evaluation jobs to measure the real world knowledge (RWK) score for text generation and BERT Score for summarization. Configure a second Lambda function to check the status of the jobs and publish custom logs to Amazon CloudWatch. Create a custom Amazon CloudWatch Logs Insights dashboard.
+D. Use Amazon SageMaker Clarify on a schedule to create model evaluation jobs. Use open source frameworks to create and run standardized evaluations. Publish results to Amazon CloudWatch namespaces. Use the word error rate score for text generation and toxicity for summarization as metrics for accuracy. Configure an AWS Lambda function to check the status of the jobs and publish custom logs to CloudWatch. Create a custom Amazon CloudWatch Logs Insights dashboard.
+E. Run an Amazon SageMaker AI notebook job on a schedule by using the fmevals or ragas framework to run evaluations that use the datasets in the S3 bucket. Write Python code in the notebook that makes direct InvokeModel API calls to the FMs and processes their responses for evaluation. Publish job status and results to Amazon CloudWatch Logs to measure the real world knowledge (RWK) score for text generation and toxicity for summarization as metrics for accuracy. Create a custom CloudWatch Logs Insights dashboard.
+
+Correct answer: AC
+
+Explanation:
+Amazon Bedrock managed model evaluation jobs can use custom prompt datasets stored in Amazon S3 with appropriate IAM permissions. For automatic evaluations, accuracy for general text generation is calculated as the Real World Knowledge (RWK) score, and accuracy for text summarization is calculated as BERTScore. Using the managed Amazon Bedrock evaluation capability minimizes operational work compared with running custom SageMaker jobs, open-source evaluation frameworks, or direct `InvokeModel` processing code.
+
+**Learn more:** [Model evaluation task types in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-tasks.html) · [Starting an automatic model evaluation job in Amazon Bedrock](https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-jobs-management-create.html)

@@ -26,13 +26,14 @@ import os
 import re
 import socket
 import sys
+import threading
 import time
+from collections import OrderedDict
 from pathlib import Path
 
 import requests
 from bs4 import BeautifulSoup, NavigableString, Tag
 from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
 
 HEADERS = {
     "User-Agent": (
@@ -43,10 +44,23 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
 }
 
-# (connect, read) — both well under gunicorn's worker timeout so a slow
-# remote can never wedge a worker. Override via env if you really need.
+# Per-attempt (connect, read) timeouts.
 CONNECT_TIMEOUT = float(os.environ.get("SCRAPER_CONNECT_TIMEOUT", "10"))
-READ_TIMEOUT    = float(os.environ.get("SCRAPER_READ_TIMEOUT",    "30"))
+READ_TIMEOUT    = float(os.environ.get("SCRAPER_READ_TIMEOUT",    "20"))
+
+# Wall-clock budget for fetch() *including* every retry and backoff. This is
+# the number that actually bounds how long a click on "Scrape" can hang:
+# per-attempt timeouts alone don't, because retries multiply them.
+TOTAL_BUDGET    = float(os.environ.get("SCRAPER_TOTAL_TIMEOUT",   "25"))
+MAX_ATTEMPTS    = int(os.environ.get("SCRAPER_MAX_ATTEMPTS",      "3"))
+MAX_BACKOFF     = float(os.environ.get("SCRAPER_MAX_BACKOFF",     "4"))
+
+# Successful page HTML is cached for this long, so re-scraping the same URL
+# (or two people scraping the same question) costs no round trip at all.
+CACHE_TTL       = float(os.environ.get("SCRAPER_CACHE_TTL",       "300"))
+CACHE_MAX       = int(os.environ.get("SCRAPER_CACHE_MAX",         "128"))
+
+RETRY_STATUS = frozenset({500, 502, 503, 504})
 
 # In Docker's default bridge network IPv6 is usually unroutable, and
 # examtopics.com (Cloudflare) publishes AAAA records — so Python's
@@ -61,24 +75,51 @@ if os.environ.get("SCRAPER_FORCE_IPV4", "1") == "1":
 
 
 def _build_session() -> requests.Session:
-    """A requests.Session with backoff retries on transient HTTP failures."""
+    """Session with connection pooling and *no* urllib3-level retries.
+
+    Retries are driven by fetch() instead, so they can be bounded by a single
+    wall-clock deadline. urllib3's Retry has no such notion: it honours a
+    Retry-After header literally, so three 429s carrying "Retry-After: 60"
+    block for a full 180s — longer than gunicorn's worker timeout.
+    """
     s = requests.Session()
-    retry = Retry(
-        total=3,
-        connect=3,
-        read=2,
-        backoff_factor=1.0,
-        status_forcelist=(429, 500, 502, 503, 504),
-        allowed_methods=frozenset({"GET"}),
-        raise_on_status=False,
-    )
-    adapter = HTTPAdapter(max_retries=retry, pool_connections=4, pool_maxsize=4)
+    adapter = HTTPAdapter(max_retries=0, pool_connections=4, pool_maxsize=8)
     s.mount("https://", adapter)
     s.mount("http://",  adapter)
     return s
 
 
 _SESSION = _build_session()
+
+# url -> (stored_at, html), guarded because gunicorn runs gthread workers.
+_CACHE: "OrderedDict[str, tuple[float, str]]" = OrderedDict()
+_CACHE_LOCK = threading.Lock()
+
+
+def _cache_get(url: str) -> str | None:
+    if CACHE_TTL <= 0:
+        return None
+    now = time.monotonic()
+    with _CACHE_LOCK:
+        hit = _CACHE.get(url)
+        if hit is None:
+            return None
+        stored_at, html = hit
+        if now - stored_at > CACHE_TTL:
+            del _CACHE[url]
+            return None
+        _CACHE.move_to_end(url)
+        return html
+
+
+def _cache_put(url: str, html: str) -> None:
+    if CACHE_TTL <= 0:
+        return
+    with _CACHE_LOCK:
+        _CACHE[url] = (time.monotonic(), html)
+        _CACHE.move_to_end(url)
+        while len(_CACHE) > CACHE_MAX:
+            _CACHE.popitem(last=False)
 
 
 # ─── HTML → text helpers ───────────────────────────────────────────
@@ -135,10 +176,94 @@ class ParseError(Exception):
     pass
 
 
-def fetch(url: str) -> str:
-    resp = _SESSION.get(url, headers=HEADERS, timeout=(CONNECT_TIMEOUT, READ_TIMEOUT))
-    resp.raise_for_status()
-    return resp.text
+class RateLimited(Exception):
+    """ExamTopics (Cloudflare) returned 429. Carries the advertised wait."""
+
+    def __init__(self, retry_after: float | None):
+        self.retry_after = retry_after
+        if retry_after:
+            super().__init__(
+                f"ExamTopics is rate-limiting this IP. Try again in about "
+                f"{int(retry_after)}s."
+            )
+        else:
+            super().__init__("ExamTopics is rate-limiting this IP. Try again shortly.")
+
+
+class FetchTimeout(Exception):
+    pass
+
+
+def retry_after_seconds(resp: requests.Response) -> float | None:
+    raw = resp.headers.get("Retry-After")
+    if not raw:
+        return None
+    try:
+        return float(raw.strip())
+    except ValueError:
+        return None  # HTTP-date form; not worth parsing just to display it
+
+
+def fetch(url: str, budget: float | None = None, use_cache: bool = True,
+          headers: dict | None = None) -> str:
+    """GET *url*, retrying transient failures within one wall-clock budget.
+
+    Raises RateLimited immediately on 429 rather than sleeping out the
+    Retry-After: a browser request can't usefully wait a minute, and telling
+    the user to come back is far better than hanging until the worker dies.
+    """
+    send = HEADERS if headers is None else headers
+    # Authenticated responses differ from anonymous ones, so requests carrying
+    # a Cookie must not share the anonymous cache entry (in either direction).
+    cache_key = url if "Cookie" not in send else f"{url}\x00{hash(send['Cookie'])}"
+    if use_cache:
+        cached = _cache_get(cache_key)
+        if cached is not None:
+            return cached
+
+    deadline = time.monotonic() + (TOTAL_BUDGET if budget is None else budget)
+    last_error: Exception | None = None
+
+    for attempt in range(MAX_ATTEMPTS):
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            break
+
+        try:
+            resp = _SESSION.get(
+                url,
+                headers=send,
+                timeout=(min(CONNECT_TIMEOUT, remaining), min(READ_TIMEOUT, remaining)),
+            )
+        except requests.RequestException as e:
+            last_error = e
+        else:
+            if resp.status_code == 429:
+                raise RateLimited(retry_after_seconds(resp))
+            if resp.status_code not in RETRY_STATUS:
+                resp.raise_for_status()
+                if use_cache:
+                    _cache_put(cache_key, resp.text)
+                return resp.text
+            last_error = requests.HTTPError(
+                f"{resp.status_code} Server Error for url: {url}", response=resp
+            )
+
+        # Exponential backoff, clamped so it can never overrun the deadline.
+        if attempt < MAX_ATTEMPTS - 1:
+            backoff = min(MAX_BACKOFF, 0.5 * (2 ** attempt))
+            if time.monotonic() + backoff >= deadline:
+                break
+            time.sleep(backoff)
+
+    if last_error is not None:
+        if time.monotonic() >= deadline:
+            raise FetchTimeout(
+                f"Gave up after {TOTAL_BUDGET:.0f}s ({last_error.__class__.__name__}). "
+                f"ExamTopics may be slow or blocking this IP."
+            ) from last_error
+        raise last_error
+    raise FetchTimeout(f"Gave up after {TOTAL_BUDGET:.0f}s with no response.")
 
 
 def parse(html: str) -> dict:

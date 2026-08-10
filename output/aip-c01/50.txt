@@ -1,0 +1,20 @@
+Exam: AWS Certified Generative AI Developer - Professional AIP-C01
+Question #: 50
+
+A financial services company is developing a Retrieval Augmented Generation (RAG) application that uses Amazon Bedrock to produce summaries of market activities. The application depends on a vector database that stores a small proprietary dataset with a low index count. The application must run similarity searches, and the Amazon Bedrock model responses must maximize accuracy while maintaining high performance.  
+  
+The company needs to configure the vector database and integrate it with the application.  
+  
+Which solution meets these requirements?
+
+A. Launch an Amazon MemoryDB cluster and configure the index by using the Flat algorithm. Configure a horizontal scaling policy based on performance metrics.
+B. Launch an Amazon MemoryDB cluster and configure the index by using the Hierarchical Navigable Small World (HNSW) algorithm. Configure a vertical policy based on performance metrics.
+C. Launch an Amazon Aurora PostgresSQL cluster and configure the index by using the Inverted File with Flat Compression (IVFFlat) algorithm. Configure the instance class to scale to a larger size when the load increases.
+D. Launch an Amazon DocumentDB cluster that has an Inverted File with Flat Compression (IVFFlat) index and a high probe value. Configure connections to the cluster as a replica set Distribute reads to replica instances.
+
+Correct answer: A
+
+Explanation:
+MemoryDB's FLAT vector index performs a brute-force linear comparison of every vector and returns exact nearest-neighbor results within distance-calculation precision. For a small index, this preserves maximum retrieval accuracy without the large-index latency disadvantage of exhaustive search. HNSW and IVFFlat are approximate indexing methods that can improve speed by accepting possible recall loss.
+
+**Learn more:** [Vector search overview - Amazon MemoryDB](https://docs.aws.amazon.com/memorydb/latest/devguide/vector-search-overview.html) · [Vector search features and limits - Amazon MemoryDB](https://docs.aws.amazon.com/memorydb/latest/devguide/vector-search-limits.html)
